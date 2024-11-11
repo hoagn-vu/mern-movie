@@ -4,15 +4,15 @@ import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
 import Profile from './pages/Profile/Profile';
+import AccountManagement from './pages/AccountManagement/AccountManagement';
 
 import api from './api/api';
 
 const App = () => {
-    const isAuthenticated = !!(localStorage.getItem('token') || sessionStorage.getItem('token'));
+    const isAuthenticated = !!(localStorage.getItem('accessToken') );
     const [userData, setUserData] = useState({});
 
-    const fetchUserData = async () => {
-        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const fetchUserData = async (token) => {
         try {
             const response = await api.get('/auth/profile', {
                 headers: {
@@ -20,21 +20,23 @@ const App = () => {
                 },
             });
             setUserData(response.data);
+            console.log('User data fetched:', response.data);
         } catch (error) {
-            // if (error.response && error.response.status === 401) {
-            //     localStorage.removeItem('token');
-            //     sessionStorage.removeItem('token');
-            //     alert('Your session has expired. Please login again.');
-            //     window.location.href = '/';
-            // } else {
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('accessToken');
+                alert('Your session has expired. Please login again.');
+                window.location.href = '/';
+            } else {
                 alert('Error during fetching user data: ', error);
-            // }
+            }
         }
+
     };
 
     useEffect(() => {
         if (isAuthenticated && !userData.id) {
-            fetchUserData();
+            const token = localStorage.getItem('accessToken');
+            fetchUserData(token);
         }
     }, [isAuthenticated]);
 
@@ -48,6 +50,10 @@ const App = () => {
                     path="/profile"
                     element={isAuthenticated ? <Profile userData={userData} /> : <Navigate to="/login" />}
                 />
+                {/* <Route 
+                    path='/admin/accounts' 
+                    element={userData.role==='admin' ? <AccountManagement /> : <Navigate to="/login" />} 
+                /> */}
             </Routes>
         </Router>
     );

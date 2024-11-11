@@ -1,29 +1,45 @@
 import axios from 'axios';
 
+// Tạo một instance của axios với baseURL
 const api = axios.create({
-    baseURL: 'http://localhost:5001/api/',
-    withCredentials: true,
+  baseURL: 'http://localhost:5001/api',
+  withCredentials: true,  // Để gửi cookie với các yêu cầu
 });
 
+// Hàm để refresh access token
+const refreshAccessToken = async () => {
+    try {
+        console.log("Attempting to refresh access token");
+        const { data } = await api.get('/auth/refresh-token', { withCredentials: true });
+        localStorage.setItem('accessToken', data.accessToken);
+        console.log("New access token obtained:", data.accessToken);
+        return data.accessToken;
+    } catch (error) {
+        console.error("Failed to refresh access token:", error);
+        throw error;
+    }
+};
+
+// Thêm interceptor
 api.interceptors.response.use(
-    response => response,
+    (response) => response,
     async (error) => {
+        console.log("Interceptor caught error:", error);
+
         const originalRequest = error.config;
-        if (error.response.status === 401 && !originalRequest._retry) {
+        
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            console.log("Token expired, attempting refresh...");
             originalRequest._retry = true;
-            const refreshToken = localStorage.getItem('refreshToken');
-            if (refreshToken) {
-                try {
-                    const response = await api.post('/auth/refresh', { refreshToken });
-                    const newAccessToken = response.data.accessToken;
-                    localStorage.setItem('token', newAccessToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    return api(originalRequest); // Gửi lại request ban đầu với access token mới
-                } catch (refreshError) {
-                    localStorage.removeItem('token');
-                    window.location.href = '/login';
-                }
-            } else {
+
+            try {
+                const newToken = await refreshAccessToken();
+                originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+                console.log("Retrying original request with new token:", newToken);
+                return api(originalRequest);
+            } catch (refreshError) {
+                alert("Token expired. Please log in again.");
+                console.error("Failed to refresh token:", refreshError);
                 window.location.href = '/login';
             }
         }
@@ -31,17 +47,7 @@ api.interceptors.response.use(
     }
 );
 
+
+
+
 export default api;
-
-// const baseURL = 'http://localhost:5000/api/';
-
-// export const register = (userData) => axios.post(`${baseURL}/auth/register`, userData);
-// export const login = (userData) => axios.post(`${baseURL}/auth/login`, userData);
-// export const getProfile = () => {
-//     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-//     return axios.get(`${baseURL}/auth/profile`, {
-//         headers: {
-//             Authorization: `Bearer ${token}`,
-//         },
-//     });
-// };

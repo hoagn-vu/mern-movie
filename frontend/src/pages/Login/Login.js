@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../../api/api';
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [rememberMe, setRememberMe] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setIsAuthenticated(true);
+        }
+    }, []);
+    
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
     const handleRememberMe = () => setRememberMe(!rememberMe);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,13 +26,8 @@ const Login = () => {
                 rememberMe, // gửi giá trị rememberMe cùng dữ liệu đăng nhập
             });
 
-            const token = response.data.token;
+            localStorage.setItem('accessToken', response.data.accessToken);
 
-            if (rememberMe) {
-                localStorage.setItem('token', token);
-            } else {
-                sessionStorage.setItem('token', token);
-            }
             window.location.href = '/profile';
         } catch (error) {
             setErrorMessage(error.response?.data?.message || 'An unexpected error occurred');
