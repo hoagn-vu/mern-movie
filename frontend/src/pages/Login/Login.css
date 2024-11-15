@@ -1,0 +1,218 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.background-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url(../../../public/background.png);
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
+}
+
+.wrapper-login {
+    width: 420px;
+    height: 550px;
+    border: 2px solid rgb(250, 126, 17, 0.2);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #1f1f1f; */
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 20px rgb(250, 126, 17, 0.2);
+    margin-top: 60px;
+}
+
+.wrapper-login .form-wrapper {
+    width: 100%;
+    padding: 80px 40px;
+}
+
+.form-wrapper .title {
+    font-size: 36px;
+    color: #eee;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(250, 126, 17, 0.9);
+}
+
+.user_input {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: #d95f00 2px solid;
+    margin: 30px 0;
+}
+
+.user_input label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.25s;
+}
+
+.remember_forget input[type="checkbox"] {
+    margin-right: 5px;
+    accent-color: #ef7000;
+    background-color: #eee;
+    backdrop-filter: blur(30px);
+    border-color: none;
+    outline: none;
+}
+
+.user_input input:focus ~ label,
+.user_input input:valid ~ label {
+    top: -3px;
+}
+
+.user_input input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #eee;
+    font-weight: 500;
+    padding: 0 35px 0 5px;
+}
+
+.user_input .icon {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #eee;
+    line-height: 57px;
+}
+
+.form-wrapper .remember_forget {
+    font-size: 0.9rem;
+    color: #eee;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 5px 20px;
+}
+
+.remember_forget a {
+    color: #eee;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.remember_forget a:hover {
+    text-decoration: underline;
+}
+
+.remember_forget .label {
+    display: flex;
+    align-items: center;
+}
+
+.btn-login {
+    height: 45px;
+    width: 100%;
+    background: #d95f00;
+    box-shadow: 2px 2px 5px rgba(250, 12, 17, 0.2);
+    cursor: pointer;
+    font-weight: bold;
+    color: #eee;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+    transform: translateY(-5px);
+}
+
+.btn-login:hover {
+    background: #ef7000;
+    color: #eee;
+}
+
+.btn-login:active {
+    transform: translateY(0px);
+    transform: scale(0.99);
+}
+
+.form-wrapper .register {
+    text-align: center;
+    margin-top: 15px;
+    color: #eee;
+}
+
+.form-wrapper .register p .to_register {
+    text-decoration: none;
+    color: #eee;
+    font-weight: 500;
+    text-shadow: 0 0 5px #eee;
+}
+
+.form-wrapper .register p .to_register:hover {
+    text-decoration: underline;
+}
+
+.separate {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.separate .line {
+    width: 30%;
+    height: 1px;
+    background: #d95f00;
+    margin: 10px 0;
+}
+
+.separate .or {
+    color: #eee;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    margin: 0 10px;
+}
+
+.social-option {
+    text-align: center;
+}
+
+.btn-login-with {
+    background-color: #d95f00;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    color: #eee;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+
+}
+
+.btn-login-with:hover {
+    background: #ef7000;
+    color: #eee;
+}
+
+.social-icon {
+    margin-right: 10px;
+}
+

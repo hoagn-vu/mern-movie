@@ -1,0 +1,10 @@
+html, body, .admin-layout {
+    height: 100%;
+  }
+  
+.main-admin-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+

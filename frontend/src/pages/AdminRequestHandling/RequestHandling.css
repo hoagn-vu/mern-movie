@@ -1,0 +1,14 @@
+
+  
+.pagination .page-item.active .page-link {
+  background-color: #ffa726;
+  border-color: #ffa726;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  border-radius: 10px;
+}

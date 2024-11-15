@@ -1,0 +1,243 @@
+.navbar-brand img {
+    max-width: 40px;
+}
+
+.sidebar-header {
+    background-color: black;
+    padding-top: 2px;
+    min-height: 74px;
+    /* padding-bottom: 5px; */
+}
+
+.sidebar-header a {
+    padding-left: 15px !important;
+}
+  
+  .sidebar.closed {
+    width: 70px;
+    overflow: hidden;
+
+  }
+  
+  .sidebar .nav-link {
+    padding: 15px 10px;
+    transition: padding 0.3s ease, background-color 0.3s ease, border-left 0.3s ease;
+    position: relative;
+    border-left: 4px solid transparent;
+    margin-right: 0;
+  }
+  
+  .sidebar .nav-link.active {
+    background-color: #444; /* Màu nền khi nav đang active */
+    border-left: 4px solid orange; /* Viền cam khi nav đang active */
+  }
+  
+  .sidebar .nav-link:hover, .sidebar .nav-link:focus {
+    background-color: #333;
+    border-left: 4px solid orange;
+  }
+  
+  .sidebar .nav-link:active {
+    background-color: #444;
+    border-left: 4px solid orange;
+  }
+  
+  .sidebar.closed .nav-link {
+    justify-content: center;
+  }
+
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 70px;
+    }
+  
+    .sidebar.open {
+      width: 210px;
+    }
+  }
+
+  .sidebar.closed + .main-content {
+    margin-left: 70px; /* Điều chỉnh khoảng cách khi Sidebar thu nhỏ */
+  }
+  
+  .admin-header {
+    height: 74px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .content {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  .admin-header {
+    min-height: 74px;
+    max-height: 74px;
+  }
+  
+  .sidebar-btn {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .sidebar-btn:hover {
+    background-color: #444 !important;
+    font-size: 18px;
+  }
+  
+  .notification {
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    border: none; /* Tắt viền */
+    box-shadow: none; /* Tắt hiệu ứng đổ bóng */
+    transition: background-color 0.3s ease; /* Thêm hiệu ứng hover */
+  }
+  
+  .notification:hover {
+    background-color: #444; /* Màu nền khi hover */
+  }
+  
+  .notification-dot {
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+    top: 12px;
+    right: 11px;
+  }
+  
+  .notification.dropdown-toggle::after {
+    display: none;
+  }
+  
+  .avatar {
+    width: 40px;
+  }
+  
+  .username {
+    color: white;
+  }
+  
+  /* Dropdown customization */
+  .dropdown-menu {
+    background-color: #333;
+    border-color: #333;
+  }
+  
+  .dropdown-item {
+    color: white;
+    transition: background-color 0.3s ease; /* Thêm hiệu ứng hover */
+  }
+  
+  .dropdown-item:hover {
+    background-color: #555;
+    color: white;
+  }
+  
+  /* Thêm hiệu ứng hover cho user-info */
+  .user-info {
+    transition: background-color 0.3s ease;
+  }
+  
+  .user-info:hover {
+    background-color: #444;
+  }
+  
+  /* Giữ mũi tên (caret) cho user-info */
+  .user-info .dropdown-toggle::after {
+    display: inline-block;
+  }
+  
+  .user-info .btn {
+    border: none;
+    box-shadow: none; /* Tắt hiệu ứng đổ bóng */
+  }
+  
+
+  .sidebar {
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: width 0.3s ease, padding 0.3s ease;
+    overflow-y: auto;
+  }
+  
+  .sidebar .sidebar-header,
+  .sidebar .nav-section {
+    transition: opacity 0.3s ease, padding 0.3s ease;
+  }
+  
+  .sidebar .nav-link i {
+    font-size: 1.25rem;
+    transition: transform 0.3s ease;
+    margin-left: 3px;
+  }
+  
+  .sidebar.closed .nav-link i {
+    transform: scale(1.2); /* Phóng to icon khi Sidebar thu nhỏ */
+    margin-right: 0;
+  }
+  
+  .main-content {
+    margin-left: 240px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+  }
+  
+  .sidebar.closed + .main-content {
+    margin-left: 70px;
+  }
+  
+  /* Hiệu ứng mở rộng khi hover trên icon */
+  .sidebar-btn:hover {
+    background-color: #444 !important;
+    transform: scale(1.1); /* Phóng to nhẹ icon */
+  }
+  
+  .notification {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .notification:hover {
+    background-color: #444;
+    transform: scale(1.1);
+  }
+  
+  .sidebar .sidebar-header a img {
+    margin-left: -1px;
+  }
+
+.admin-layout .main-content {
+  width: calc(100% - 70px);
+}

@@ -1,0 +1,17 @@
+.modal-content {
+  border-radius: 10px;
+}
+
+.pagination .page-link {
+  color: #333;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #ffa726;
+  border-color: #ffa726;
+}
+
+.custom-focus:focus {
+  border-color: #ffa726;
+  box-shadow: 0 0 0 0.25rem rgba(255, 87, 51, 0.25); /* Tạo hiệu ứng mờ cùng màu */
+}

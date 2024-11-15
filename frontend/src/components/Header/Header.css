@@ -1,0 +1,32 @@
+.navbar-brand img {
+  max-width: 40px;
+}
+
+.offcanvas-body .nav-link {
+  padding: 0.5rem 1rem;
+  font-size: 1.1rem;
+}
+
+/* .avatar {
+  border-radius: 50%;
+  border: 2px solid #fff;
+} */
+
+#account-dropdown-item:hover {
+  background: #393939;
+}
+
+#offcanvasNavbar {
+  width: 250px;
+}
+
+.btn-close {
+  background-color: #fff;
+}
+
+@media (min-width: 992px) {
+  .offcanvas {
+    display: none; /* Ẩn offcanvas khi trên màn hình lớn */
+  }
+}
+
