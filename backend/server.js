@@ -6,6 +6,11 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const accountRoutes = require('./routes/accountRoutes');
 
+const genreRoutes = require('./routes/genreRoutes');
+const directorRoutes = require('./routes/directorRoutes');
+const actorRoutes = require('./routes/actorRoutes');
+const movieRoutes = require('./routes/moviesRoutes');
+
 dotenv.config();
 const app = express();
 app.use(cors({
@@ -18,6 +23,11 @@ app.use(cookieParser());
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/account', accountRoutes);
+
+app.use('/api/genres', genreRoutes);
+app.use('/api/directors', directorRoutes);
+app.use('/api/actors', actorRoutes);
+app.use('/api/movies', movieRoutes);
 
 const PORT = process.env.PORT || 5001;
 

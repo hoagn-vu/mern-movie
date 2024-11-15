@@ -1,0 +1,116 @@
+/* Tô sáng khi chọn */
+::selection {
+  color: #fff;
+  background: #5372F0;
+}
+
+/* Nội dung chính */
+.content-input-tag {
+  position: relative;
+  /* max-width: 496px; */
+}
+
+.content-input-tag ul {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 7px;
+  border-radius: 5px;
+  border: 1px solid #a6a6a6;
+}
+
+.content-input-tag ul li {
+  color: #333;
+  margin: 4px 3px;
+  list-style: none;
+  border-radius: 5px;
+  background: #F2F2F2;
+  padding: 5px 8px 5px 10px;
+  border: 1px solid #e3e1e1;
+  transition: background 0.2s ease;
+}
+
+.content-input-tag ul li:hover {
+  background-color: #e8e8e8;
+}
+
+.content-input-tag ul li i {
+  height: 20px;
+  width: 20px;
+  color: #808080;
+  margin-left: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 50%;
+  background: #dfdfdf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.content-input-tag ul li i:hover {
+  background: #cfcfcf;
+}
+
+.content-input-tag ul input {
+  flex: 1;
+  padding: 5px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+/* Dropdown */
+.dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #a6a6a6;
+  border-radius: 5px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.dropdown-item input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.dropdown-item:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdown.show {
+  display: block;
+}
+
+/* Custom scrollbar cho dropdown */
+.dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown::-webkit-scrollbar-track {
+  background: #f2f2f2;
+  border-radius: 5px;
+}
+
+.dropdown::-webkit-scrollbar-thumb {
+  background: #cccccc;
+  border-radius: 5px;
+}
+
+.dropdown::-webkit-scrollbar-thumb:hover {
+  background: #b3b3b3;
+}

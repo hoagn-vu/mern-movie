@@ -17,3 +17,8 @@
   background-color: #ffa726;
   color: white;
 }
+
+.back-button {
+  color: #ffa726;
+  cursor: pointer;
+}
