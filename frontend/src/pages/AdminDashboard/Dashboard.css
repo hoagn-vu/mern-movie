@@ -1,101 +1,157 @@
-    /* Nền các khối */
-  .info-box, .chart-box, .ranking-box, .modal-content {
-    /* background-color: #1e1e1e; */
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Các icon và thông tin */
-  .info-box {
-    padding: 20px;
-    /* color: #e0e0e0; */
-    /* color: #1e1e1e; */
-  }
-  
-  .info-icon {
-    font-size: 3rem;
-    margin-right: 35px;
-    margin-left: 10px;
-    color: #ffa726; /* Màu cam cho icon */
-  }
-  
-  .info-content h5 {
-    color: #ffa726; /* Màu cam cho số liệu */
-    margin: 0 !important;
-  }
-  
-  .info-content p {
-    color: #1e1e1e; /* Màu trắng nhạt cho phần mô tả */
-    margin: 0 !important;
-  }
-  
-  /* Chart placeholder */
-  .chart-placeholder {
-    height: 280px;
-    background-color: #333333;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Bảng xếp hạng */
-  .movie-img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 5px;
-    border: 2px solid #ffa726;
-  }
-  
-  .ranking-box {
-    color: #ffffff;
-  }
-  
-  .ranking-box h5 {
-    color: #ffa726;
-  }
-  
-  /* Nút trong các chart box */
-  .btn-primary {
-    background-color: #ffa726;
-    border-color: #ffa726;
-  }
-  
-  .btn-primary:hover {
-    background-color: #ffb74d;
-    border-color: #ffb74d;
-  }
-  
-  /* Modal */
-  .modal {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
-  
-  .modal-content {
-    border-radius: 10px;
-  }
-  
-  .modal-header, .modal-footer {
-    border-color: #333333;
-  }
-  
-  .modal-title {
-    color: #ffa726;
-  }
-  
-  /* Đường viền các ảnh trong bảng */
-  .movie-img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 5px;
-    border: 1px solid #ffa726;
-  }
-  
-  /* Định dạng bo góc */
-  .info-box, .chart-box, .ranking-box {
-    border-radius: 10px;
-    /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); */
-  }
-  
+  /* Nền các khối */
+.info-box, .chart-box, .ranking-box, .modal-content {
+  /* background-color: #1e1e1e; */
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Các icon và thông tin */
+.info-box {
+  padding: 20px;
+  /* color: #e0e0e0; */
+  /* color: #1e1e1e; */
+}
+
+.info-icon {
+  font-size: 3rem;
+  margin-right: 35px;
+  margin-left: 10px;
+  color: #ffa726; /* Màu cam cho icon */
+}
+
+.info-content h5 {
+  color: #ffa726; /* Màu cam cho số liệu */
+  margin: 0 !important;
+}
+
+.info-content p {
+  color: #1e1e1e; /* Màu trắng nhạt cho phần mô tả */
+  margin: 0 !important;
+}
+
+/* Chart placeholder */
+.chart-placeholder {
+  height: 280px;
+  background-color: #333333;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Bảng xếp hạng */
+/* .movie-img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: 2px solid #ffa726;
+} */
+
+.ranking-box .movie-img,
+.modal-ranking-movies .movie-img {
+  object-fit: cover;
+  width: 60px;
+  aspect-ratio: 2 / 2.8;
+  border-radius: 5px;
+  border: 1px solid #ffa726;
+}
+
+.index-table-modal-ranking {
+  width: 50px;
+}
+
+.ranking-box {
+  color: #ffffff;
+}
+
+.ranking-box-header .btn-primary {
+  background: transparent;
+  color: #ffa726;
+  border: none;
+  padding: 6px 3px;
+  font-size: 20px;
+}
+
+.ranking-box-header .btn-primary:hover {
+  background: none;
+  border: none;
+}
+
+.ranking-box-header .btn-primary:focus {
+  background: none;
+  border: none;
+  color: #ffa726;
+}
+
+.ranking-box table tr{
+  border-top: 1px solid #dee2e6;
+}
+
+
+.chart-box-header .btn-primary {
+  /* background-color: #ffa726;
+  border-color: #ffa726; */
+  background: transparent;
+  color: #ffa726;
+  border: none;
+  /* padding: 6px 0px;  */
+  font-size: 20px;
+}
+
+.chart-box-header .btn-primary:hover {
+  background: none;
+  border: none;
+  /* background-color: #ffb74d;
+  border-color: #ffb74d; */
+}
+
+.chart-box-header .btn-primary:focus {
+  background: none;
+  border: none;
+  color: #ffa726;
+}
+
+/* Modal */
+.dashboard-container .modal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dashboard-container .modal-body {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.dashboard-container .ranking-modal-body {
+  min-height: 560px;
+}
+
+/* .dashboard-container .modal-body .pagination {
+  bottom: 0 !important;
+} */
+
+.dashboard-container .modal-content {
+  border-radius: 10px;
+}
+
+.dashboard-container .modal-header, .modal-footer {
+  border-color: #333333;
+}
+
+.dashboard-container .modal-title {
+  color: #ffa726;
+}
+
+/* Định dạng bo góc */
+.info-box, .chart-box, .ranking-box {
+  border-radius: 10px;
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); */
+}
+
+.btn-close:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+
+

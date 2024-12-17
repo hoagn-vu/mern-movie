@@ -1,5 +1,3 @@
-
-  
 .pagination .page-item.active .page-link {
   background-color: #ffa726;
   border-color: #ffa726;
@@ -11,4 +9,13 @@
 
 .modal-content {
   border-radius: 10px;
+}
+
+.request-handling-header {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.handle-request-container .pagination {
+  width: 500px;
+  margin-bottom: 150px !important;
 }

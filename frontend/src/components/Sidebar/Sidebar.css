@@ -13,66 +13,70 @@
     padding-left: 15px !important;
 }
   
-  .sidebar.closed {
+.sidebar.closed {
+  width: 70px;
+  overflow: hidden;
+
+}
+
+.sidebar .nav-link {
+  padding: 15px 10px;
+  transition: padding 0.3s ease, background-color 0.3s ease, border-left 0.3s ease;
+  position: relative;
+  border-left: 4px solid transparent;
+  margin-right: 0;
+}
+  
+.sidebar .nav-link.active {
+  background-color: #444; /* Màu nền khi nav đang active */
+  border-left: 4px solid orange; /* Viền cam khi nav đang active */
+}
+
+.sidebar .nav-link:hover, .sidebar .nav-link:focus {
+  background-color: #333;
+  border-left: 4px solid orange;
+}
+
+.sidebar .nav-link:active {
+  background-color: #444;
+  border-left: 4px solid orange;
+}
+
+.sidebar.closed .nav-link {
+  justify-content: center;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
     width: 70px;
-    overflow: hidden;
-
-  }
-  
-  .sidebar .nav-link {
-    padding: 15px 10px;
-    transition: padding 0.3s ease, background-color 0.3s ease, border-left 0.3s ease;
-    position: relative;
-    border-left: 4px solid transparent;
-    margin-right: 0;
-  }
-  
-  .sidebar .nav-link.active {
-    background-color: #444; /* Màu nền khi nav đang active */
-    border-left: 4px solid orange; /* Viền cam khi nav đang active */
-  }
-  
-  .sidebar .nav-link:hover, .sidebar .nav-link:focus {
-    background-color: #333;
-    border-left: 4px solid orange;
-  }
-  
-  .sidebar .nav-link:active {
-    background-color: #444;
-    border-left: 4px solid orange;
-  }
-  
-  .sidebar.closed .nav-link {
-    justify-content: center;
   }
 
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .sidebar {
-      width: 70px;
-    }
-  
-    .sidebar.open {
-      width: 210px;
-    }
+  .sidebar.open {
+    width: 210px;
   }
 
-  .sidebar.closed + .main-content {
-    margin-left: 70px; /* Điều chỉnh khoảng cách khi Sidebar thu nhỏ */
+  .sidebar.open ~ .main-content {
+    margin-left: 210px;
   }
-  
-  .admin-header {
-    height: 74px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-  
-  .content {
-    flex-grow: 1;
-    overflow-y: auto;
-  }
+}
+
+.sidebar.closed + .main-content {
+  margin-left: 70px;
+}
+
+.admin-header {
+  height: 74px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.content {
+  flex-grow: 1;
+  /* overflow-y: auto; */
+}
   
 
 
@@ -177,7 +181,13 @@
   
   .user-info .btn {
     border: none;
-    box-shadow: none; /* Tắt hiệu ứng đổ bóng */
+    box-shadow: none;
+    background: none !important;
+  }
+  
+  .user-info .btn:hover {
+    background: black !important;
+
   }
   
 
@@ -241,3 +251,73 @@
 .admin-layout .main-content {
   width: calc(100% - 70px);
 }
+
+/* .content {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
+} */
+
+.upload-movie-toast {
+  min-width: 360px;
+  font-size: 1.1rem;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.upload-movie-toast .toast-header {
+  min-height: 52px;
+  padding: 0px 17px;
+  background-color: #f8f8f8;
+}
+
+.upload-movie-toast .toast-header .chevron-control-body {
+  cursor: pointer;
+}
+
+.upload-movie-toast .toast-body {
+  padding: 0px;
+  background-color: #fff;
+}
+
+.upload-movie-toast .hide-toast-body {
+  height: 0;
+  transition: height 0.3s ease;
+}
+
+.upload-movie-toast .toast-body .uploading-alert {
+  padding: 5px 17px;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.8rem;
+}
+
+.upload-movie-toast .toast-body .movie-upload-row {
+  padding: 12px 17px;
+  /* border-bottom: 1px solid #ddd; */
+  cursor: pointer;
+}
+
+.upload-movie-toast .toast-body .movie-upload-row h6 {
+  padding: 3px 0px;
+  max-width: 250px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+.upload-movie-toast .toast-body .movie-upload-row:hover {
+  background-color: #f3f3f3;
+}
+
+.upload-movie-toast .upload-type-icon {
+  color: #ff6500;
+}
+

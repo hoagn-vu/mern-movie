@@ -1,0 +1,389 @@
+.user-profile-container p {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.user-profile-container button {
+    border: none;
+    background-color: transparent;
+}
+
+.user-profile-container {
+    min-height: 100vh;
+}
+
+.user-profile-header {
+    /* width: 75%; */
+    border-bottom: 1px solid #495057;
+}
+
+.user-profile-container .box-title {
+    color: gray;
+}
+
+.user-information-box .user-avatar {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.user-information-box .register-date {
+    color: gray;
+}
+
+.edit-infor-button {
+    color: white;
+    cursor: pointer;
+}
+
+.edit-infor-button:hover {
+    color: #ff6500;
+}
+
+.profile-row {
+    border-bottom: 1px solid gray;
+}
+
+.profile-row .setting-button {
+    color: white;
+    cursor: pointer;
+}
+
+.profile-row .setting-button:hover {
+    color: #ff6500;
+}
+
+.second-profile-box .profile-row-title {
+    color: gray;
+}
+
+.disabled-button-profile {
+    color: gray !important;
+    pointer-events: none;
+}
+
+.disabled-button-profile:hover {
+    color: gray !important;
+}
+
+
+
+.user-profile-container .personal-edit-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.user-profile-container .personal-edit-modal-content {
+    width: 600px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+
+
+.edit-infor-box {
+    border-bottom: 1px solid #495057;
+}
+
+.edit-infor-box .user-avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.edit-infor-box .profile-input-fullname {
+    flex-grow: 1;
+}
+
+.edit-infor-box .profile-input-fullname label {
+    background-color: transparent !important;
+    color: white !important;
+}
+
+.edit-infor-box .profile-input-fullname label::after {
+    background-color: transparent !important;
+    color: white !important;
+}
+
+.edit-infor-box .profile-input-fullname input {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #495057;
+}
+
+
+
+.edit-infor-box .fullname-input {
+    position: relative;
+    flex-grow: 1;
+    height: 50px;
+    border-bottom: #ff6500 1px solid;
+    margin: 30px 0;
+}
+
+.edit-infor-box .fullname-input label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.25s;
+}
+
+.edit-infor-box .fullname-input input:focus ~ label,
+.edit-infor-box .fullname-input input:valid ~ label {
+    top: -3px;
+    font-size: 0.9rem;
+}
+
+.edit-infor-box .fullname-input input {
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    font-size: 1.1em;
+    color: #eee;
+    font-weight: 500;
+    padding: 0 35px 0 5px;
+}
+
+.edit-infor-box .fullname-input .icon-fullname {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #eee;
+    line-height: 57px;
+    cursor: pointer;
+}
+
+.edit-infor-box .fullname-input input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    transition: background-color 5000s ease-in-out 0s;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+}
+
+.edit-infor-form .register_input input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    transition: background-color 5000s ease-in-out 0s;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+}
+
+
+
+.personal-edit-modal-content .avatar-list .avatar-col {
+    flex: 0 0 auto;
+    width: 20%;
+}
+
+.personal-edit-modal-content .avatar-list .avatar-option {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.personal-edit-modal-content .avatar-list .avatar-option:hover {
+    opacity: 1;
+    border: 2px solid #ff6500;
+}
+
+.personal-edit-modal-content .selected-avatar {
+    opacity: 1 !important;
+    border: 2px solid #ff6500;
+}
+
+.personal-edit-modal-content .selected-icon {
+    color: white;
+    background-color: #ff6500;
+    padding: 5px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 28px;
+}
+
+.edit-button-box .btn-primary {
+    background-color: #ffa726;
+    border-color: #ffa726;
+}
+
+.edit-button-box .btn-primary:hover {
+    background-color: #ffb74d;
+    border-color: #ffb74d;
+    color: white;
+}
+
+
+
+
+.user-profile-container .account-edit-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.user-profile-container .account-edit-modal-content {
+    width: 600px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.edit-filed-row input {
+    background-color: #495057;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #ff6500;
+    color: white;
+}
+
+.edit-filed-row input:focus {
+    background-color: #495057;
+    box-shadow: none;
+    border-bottom: 1px solid #ff6500;
+    color: white;
+
+
+}
+
+
+
+
+
+
+.edit-password-profile .register_input {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: #d95f00 2px solid;
+    margin: 30px 0;
+}
+
+.edit-password-profile .register_input label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.25s;
+}
+
+.edit-password-profile .register_input input:focus ~ label,
+.edit-password-profile .register_input input:valid ~ label {
+    top: -3px;
+}
+
+.edit-password-profile .register_input input {
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #eee;
+    font-weight: 500;
+    padding: 0 35px 0 5px;
+}
+
+.edit-password-profile .register_input .icon-form-register {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #eee;
+    line-height: 57px;
+    cursor: pointer;
+}
+
+.edit-account-profile .register_input {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: #d95f00 2px solid;
+    margin: 30px 0;
+}
+
+.edit-account-profile .register_input label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.25s;
+}
+
+.edit-account-profile .register_input input:focus ~ label,
+.edit-account-profile .register_input input:valid ~ label {
+    top: -3px;
+}
+
+.edit-account-profile .register_input input {
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #eee;
+    font-weight: 500;
+    padding: 0 35px 0 5px;
+}
+
+.edit-account-profile .register_input .icon-form-register {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #eee;
+    line-height: 57px;
+    cursor: pointer;
+}

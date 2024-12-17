@@ -1,34 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './RequestHandling.css';
+import api from '../../api/api';
+import Pagination from '../../components/Pagination/Pagination';
 
 const RequestHandling = () => {
-  const [reports, setReports] = useState([
-    { id: 1, user: 'JohnDoe', movie: 'Movie 1', reason: 'Inappropriate content', date: '2024-10-01' },
-    { id: 2, user: 'JaneDoe', movie: 'Movie 2', reason: 'Spam comments', date: '2024-10-02' },
-    // Các report khác
-  ]);
+  // const [reports, setReports] = useState([
+  //   { id: 1, user: 'JohnDoe', movie: 'Movie 1', reason: 'Inappropriate content', date: '2024-10-01' },
+  //   { id: 2, user: 'JaneDoe', movie: 'Movie 2', reason: 'Spam comments', date: '2024-10-02' },
+  // ]);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const reportsPerPage = 10;
-
+  const [reports, setReports] = useState([]);
   const [selectedReport, setSelectedReport] = useState(null);
 
   const deleteReport = (reportId) => {
     setReports(reports.filter((report) => report.id !== reportId));
   };
 
-  const indexOfLastReport = currentPage * reportsPerPage;
-  const indexOfFirstReport = indexOfLastReport - reportsPerPage;
-  const currentReports = reports.slice(indexOfFirstReport, indexOfLastReport);
+  useEffect(() => {
+    const getAllReports = async () => {
+      try {
+        const response = await api.get('/movies/getAllReports');
+        setReports(response.data);
+      } catch (error) {
+        console.error('Error fetching reports:', error);
+      }
+    };
 
-  const totalPages = Math.ceil(reports.length / reportsPerPage);
+    getAllReports();
+  }, []);
 
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const convertISODate = (isoDate) => {
+    const date = new Date(isoDate);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Tháng bắt đầu từ 0
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  };
+
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const getCurrentPageData = (data) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  };
+
+  const currentData = getCurrentPageData(reports);
+  const totalPages = Math.ceil(reports.length / itemsPerPage);
+
+
 
   return (
-    <div className="container-fluid p-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2>Request Handling</h2>
+    <div className="container-fluid handle-request-container p-4">
+      <div className="request-handling-header pb-2 d-flex justify-content-between align-items-center mb-3">
+        <h2 className='m-0'>Người dùng phản hồi</h2>
         {/* <button className="btn btn-primary">Add Account</button> */}
       </div>
       <div className='table-responsive'>
@@ -36,43 +72,44 @@ const RequestHandling = () => {
           <thead className="table-light">
             <tr>
               <th>#</th>
-              <th>User</th>
-              <th>Movie</th>
-              <th>Reason</th>
-              <th>Date</th>
-              <th>Actions</th>
+              <th>Tài khoản</th>
+              <th>Họ tên</th>
+              <th>Báo cáo phim</th>
+              <th>Nội dung báo cáo</th>
+              <th>Thời gian</th>
+              {/* <th>Thao tác</th> */}
             </tr>
           </thead>
           <tbody className='align-middle'>
-            {currentReports.map((report, index) => (
-              <tr key={report.id}>
-                <td>{indexOfFirstReport + index + 1}</td>
-                <td>{report.user}</td>
-                <td>{report.movie}</td>
-                <td>{report.reason}</td>
-                <td>{report.date}</td>
-                <td>
+            {currentData.map((report, index) => (
+              <tr key={report._id}>
+                <td className='text-center'>{(currentPage - 1) * itemsPerPage + index + 1}</td>
+                <td>{report.username}</td>
+                <td>{report.fullname}</td>
+                <td>{report.movieTitle}</td>
+                <td>{report.content}</td>
+                <td>{convertISODate(report.createAt)}</td>
+                {/* <td>
+                  
                   <button className="btn btn-info btn-sm me-2" onClick={() => setSelectedReport(report)}>View</button>
                   <button className="btn btn-danger btn-sm" onClick={() => deleteReport(report.id)}>Delete</button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* Pagination */}
-      <nav>
-        <ul className="pagination justify-content-center">
-          {Array.from({ length: totalPages }, (_, index) => (
-            <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-              <button className="page-link custom-focus" onClick={() => setCurrentPage(index + 1)}>
-                {index + 1}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      {totalPages > 1 && (
+        <div className='d-flex justify-content-center'>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
+      
 
       {/* Modal hiển thị chi tiết report */}
       {selectedReport && (

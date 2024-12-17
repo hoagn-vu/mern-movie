@@ -1,0 +1,32 @@
+.report-modal-body textarea {
+    height: 100px;
+    background: none;
+    color: white;
+
+}
+
+.report-modal-body textarea:focus {
+    height: 100px;
+    background: none;
+    color: white;
+    border-color: white;
+    box-shadow: none;
+}
+
+.report-modal-body .label {
+    background: none;
+}
+
+.report-modal-header {
+    color: #ffa726;
+}
+
+.report-modal-footer .btn-primary {
+    background-color: #ffa726;
+    border-color: #ffa726;
+}
+
+.report-modal-footer .btn-primary:hover {
+    background-color: #ffb74d;
+    border-color: #ffb74d;
+}

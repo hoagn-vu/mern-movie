@@ -1,4 +1,5 @@
 const directorService = require('../services/directorService');
+const Director = require('../models/Director');
 
 const createDirector = async (req, res) => {
   try {
@@ -11,7 +12,7 @@ const createDirector = async (req, res) => {
 
 const getDirectors = async (req, res) => {
   try {
-    const examples = await directorService.getDirectors();
+    const examples = await Director.find().select(['-__v']);
     res.status(200).json(examples);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,4 +1,5 @@
 const genreService = require('../services/genreService');
+const Genre = require('../models/Genre');
 
 const createGenre = async (req, res) => {
   try {
@@ -11,8 +12,9 @@ const createGenre = async (req, res) => {
 
 const getGenres = async (req, res) => {
   try {
-    const examples = await genreService.getGenres();
+    const examples = await Genre.find().select(['-__v']);
     res.status(200).json(examples);
+    console.log('Fetching genres');
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

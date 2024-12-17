@@ -1,0 +1,113 @@
+.container-test .sort-box {
+    cursor: pointer;
+}
+
+.container-test .sort-option {
+    position: relative;
+}
+
+.container-test .sort-option i {
+    position: absolute;
+    color: lightgrey;
+}
+
+.container-test .sort-option .sort-chosen {
+    color: black;
+}
+
+
+
+.container-test .toggle-button {
+    border: none;
+    background: none;
+    outline: none;
+    cursor: pointer;
+}
+  
+/*.container-test  .fa-sort {
+    position: relative;
+    display: inline-block;
+} */
+
+.container-test .half-top {
+    background: linear-gradient(to bottom, black 50%, lightgrey 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.container-test .half-bottom {
+    background: linear-gradient(to top, black 50%, lightgrey 50%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+  
+
+
+.container-test .upload-movie-toast {
+    min-width: 360px;
+    font-size: 1.1rem;
+    border-radius: 5px 5px 0px 0px;
+}
+
+.container-test .upload-movie-toast .toast-header {
+    min-height: 52px;
+    padding: 0px 17px;
+    background-color: #f8f8f8;
+}
+
+.container-test .upload-movie-toast .toast-body {
+    padding: 0px;
+}
+
+.container-test .upload-movie-toast .toast-body .uploading-alert {
+    padding: 5px 17px;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.8rem;
+}
+
+.container-test .upload-movie-toast .toast-body .movie-upload-row {
+    padding: 12px 17px;
+    /* border-bottom: 1px solid #ddd; */
+    cursor: pointer;
+}
+
+.container-test .upload-movie-toast .toast-body .movie-upload-row h6 {
+    padding: 3px 0px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+.container-test .upload-movie-toast .toast-body .movie-upload-row:hover {
+    background-color: #f3f3f3;
+}
+
+.container-test .upload-movie-toast .upload-type-icon {
+    color: #ff6500;
+}
+
+
+
+
+
+.test-dropdown-ellipsis .dropdown-toggle::after {
+    content: none;
+}
+
+.test-dropdown-ellipsis .dropdown-toggle:active {
+    color: #ff6500;
+}
+
+.test-dropdown-ellipsis .delete-comment {
+    cursor: pointer;
+}
+
+.test-dropdown-ellipsis .delete-comment:hover {
+    color: #ff6500;
+}
+  

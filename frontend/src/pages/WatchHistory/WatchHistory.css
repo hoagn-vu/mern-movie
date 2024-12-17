@@ -1,0 +1,56 @@
+.watch-history-container {
+    min-height: 100vh;
+}
+
+.watch-history-header {
+    border-bottom: 1px solid #495057;
+}
+
+.watch-history-thumbnail {
+    position: relative;
+    overflow: hidden;
+
+}
+
+.watch-history-thumbnail .watch-history-duration {
+    width: 100%;
+}
+
+.watch-history-duration-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background-color: #ff6500;
+    transition: width 0.3s ease;
+}
+
+.watch-history-item .watch-history-img {
+    object-fit: cover;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+}
+
+
+.watch-history-thumbnail .play-icon {
+    position: absolute;
+    /* top: 37.46%;
+    left: 46.33%; */
+    /* bottom: 45px;
+    right: 22px; */
+    bottom: calc(-16px + 50%);
+    left: calc(-6px + 50%);
+    /* transform: translate(-50%, -50%); */
+
+    /* bottom: 0;
+    right: 0; */
+    font-size: 24px;
+    color: #ff6500;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.watch-history-link:hover .play-icon {
+    opacity: 1;
+    transform: scale(1.2);
+}

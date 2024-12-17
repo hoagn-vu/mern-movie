@@ -1,0 +1,205 @@
+.background-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url(https://i.imgur.com/6XNFs7y.png);
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
+}
+
+.wrapper-verify {
+    width: 420px;
+    border: 2px solid rgb(250, 126, 17, 0.2);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #1f1f1f; */
+    backdrop-filter: blur(30px);
+    box-shadow: 0 0 20px rgb(250, 126, 17, 0.2);
+    margin-top: 60px;
+}
+
+.wrapper-verify .form-wrapper {
+    width: 100%;
+    padding: 50px 40px;
+}
+
+.wrapper-verify .form-wrapper .title {
+    font-size: 36px;
+    color: #eee;
+    text-align: center;
+    text-transform: uppercase;
+    text-shadow: 0 0 30px rgba(250, 126, 17, 0.9);
+}
+
+.verify-label {
+    margin-top: 15px;
+}
+
+.wrapper-verify .verify_input {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: #d95f00 2px solid;
+    margin: 0px 0px 15px 0px;
+}
+
+.first-input {
+    margin-top: 15px !important;
+}
+
+.last-input {
+    margin-bottom: 15px !important;
+}
+
+.verify_input label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.25s;
+}
+
+.remember_forget input[type="checkbox"] {
+    margin-right: 5px;
+    accent-color: #ef7000;
+    background-color: #eee;
+    backdrop-filter: blur(30px);
+    border-color: none;
+    outline: none;
+}
+
+.verify_input input:focus ~ label,
+.verify_input input:valid ~ label {
+    top: -3px;
+}
+
+.verify_input input {
+    width: 100%;
+    height: 100%;
+    background: transparent !important;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #eee;
+    font-weight: 500;
+    padding: 0 35px 0 5px;
+}
+
+.verify_input .icon-form-register {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #eee;
+    line-height: 57px;
+    cursor: pointer;
+}
+
+.wrapper-verify .form-wrapper .remember_forget {
+    font-size: 0.9rem;
+    color: #eee;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 5px 20px;
+}
+
+.remember_forget a {
+    color: #eee;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.remember_forget a:hover {
+    text-decoration: underline;
+}
+
+.remember_forget .label {
+    display: flex;
+    align-items: center;
+}
+
+.wrapper-verify .resend-line {
+    color: #555;
+}
+
+.wrapper-verify .resend-line .resend-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #eee;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+
+.wrapper-verify .resend-line .disable-resend {
+    pointer-events: none;
+    color: #555 !important;
+}
+
+.btn-verify {
+    height: 45px;
+    width: 100%;
+    background: #d95f00;
+    box-shadow: 2px 2px 5px rgba(250, 12, 17, 0.2);
+    cursor: pointer;
+    font-weight: bold;
+    color: #eee;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    text-transform: uppercase;
+    transition: all 0.2s ease-in-out;
+    transform: translateY(-5px);
+
+    margin-top: 15px;
+}
+
+.btn-verify:hover {
+    background: #ef7000;
+    color: #eee;
+}
+
+.btn-verify:active {
+    transform: translateY(0px);
+    transform: scale(0.99);
+}
+
+.wrapper-verify .form-wrapper .login {
+    text-align: center;
+    margin-top: 15px;
+    color: #eee;
+}
+
+.wrapper-verify .form-wrapper .login p .to_login {
+    text-decoration: none;
+    color: #eee;
+    font-weight: 500;
+    text-shadow: 0 0 5px #eee;
+}
+
+.wrapper-verify .form-wrapper .login p .to_login:hover {
+    text-decoration: underline;
+}
+
+.wrapper-verify input:-webkit-autofill {
+    background-color: transparent !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    transition: background-color 5000s ease-in-out 0s;
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    caret-color: white;
+}
+

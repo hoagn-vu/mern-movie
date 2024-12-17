@@ -1,0 +1,423 @@
+.player-container .video-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.video-container .spinner-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5); /* Mờ nền để nổi bật spinner */
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.video-container .custom-spinner {
+    width: 4.2rem; /* Kích thước chiều ngang */
+    height: 4.2rem; /* Kích thước chiều dọc */
+    border-width: 0.25rem; /* Độ dày đường viền */
+    border-radius: 50%; /* Bo tròn */
+}
+
+
+
+.player-container p {
+    margin-bottom: 0 !important;
+}
+
+.playback-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.player-container {
+    width: 100%;
+    user-select: none;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #000;
+    aspect-ratio: 16 / 9;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.player-container.fullscreen-btn {
+    max-width: 100%;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0px;
+}
+
+.player-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    bottom: -15px;
+    transition: all 0.3s ease;
+}
+
+.player-container.show-controls .player-wrapper {
+    opacity: 1;
+    /* bottom: 0; */
+    transition: all 0.13s ease;
+}
+
+.player-wrapper::before {
+    content: "";
+    bottom: 0;
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: calc(100% + 35px);
+    pointer-events: none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+
+.player-timeline {
+    /* margin: 0 10px 0 10px; */
+    height: 7px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.player-timeline .progress-area {
+    flex: 1;
+    height: 4px;
+    position: relative;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.progress-area span {
+    position: absolute;
+    left: 50%;
+    top: -25px;
+    font-size: 13px;
+    color: #fff;
+    pointer-events: none;
+    transform: translateX(-50%);
+}
+
+.progress-area .progress-bar-player {
+    width: 0%;
+    height: 100%;
+    position: relative;
+    background: #ff6500;
+    border-radius: 0.375rem;
+}
+
+.progress-bar-player::before {
+    content: "";
+    right: -6px;
+    top: 50%;
+    height: 12px;
+    width: 12px;
+    position: absolute;
+    border-radius: 50%;
+    background: #ff6500;
+    transform: translateY(-50%);
+}
+
+.progress-bar-player::before, .progress-area span {
+    display: none;
+}
+
+.player-timeline:hover .progress-bar-player::before,
+.player-timeline:hover .progress-area span {
+    display: block;
+}
+
+.player-wrapper .player-controls {
+    padding: 5px 10px 10px 10px;
+}
+
+.player-controls .player-options {
+    width: 100%;
+}
+
+.player-controls .player-options:first-child {
+    justify-content: flex-start;
+}
+
+.player-controls .player-options:last-child {
+    justify-content: flex-end;
+}
+
+.player-options button {
+    height: 40px;
+    width: 40px;
+    font-size: 19px;
+    border: none;
+    cursor: pointer;
+    background: none;
+    color: #efefef;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.player-options button :where(i, span) {
+    height: 100%;
+    width: 100%;
+    line-height: 40px;
+}
+
+.player-options button:hover :where(i, span) {
+    color: #fff;
+}
+
+.player-options button:active :where(i, span) {
+    transform: scale(0.9);
+}
+
+.player-options button span {
+    font-size: 23px;
+}
+
+.player-options input[type="range"] {
+    height: 3px;
+    max-width: 75px;
+    accent-color: #ff6500;
+}
+
+/* Tùy chỉnh cho input range */
+.player-options  .custom-range  {
+    -webkit-appearance: none;
+    width: 0;
+    height: 8px;
+    background: linear-gradient(to right, #ff6500 100%, #d3d3d3 100%);
+    outline: none;
+    border: none;
+    border-radius: 4px;
+    /* transition: background 0.3s ease-in-out; */
+    opacity: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+
+}
+
+.volume-box:hover .custom-range {
+    opacity: 1;
+    width: 100%;
+}
+
+/* Nút trượt */
+.custom-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #ff6500;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+    
+.custom-range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #ff6500;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+    
+.custom-range::-ms-thumb {
+    width: 12px;
+    height: 12px;
+    background: #ff6500;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Tùy chỉnh track */
+.custom-range::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+}
+
+.custom-range::-moz-range-track {
+    -moz-appearance: none;
+}
+    
+.custom-range::-ms-track {
+    appearance: none;
+    border-color: transparent;
+    color: transparent;
+}
+
+.hide-cursor  {
+    cursor: none;
+}
+
+.player-options .player-timer {
+    color: #efefef;
+    font-size: 15px;
+}
+.player-timer .separator {
+    margin: 0 5px 0 5px; 
+    font-size: 12px;
+}
+
+.playback-content {
+    display: flex;
+    position: relative;
+}
+
+.playback-content .speed-options {
+    position: absolute;
+    list-style: none;
+    left: -20px;
+    bottom: 40px;
+    width: 95px;
+    overflow: hidden;
+    opacity: 0;
+    border-radius: 4px;
+    pointer-events: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.13s ease;
+}
+
+.playback-content .speed-options.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.speed-options li {
+    cursor: pointer;
+    /* color: #000; */
+    font-size: 14px;
+    margin: 2px 0;
+    padding: 5px 0 5px 15px;
+    transition: all 0.1s ease;
+}
+
+.speed-options li:where(:first-child, :last-child) {
+    margin: 0px;
+}
+
+.speed-options li:hover {
+    background: #393939;
+}
+
+.speed-options li.active {
+    color: #ff6500;
+}
+
+.playback-content .perform-options {
+    position: absolute;
+    list-style: none;
+    left: -60px;
+    bottom: 40px;
+    width: 95px;
+    overflow: hidden;
+    opacity: 0;
+    border-radius: 4px;
+    pointer-events: none;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.13s ease;
+}
+
+.playback-content .perform-options.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.perform-options li {
+    cursor: pointer;
+    font-size: 14px;
+    margin: 2px 0;
+    padding: 5px 0 5px 15px;
+    transition: all 0.1s ease;
+}
+
+.perform-options li:where(:first-child, :last-child) {
+    margin: 0px;
+}
+
+.perform-options li:hover {
+    background: #393939;
+}
+.perform-options li.active {
+    color: #ff6500;
+}
+
+.player-container:fullscreen,
+.player-container:-webkit-full-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-container video {
+    width: 100%;
+}
+
+@media screen and (max-width: 540px) {
+    .player-wrapper .player-controls {
+        padding: 3px 10px 7px;
+    }
+
+    .player-options input, .progress-area span {
+        display: none!important;
+    }
+
+    .player-options button {
+        height: 30px;
+        width: 30px;
+        font-size: 17px;
+    }
+
+    .player-options button :where(i, span) {
+        line-height: 30px;
+    }
+    .player-options button span {
+        font-size: 21px;
+    }
+
+    .player-options .player-timer, .progress-area span, .speed-options li, .perform-options li {
+        font-size: 12px;
+    }
+
+    .playback-content .speed-options {
+        width: 75px;
+        left: -30px;
+        bottom: 30px;
+    }
+
+    .speed-options li {
+        margin: 1px 0;
+        padding: 3px 0 3px 10px;
+    }
+
+    .playback-content .perform-options {
+        width: 75px;
+        left: -30px;
+        bottom: 30px;
+    }
+
+    .perform-options li {
+        margin: 1px 0;
+        padding: 3px 0 3px 10px;
+    }
+
+    .options-right .pic-in-pic-btn {
+        display: none;
+    }
+}
+
+
+
+
+
+
+
+

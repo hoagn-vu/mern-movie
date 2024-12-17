@@ -1,24 +1,233 @@
-.movie-img {
+.btn-primary:active {
+  background-color: #ffa726 !important;
+  border-color: #ffa726 !important;
+}
+
+.movie-management-container .table-movies {
+  min-height: 977px;
+}
+
+.table-movies .index-col-table-movies {
   width: 50px;
-  height: 50px;
+}
+
+.table-movies .poster-col-table-movies {
+  width: 86px;
+}
+
+.table-movies .title-col-table-movies {
+  width: 350px;
+}
+
+/* 
+.table-movies .release-date-col-table-movies {
+  min-width: 132px;
+}
+
+.table-movies .upload-date-col-table-movies {
+  min-width: 153px;
+}
+
+.table-movies .status-col-table-movies {
+  min-width: 128px;
+}
+
+.table-movies .promote-col-table-movies {
+  min-width: 170px;
+}
+
+.table-movies .action-col-table-movies {
+  min-width: 110px;
+} */
+
+.movie-management-container .movie-img {
   object-fit: cover;
+  max-width: 70px;
+  min-height: 98px;
+  aspect-ratio: 2 / 2.8;
   border-radius: 5px;
 }
 
-.modal-content {
+.movie-management-container .pagination {
+  width: 500px;
+  margin-bottom: 150px !important;
+}
+
+.movie-management-container .modal-content {
   border-radius: 10px;
 }
 
-.pagination .page-link {
-  border-radius: 5px;
+.movie-management-container .modal-promote-setting-content input:focus {
+  border-color: #ffa726 !important;
+  box-shadow: 0 0 0 0.25rem rgba(255, 167, 38, 0.25) !important;
 }
 
-.pagination .active .page-link {
+.movie-management-container .modal-promote-setting-content .btn-primary {
   background-color: #ffa726;
-  color: white;
+  border-color: #ffa726;
+  /* width: 115px !important; */
 }
+.movie-management-container .modal-promote-setting-content .btn-primary:hover {
+  background-color: #ffb74d;
+  border-color: #ffb74d;
+}
+
 
 .back-button {
   color: #ffa726;
   cursor: pointer;
+}
+
+/* Tùy chỉnh switch khi checked */
+.custom-switch:checked {
+  background-color: #ffa726; /* Màu nền khi checked */
+  border-color: #ffa726;
+}
+
+.custom-switch:checked:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 167, 38, 0.25); /* Màu shadow khi focus */
+}
+
+/* Tùy chỉnh switch khi unchecked */
+.custom-switch {
+  background-color: #e0e0e0; /* Màu nền khi unchecked */
+  border-color: #e0e0e0;
+}
+
+/* Hiệu ứng focus của switch (cả khi checked và unchecked) */
+.custom-switch:focus {
+  box-shadow: 0 0 0 0.25rem rgba(255, 87, 51, 0.25); /* Shadow khi focus */
+  border-color: #ffa726;
+}
+
+/* Tùy chỉnh hình tròn trong switch khi unchecked */
+.custom-switch::before {
+  background-color: #ffa726; /* Màu hình tròn khi unchecked */
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Tùy chỉnh hình tròn khi focus ở trạng thái unchecked */
+.custom-switch:focus:not(:checked)::before {
+  background-color: #ffa726; /* Màu hình tròn khi focus và unchecked */
+}
+
+.form-switch .form-check-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e");
+}
+.form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='white'/%3e%3c/svg%3e");
+}
+
+.movie-management-header {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.movie-management-header .search-box {
+  width: 250px;
+  position: relative;
+  border: #dee2e6 solid 1px;
+  padding: 6px 12px;
+}
+
+.movie-management-header .search-box .search-input {
+  border: none;
+  outline: none;
+}
+
+.movie-management-header .search-box .search-input:focus {
+  border: none;
+  outline: none;
+}
+
+.movie-management-header .search-box .search-icon {
+  color: #ccc;
+}
+
+.movie-management-header .btn-primary {
+  background-color: #ffa726;
+  border-color: #ffa726;
+  /* width: 175px; */
+}
+
+.movie-management-header .btn-primary:hover {
+  background-color: #ffb74d;
+  border-color: #ffb74d;
+}
+
+.clear-filter-btn {
+  color: #ffa726;
+  border: #ffa726 solid 1px;
+}
+
+.clear-filter-btn:hover {
+  color: white;
+  background-color: #ffa726;
+  border: #ffa726 solid 1px;
+}
+
+.clear-filter-btn:focus {
+  color: white;
+  background-color: #ffa726;
+  border: #ffa726 solid 1px;
+}
+
+.clear-filter-btn:active {
+  color: white;
+  background-color: #ffa726 !important;
+  border: #ffa726 solid 1px !important;
+}
+
+/* .clear-filter-btn */
+/* .movie-management-header .right-header {
+  width: 500px;
+} */
+
+
+/* .sort-icon {
+  cursor: pointer;
+  visibility: hidden;
+  color: #ccc;
+  transition: color 0.3s;
+}
+
+.sort-header {
+  cursor: pointer;
+}
+
+.sort-header:hover .sort-icon {
+  visibility: visible;
+  color: #000;
+}
+
+.sort-active {
+  color: #000;
+  visibility: visible;
+} */
+
+/* .movie-management-row .dropdown-menu {
+  width: 300px;
+} */
+
+
+
+.sort-header {
+  cursor: pointer;
+}
+
+.sort-header i {
+  color: lightgrey;
+  cursor: pointer;
+
+}
+
+.sort-header .half-top {
+  background: linear-gradient(to bottom, black 50%, lightgrey 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sort-header .half-bottom {
+  background: linear-gradient(to top, black 50%, lightgrey 50%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

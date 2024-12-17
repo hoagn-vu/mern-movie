@@ -1,0 +1,56 @@
+
+/* Ẩn mũi tên điều hướng mặc định */
+.movie-swiper-history-container .swiper-button-next,
+.movie-swiper-history-container .swiper-button-prev {
+  /* opacity: 0;
+  transition: opacity 0.3s ease; */
+  display: none;
+  top: 38% !important;
+  color: white;
+  z-index: 999;
+}
+
+/* Hiển thị mũi tên điều hướng khi di chuột vào vùng Swiper */
+.movie-swiper-history-container:hover .swiper-button-next,
+.movie-swiper-history-container:hover .swiper-button-prev {
+  display: block; /* Chỉ hiển thị khi di chuột vào */
+  opacity: 1; /* Đảm bảo mũi tên hiển thị rõ ràng khi di chuột */
+  transition: opacity 0.3s ease;
+  /* background: linear-gradient(270deg, #000000 35%, rgba(0, 0, 0, 0.5) 100%); */
+}
+
+/* Căn chỉnh hình ảnh */
+.movie-swiper-history-container .swiper-slide img {
+  object-fit: cover;
+  width: 100%; /* Để img-fluid của Bootstrap hoạt động */
+}
+
+.movie-swiper-history-container h5 {
+  margin-top: 0.5rem;
+}
+
+.movie-swiper-history-container .poster-fluid {
+  max-width: 252px;
+  aspect-ratio: 2 / 1;
+}
+
+.swiper-button-disabled {
+  pointer-events: auto !important;
+}
+
+.swiper-history-content:hover {
+    color: #ff6500 !important;
+}
+
+.swiper-history-content .movie-duration {
+    width: 100%;
+}
+
+.swiper-history-content .movie-duration-progress {
+    /* position: absolute;
+    bottom: 0;
+    left: 0; */
+    height: 3px;
+    background-color: #ff6500;
+    transition: width 0.3s ease;
+}

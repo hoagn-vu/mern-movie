@@ -1,0 +1,63 @@
+
+/* Ẩn mũi tên điều hướng mặc định */
+.movie-swiper-type-1-container .swiper-button-next,
+.movie-swiper-type-1-container .swiper-button-prev {
+  /* opacity: 0;
+  transition: opacity 0.3s ease; */
+  display: none;
+  top: 38% !important;
+  color: white;
+  z-index: 999;
+}
+
+/* Hiển thị mũi tên điều hướng khi di chuột vào vùng Swiper */
+.movie-swiper-type-1-container:hover .swiper-button-next,
+.movie-swiper-type-1-container:hover .swiper-button-prev {
+  display: block; /* Chỉ hiển thị khi di chuột vào */
+  opacity: 1; /* Đảm bảo mũi tên hiển thị rõ ràng khi di chuột */
+  transition: opacity 0.3s ease;
+  /* background: linear-gradient(270deg, #000000 35%, rgba(0, 0, 0, 0.5) 100%); */
+}
+
+/* Căn chỉnh hình ảnh */
+.movie-swiper-type-1-container .swiper-slide img {
+  object-fit: cover;
+  width: 100%; /* Để img-fluid của Bootstrap hoạt động */
+}
+
+.movie-swiper-type-1-container h5 {
+  margin-top: 0.5rem;
+}
+
+.movie-swiper-type-1-container .poster-fluid {
+  max-width: 252px;
+  aspect-ratio: 2 / 1;
+}
+
+.swiper-button-disabled {
+  pointer-events: auto !important;
+}
+
+.swiper-type-1-content:hover {
+    color: #ff6500 !important;
+}
+
+/* Hiển thị mũi tên điều hướng khi di chuột vào vùng Swiper */
+/* .movie-swiper-type-1-container:hover .swiper-button-next,
+.movie-swiper-type-1-container:hover .swiper-button-prev {
+  opacity: 1;
+} */
+
+/* Căn chỉnh hình ảnh */
+/* .swiper-slide img {
+  object-fit: cover;
+  width: 100%;
+}
+
+.movie-swiper-type-1-container {
+  min-width: 240px;
+}
+
+h5 {
+  margin-top: 0.5rem;
+} */

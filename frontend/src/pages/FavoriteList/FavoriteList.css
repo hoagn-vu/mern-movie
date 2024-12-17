@@ -1,0 +1,136 @@
+.favorite-movie-container {
+    min-height: 100vh;
+}
+
+.favorite-movie-header {
+    border-bottom: 1px solid #495057;
+}
+
+.favorite-movie-header .edit-favorite-btn {
+    width: 98px;
+    background-color: #ffa726;
+    border-color: #ffa726;
+}
+
+.favorite-movie-header .cancel-edit-favorite-btn {
+    width: 98px;
+    border-color: #ffa726;
+    color: #ffa726;
+}
+
+.favorite-movie-header .edit-favorite-btn:hover {
+    background-color: #ffb74d;
+    border-color: #ffb74d;
+    color: white;
+}
+
+.favorite-movie-header .cancel-edit-favorite-btn:hover {
+    background-color: #ffa726;
+    border-color: #ffa726;
+    color: white;
+}
+
+
+.favorite-movie-item .favorite-movie-item-poster {
+    object-fit: cover;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+}
+
+/* Overlay */
+.favorite-overlay {
+    position: absolute;
+    top: 0;
+    left: 12px;
+    right: 12px;
+    bottom: 35px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    opacity: 1;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.favorite-movie-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.favorite-movie-item .favorite-movie-item-poster {
+    object-fit: cover;
+    width: 100%;
+    aspect-ratio: 2 / 1;
+    border-radius: 8px;
+}
+
+.favorite-movie-item .favorite-movie-title {
+    transition: color 0.3s ease;
+}
+
+.favorite-movie-item-link:hover .favorite-movie-title,
+.show-overlay:hover .favorite-movie-title {
+    color: #ff6500 !important;
+}
+
+.favorite-movie-item-content .play-icon {
+    position: absolute;
+    /* top: 37.46%;
+    left: 46.33%; */
+    /* bottom: 45px;
+    right: 22px; */
+    bottom: calc( 50%);
+    left: calc(-6px + 50%);
+    /* transform: translate(-50%, -50%); */
+
+    /* bottom: 0;
+    right: 0; */
+    font-size: 24px;
+    color: #ff6500;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.favorite-movie-item-link:hover .play-icon {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* .favorite-radio { */
+.favorite-checkbox {
+    margin: 10px;
+    cursor: pointer;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 1px solid white;
+    border-radius: 50%;
+    background-color: transparent;
+    position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* .favorite-radio:checked { */
+.favorite-checkbox:checked {
+    background-color: #ff6500;
+    border-color: 1px solid white;
+}
+
+/* .favorite-radio:checked::after { */
+.favorite-checkbox:checked::after {
+    content: '✓';
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    top: 49%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.checkbox-select-all {
+    margin: 0;
+}
+
+

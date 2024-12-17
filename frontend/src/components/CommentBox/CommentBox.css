@@ -1,0 +1,76 @@
+.comment-input:focus {
+    box-shadow: none;
+    border-color: #ffa726;
+    color: white;
+}
+
+.comment-input::placeholder {
+    color: gray;
+    opacity: 0.5;
+  }
+  
+
+
+
+/* Thay đổi màu sắc cho react-select */
+.comment-sort-box .react-select__control {
+    background-color: transparent !important;
+    border: none !important;
+    /* border-bottom: gray solid 1px !important; */
+    box-shadow: none !important;
+    color: white !important;
+}
+
+.comment-sort-box .react-select__placeholder {
+    color: gray !important;
+}
+
+.comment-sort-box .react-select__single-value {
+    color: white !important;
+}
+
+.comment-sort-box .react-select__menu {
+    background-color: #343a40 !important;
+}
+
+.comment-sort-box .react-select__option {
+    color: white !important;
+}
+
+.comment-sort-box .react-select__option--is-focused {
+    background-color: #495057 !important;
+}
+
+.comment-sort-box .react-select__option--is-selected {
+    background: none !important;
+    color: #ff6500 !important;
+}
+
+.comment-sort-box .react-select__option--is-selected.react-select__option--is-focused {
+    background-color: #495057 !important;
+}
+
+.admin-icon-comment {
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+
+
+.comment-box-container .dropdown-toggle::after,
+.comment-box-container .dropdown-toggle::before {
+    content: none;
+}
+
+.comment-box-container .dropdown-toggle:active {
+    color: #ff6500;
+}
+
+.comment-box-container .delete-comment {
+    cursor: pointer;
+}
+
+.comment-box-container .delete-comment:hover {
+    color: #ff6500;
+}
+

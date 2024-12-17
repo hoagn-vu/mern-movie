@@ -1,8 +1,10 @@
 const User = require('../models/User');
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 exports.getAllAccounts = async (req, res) => {
     try {
-        const accounts = await User.find().select(['-password', '-createdAt', '-updatedAt', '-__v']).sort({ _id: -1 });
+        const accounts = await User.find().select(['-password', '-__v']).sort({ _id: -1 });
         if (!accounts) return res.status(404).json({ message: 'No accounts found' });
         res.json(accounts);
     } catch (error) {
@@ -22,19 +24,76 @@ exports.getAccountById = async (req, res) => {
 
 exports.createAccount = async (req, res) => {
     try {
-        const { username, email, password, role } = req.body;
-        const account = new User({ username, email, password, role });
+        const { username, fullname, email, password, role } = req.body;
+        if (!username || !fullname || !email || !password || !role) {
+            return res.status(400).json({ message: 'Vui lòng điền đầy đủ thông tin' });
+        }
+
+        const existingAccount = await User.findOne({ username });
+        if (existingAccount) return res.status(400).json({ message: 'Tên tài khoản đã tồn tại' });
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) return res.status(400).json({ message: 'Email đã tồn tại' });
+
+        const account = new User({ username, fullname, email, password, role, emailVerified:true });
         await account.save();
         res.status(201).json(account);
     } catch (error) {
-        res.status(400).json({ message: 'Error creating account', error });
+        res.status(400).json({ message: 'Xảy ra lỗi trong quá trình tạo tài khoản', error });
     }
 }
 
 exports.updateAccount = async (req, res) => {
-    const { username, email, role } = req.body;
+    const { username, fullname, email, password, role, status } = req.body;
     try {
-        const account = await User.findByIdAndUpdate(req.params.id, { username, email, role }, { new: true });
+        const account = await User.findById(req.params.id);
+        if (!account) return res.status(404).json({ message: 'Không tìm thấy tài khoản!' });
+
+        if (username) account.username = username;
+        if (fullname) account.fullname = fullname;
+        if (email) account.email = email;
+        if (password) account.password = password;
+        if (role) account.role = role;
+        if (status) account.status = status;
+
+        await account.save();
+
+        res.json(account);
+    } catch(error) {
+        res.status(400).json({ message: 'Lỗi khi cập nhật tài khoản ', error });
+    }
+};
+
+exports.deleteAccount = async (req, res) => {
+    try {
+        const account = await User.findByIdAndDelete(req.params.id);
+        if (!account) return res.status(404).json({ message: 'Không tìm thấy tài khoản!' });
+        res.json({ message: 'Xóa tài khoản thành công' });
+    } catch (error) {
+        res.status(400).json({ message: 'Lỗi khi xóa tài khoản', error });
+    }
+}
+
+exports.updateAvatarFullname = async (req, res) => {
+    const { userId } = req.params;
+    const { avatar, fullname } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: 'ID không hợp lệ.' });
+    }    
+
+    // Kiểm tra dữ liệu đầu vào
+    if (!avatar && !fullname) {
+        return res.status(400).json({ message: 'Vui lòng cung cấp avatar hoặc fullname để cập nhật.' });
+    }
+
+    try {
+        const update = {};
+
+        
+        if (avatar) update.avatar = avatar;
+        if (fullname) update.fullname = fullname;
+
+        const account = await User.findByIdAndUpdate(userId, update, { new: true }).select(['_id', 'username', 'fullname', 'email', 'role', 'avatar', 'createdAt']);
         if (!account) return res.status(404).json({ message: 'No account found' });
         res.json(account);
     } catch(error) {
@@ -42,13 +101,67 @@ exports.updateAccount = async (req, res) => {
     }
 };
 
-exports.deleteAccount = async (req, res) => {
+exports.updateUsernamePassword = async (req, res) => {
+    const { userId } = req.params;
+    const { username, password } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: 'ID không hợp lệ.' });
+    }    
+
+    // Kiểm tra dữ liệu đầu vào
+    if (!username && !password) {
+        return res.status(400).json({ message: 'Tên tài khoản hoặc mật khẩu không được trống.' });
+    }
+
     try {
-        const account = await User.findByIdAndDelete(req.params.id);
+        const update = {};
+
+        if (username) update.username = username;
+        if (password) update.password = password;
+
+        // const account = await User.findByIdAndUpdate(userId, update, { new: true }).select(['_id', 'email', 'emailVerified', 'username', 'fullname', 'role', 'avatar', 'createdAt', 'googleId', 'password']);
+        const account = await User.findById(userId);
         if (!account) return res.status(404).json({ message: 'No account found' });
-        res.json({ message: 'Account deleted' });
-    } catch (error) {
-        res.status(400).json({ message: 'Error deleting account', error });
+
+        account.username = username;
+        account.password = password;
+        await account.save();
+
+        res.json({ message: 'Đã cập nhật thông tin đăng nhập.' });
+    } catch(error) {
+        res.status(400).json({ message: 'Error updating account', error });
     }
 }
 
+exports.changePassword = async (req, res) => {
+    const { userId } = req.params;
+    const { oldPassword, newPassword } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: 'ID không hợp lệ.' });
+    }
+
+    if (!oldPassword || !newPassword) {
+        return res.status(400).json({ message: 'Vui lòng nhập đầy đủ thông tin.' });
+    }
+
+    try {
+        const account = await User.findById(userId);
+        if (!account) return res.status(404).json({ message: 'Không tìm thấy tài khoản.' });
+
+        const isMatch = await account.comparePassword(oldPassword);
+
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Mật khẩu cũ không chính xác.' });
+        }
+
+        account.password = newPassword;
+        await account.save();
+
+        res.json({ message: 'Đã cập nhật mật khẩu.' });
+
+    } catch(error) {
+        res.status(400).json({ message: 'Xảy ra lỗi khi cập nhật mật khẩu.', error });
+    }
+}

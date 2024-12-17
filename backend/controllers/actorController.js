@@ -1,4 +1,5 @@
 const actorService = require('../services/actorService');
+const Actor = require('../models/Actor');
 
 const createActor = async (req, res) => {
   try {
@@ -11,7 +12,7 @@ const createActor = async (req, res) => {
 
 const getActors = async (req, res) => {
   try {
-    const examples = await actorService.getActors();
+    const examples = await Actor.find().select(['-__v']);
     res.status(200).json(examples);
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -1,0 +1,36 @@
+
+/* Ẩn mũi tên điều hướng mặc định */
+.movie-swiper-type-3-container .swiper-button-next,
+.movie-swiper-type-3-container .swiper-button-prev {
+  display: none;
+  top: 43% !important;
+  color: white;
+  z-index: 999;
+}
+
+/* Hiển thị mũi tên điều hướng khi di chuột vào vùng Swiper */
+.movie-swiper-type-3-container:hover .swiper-button-next,
+.movie-swiper-type-3-container:hover .swiper-button-prev {
+  display: block;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Căn chỉnh hình ảnh */
+.movie-swiper-type-3-container .swiper-slide img {
+  object-fit: cover; /* Đảm bảo ảnh giữ nguyên tỉ lệ */
+  width: 100%; /* Để img-fluid của Bootstrap hoạt động */
+}
+
+.movie-swiper-type-3-container h5 {
+  margin-top: 0.5rem;
+}
+
+.movie-swiper-type-3-container .poster-fluid {
+  max-width: 422px;
+  aspect-ratio: 2 / 1;
+}
+
+.swiper-type-3-content:hover {
+    color: #ff6500 !important;
+}
