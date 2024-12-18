@@ -69,12 +69,12 @@ jobs:
       - name: Build and push backend Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/mern-movie-backend ./backend
-          docker push ${{ secrets.DOCKER_USERNAME }}/mern-backend
+          docker push ${{ secrets.DOCKER_USERNAME }}/mern-movie-backend
 
       - name: Build and push frontend Docker image
         run: |
           docker build -t ${{ secrets.DOCKER_USERNAME }}/mern-movie-frontend ./frontend
-          docker push ${{ secrets.DOCKER_USERNAME }}/mern-frontend
+          docker push ${{ secrets.DOCKER_USERNAME }}/mern-movie-frontend
 
       - name: Deploy application using Docker Compose
         run: |
