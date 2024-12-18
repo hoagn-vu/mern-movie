@@ -154,15 +154,14 @@ const Sidebar = ({ userData, uploadingQueue, callClearQueue, hideToastBody, call
                         <span className="notification-dot position-absolute"></span>
                     </button>
                     <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
-                        <li><a className="dropdown-item" href="#">Notification 1</a></li>
-                        <li><a className="dropdown-item" href="#">Notification 2</a></li>
-                        <li><a className="dropdown-item" href="#">Notification 3</a></li>
+                        <li><a className="dropdown-item" >Notification 1</a></li>
+                        <li><a className="dropdown-item" >Notification 2</a></li>
+                        <li><a className="dropdown-item" >Notification 3</a></li>
                     </ul>
                     </div>
                     <li className="nav-item dropdown d-block">
                     <Link
                         className="nav-link dropdown-toggle d-flex align-items-center text-white"
-                        href="#"
                         id="navbarDropdown"
                         role="button"
                         data-bs-toggle="dropdown"
@@ -178,8 +177,8 @@ const Sidebar = ({ userData, uploadingQueue, callClearQueue, hideToastBody, call
                             <Link className="dropdown-item text-white" id="account-dropdown-item" to="/profile">Hồ sơ</Link>
                         </div>
                         </li>
-                        <li><Link className="dropdown-item text-white" id="account-dropdown-item" href="#">Yêu thích</Link></li>
-                        <li><Link className="dropdown-item text-white" id="account-dropdown-item" href="#">Lịch sử xem</Link></li>
+                        <li><Link className="dropdown-item text-white" id="account-dropdown-item" to="/favorite">Yêu thích</Link></li>
+                        <li><Link className="dropdown-item text-white" id="account-dropdown-item" to="/history">Lịch sử xem</Link></li>
                         <li><hr className="dropdown-divider" /></li>
                         <li><Link className="dropdown-item text-white" id="account-dropdown-item" onClick={handleLogout}>Đăng xuất</Link></li>
                     </ul>
