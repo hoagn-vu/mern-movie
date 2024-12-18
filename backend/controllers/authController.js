@@ -182,8 +182,12 @@ exports.getProfile = async (req, res) => {
             };
         });
 
+        // Sắp xếp lịch sử xem theo thời gian mới nhất
+        latestHistory.sort((a, b) => new Date(b.at) - new Date(a.at));
+
         // Lấy danh sách movieId duy nhất
         const movieIds = [...new Set(latestHistory.map(item => item.movieId))];
+
 
         // Truy vấn tất cả các phim theo movieId
         const movies = await Movie.find({ _id: { $in: movieIds } }).select(['_id', 'mainTitle', 'subTitle', 'duration', 'source']);

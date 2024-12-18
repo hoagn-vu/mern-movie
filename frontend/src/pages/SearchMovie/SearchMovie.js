@@ -137,9 +137,50 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
         );
     };
 
+    // const [topViewedMovies, setTopViewedMovies] = useState([]);
+    // const [topRatedMovies, setTopRatedMovies] = useState([]);
+    // const getTopMovies = async () => {
+    //     try {
+    //         const response = await api.get('/movies/getTopMovies');
+    //         console.log('Top movies:', response.data);
+            
+    //         // sample response:
+    //         // movieId: movie._id,
+    //         // mainTitle: movie.mainTitle,
+    //         // subTitle: movie.subTitle,
+    //         // releaseDate: movie.releaseDate,
+    //         // averageRate: Number(averageRate),
+    //         // viewsPerMonth, // [{ month: 1, views: 100 }, { month: 2, views: 200 }, ...]
+    //         // source: movie.source,
+    //         setTopViewedMovies(response.data.sort((a, b) => b.viewsPerMonth[0]?.views - a.viewsPerMonth[0]?.views).slice(0, 5));
+        
+    //         console.log('Top viewed:', topViewedMovies);
+    //         setTopRatedMovies(response.data.sort((a, b) => b.averageRate - a.averageRate).slice(0, 5));
+    //     } catch (error) {
+    //         console.error('Error fetching top movies:', error);
+    //     }
+    // };
+    const [topViewedMovies, setTopViewedMovies] = useState([]);
+    const getTopMovies = async () => {
+        try {
+            const response = await api.get('/movies/getTopMovies');
+            console.log('Top movies:', response.data);
+
+            setTopViewedMovies(response.data);
+        } catch (error) {
+            console.error('Error fetching top movies:', error);
+        }
+    };
+
+
     useEffect(() => {
-        console.log('userFavorite:', userFavorite);
-    }, [userFavorite]);
+        getTopMovies();
+    }, []);
+
+
+    
+
+
     
     return (
         <DefaultLayout userData={userData}>
@@ -227,9 +268,69 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
 
                 { !isSearching ? (
                     <div className='newest-movies text-white mb-3'>
-                        <h2 className='mt-5 mb-3'>Phim mới gần đây</h2>
+                        {/* <div className='row'>
+                            <div className='col-12 col-lg-6'>
+                                <h2>Phim được xem nhiều nhất</h2>
+                                <div className='top-movies-list'>
+                                    {topViewedMovies.map((movie, index) => (
+                                        <div key={index} className='top-movie d-flex mb-3'>
+                                            <ImageWithSkeletonSwiper
+                                                src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`}
+                                                alt={movie.subTitle}
+                                                className="poster-result-fluid rounded me-3"
+                                            />
+                                            <div className='top-movie-info'>
+                                                <h3>{movie.mainTitle}</h3>
+                                                <p>Năm: {new Date(movie.releaseDate).getFullYear()}</p>
+                                                <p>Đánh giá: {movie.averageRate.toFixed(1)}</p>
+                                                <p>Lượt xem 3 tháng gần nhất: {movie.viewsInLast3Months}</p>
+
+                                                <Link to={`/watch/${movie.movieId}`} onClick={(e) => checkAuth(e, movie.movieId)}>
+                                                    <button className='watch-button'>Xem ngay</button>
+                                                </Link>
+
+                                                <button className="like-button" onClick={() => handleToggleFavorite(movie.movieId)}>
+                                                    { userFavorite && userFavorite.includes(movie.movieId) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className='col-12 col-lg-6'>
+                                <h2>Phim được đánh giá cao nhất</h2>
+                                <div className='top-movies-list'>
+                                    {topRatedMovies.map((movie, index) => (
+                                        <div key={index} className='top-movie d-flex mb-3'>
+                                            <ImageWithSkeletonSwiper
+                                                src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`}
+                                                alt={movie.subTitle}
+                                                className="poster-result-fluid rounded me-3"
+                                            />
+                                            <div className='top-movie-info'>
+                                                <h3>{movie.mainTitle}</h3>
+                                                <p>Năm: {new Date(movie.releaseDate).getFullYear()}</p>
+                                                <p>Đánh giá: {movie.averageRate.toFixed(1)}</p>
+                                                <p>Lượt xem 3 tháng gần nhất: {movie.viewsInLast3Months}</p>
+
+                                                <div className='movie-result-actions d-flex align-items-center'>
+                                                    <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
+                                                        <button className='watch-button'>Xem ngay</button>                                            
+                                                    </Link>
+                                                    <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>
+                                                        { userFavorite && userFavorite.includes(movie._id) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div> */}
+                        <h2 className='mt-5 mb-3'>Phim thịnh hành</h2>
                         <div className='newest-movies-list row'>
-                            {newestMovies.map((movie, index) => (
+                            {/* {newestMovies.map((movie, index) => ( */}
+                            {topViewedMovies.map((movie, index) => (
                                 <div key={index} className='col-12 col-md-12 col-lg-12 col-xl-6 mb-5'>
                                     <div className='search-result-movie d-flex'>
                                         <ImageWithSkeletonSearch
@@ -239,22 +340,30 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                                             height="378px"  
                                         />
                                         <div className='movie-info-and-action text-white'>
-                                        <div className='movie-result-infos'>
-                                            <h3>{movie.mainTitle}</h3>
-                                            <p>Năm: {new Date(movie.releaseDate).getFullYear()}</p>
-                                            <p>Thể loại: {movie.genres.join(', ')}</p>
-                                            <p>Nội dung: {movie.description}</p>
+                                            <div className='movie-result-infos'>
+                                                <h3>{movie.mainTitle}</h3>
+                                                <div className='row'>
+                                                    <p>
+                                                        <i class="fa-solid fa-star"></i> {movie.averageRate} 
+                                                        <span className='ms-2 me-2 text-secondary'>|</span>
+                                                        {movie.totalViewsLastThreeMonths} lượt xem
+                                                        <span className='ms-2 me-2 text-secondary'>|</span>
+                                                        {new Date(movie.releaseDate).getFullYear()}
+                                                    </p>
+
+                                                </div>
+                                                <p>Thể loại: {movie.genres.join(', ')}</p>
+                                                <p>Nội dung: {movie.description}</p>
+                                            </div>
+                                            <div className='movie-result-actions d-flex align-items-center'>
+                                                <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
+                                                    <button className='watch-button'>Xem ngay</button>                                            
+                                                </Link>
+                                                <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>
+                                                    { userFavorite && userFavorite.includes(movie._id) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div className='movie-result-actions d-flex align-items-center'>
-                                            <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
-                                                <button className='watch-button'>Xem ngay</button>                                            
-                                            </Link>
-                                            <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>
-                                                { userFavorite && userFavorite.includes(movie._id) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
-                                                {/* <i className="far fa-heart"></i> */}
-                                            </button>
-                                        </div>
-                                    </div>
                                     </div>
                                 </div>
                             ))}

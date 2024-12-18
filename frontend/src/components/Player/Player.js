@@ -3,7 +3,7 @@ import './Player.css';
 import api from "../../api/api";
 import { useParams } from "react-router-dom";
 
-const Player = ({  movieSource, callOpenReportModal }) => {
+const Player = ({  movieSource, callOpenReportModal, history }) => {
     const { userId, movieId } = useParams();
 
     const playerContainerRef = useRef(null);
@@ -550,6 +550,16 @@ const Player = ({  movieSource, callOpenReportModal }) => {
     //         window.removeEventListener('beforeunload', handleBeforeUnload);
     //     };
     // }, [movieId, userId]);
+
+    // Kiểm tra history và nếu có thì chuyển đến thời gian đã xem
+    useEffect(() => {
+        const historyData = history.find((item) => item.movieId === movieId);
+        if (historyData) {
+            if (window.confirm(`Bạn đã xem đến ${formatTime(historyData.timeWatched)}. Bạn có muốn tiếp tục xem không?`)) {
+                videoRef.current.currentTime = historyData.timeWatched;
+            }
+        }
+    }, [history, movieId]);
     
     
 
@@ -624,8 +634,7 @@ const Player = ({  movieSource, callOpenReportModal }) => {
                                 <i className="fa-solid fa-flag"></i>
                             </button>
                     
-                            <button className="playback-perform" onClick={() => handlePlaybackMenuToggle("perform")}>
-                                {/* <i className="fas fa-cog"></i> */}
+                            {/* <button className="playback-perform" onClick={() => handlePlaybackMenuToggle("perform")}>
                                 <i className="fa-solid fa-sliders"></i>
                             </button>
                             <ul className={`perform-options ${openMenu === "perform" ? "show" : ""} shadow bg-black text-white`}>
@@ -639,7 +648,7 @@ const Player = ({  movieSource, callOpenReportModal }) => {
                                         {perform}p
                                     </li>
                                 ))}
-                            </ul>
+                            </ul> */}
                             {/* <button className="playback-speed" onClick={() => handlePlaybackMenuToggle("speed")}>
                                 <span className="material-symbols-rounded">slow_motion_video</span>
                             </button>

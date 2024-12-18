@@ -71,7 +71,7 @@ const PlayerAndDetails = ({ movie: initialMovie, movieId, userData, callOpenRepo
 
   return (
     <div className="container media-player-container">
-      <Player userId={userData._id} movieId={movieId} movieSource={movie.source} callOpenReportModal={callOpenReportModal} />
+      <Player userId={userData._id} movieId={movieId} movieSource={movie.source} history={userData.history} callOpenReportModal={callOpenReportModal} />
       {/* <div className="media-player mb-3">
         <video width="100%" controls>
           <source

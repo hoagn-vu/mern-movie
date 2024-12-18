@@ -32,7 +32,7 @@ exports.uploadMovie = async (req, res) => {
         });
         await newMovie.save();
         const movie = await Movie.findById(newMovie._id).select(['-__v', '-userActivity']);
-        console.log('movie return:', movie);
+        // console.log('movie return:', movie);
         res.status(200).send({
             message: 'Đăng tải phim thành công',
             movie
@@ -468,7 +468,7 @@ exports.addComment = async (req, res) => {
 
         await movie.save();
         const newComment = movie.userActivity.find(activity => activity.userId.equals(userId)).comment.slice(-1)[0];
-        console.log('newComment:', newComment);
+        // console.log('newComment:', newComment);
         res.status(200).json({ message: 'Bình luận thành công!', newComment });
     } catch (error) {
         console.error(error);
@@ -734,7 +734,7 @@ exports.getFavoriteList = async (req, res) => {
 
 
 exports.saveWatchHistory = async (req, res) => {
-    console.log('- test check req.body saveWatchHistory:', req.body);
+    // console.log('- test check req.body saveWatchHistory:', req.body);
     try {
         const { userId, movieId, timeWatched } = req.body;
 
@@ -962,6 +962,89 @@ exports.statistic = async (req, res) => {
     }
 };
 
+const getLastThreeMonths = () => {
+    const now = new Date();
+    const months = [];
+    for (let i = 0; i < 3; i++) {
+        const month = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        months.push(`${month.getFullYear()}-${month.getMonth() + 1}`); // Format: YYYY-M
+    }
+    return months;
+};
+
+exports.getTopMovies = async (req, res) => {
+    try {
+        // Lấy danh sách người dùng chỉ với các trường cần thiết
+        const users = await User.find({}).select(['_id', 'history']);
+
+        // Lấy danh sách phim
+        const movies = await Movie.find({});
+
+        // Xác định 3 tháng gần nhất
+        const lastThreeMonths = getLastThreeMonths();
+
+        // Duyệt qua danh sách phim để tính toán thông tin chi tiết
+        const movieDetails = await Promise.all(movies.map(async (movie) => {
+
+            // Calculate average rate
+            const totalRatedActivities = movie.userActivity.filter(activity => activity.rate > 0).length;
+            const totalRates = movie.userActivity.reduce((acc, activity) => acc + activity.rate, 0);
+            const averageRate = totalRatedActivities
+                ? (totalRates / totalRatedActivities).toFixed(2)
+                : 0;
+
+            // Calculate total views for the last 3 months
+            let totalViewsLastThreeMonths = 0;
+
+            users.forEach((user) => {
+                user.history
+                    .filter((history) => history.movieId.toString() === movie._id.toString())
+                    .forEach((history) => {
+                        history.progress.forEach((progress) => {
+                            if (progress.timeWatched >= 0.9 * movie.duration) {
+                                const monthKey = progress.at instanceof Date
+                                    ? `${progress.at.getFullYear()}-${progress.at.getMonth() + 1}`
+                                    : 'Invalid Date';
+
+                                if (lastThreeMonths.includes(monthKey)) {
+                                    totalViewsLastThreeMonths++;
+                                }
+                            }
+                        });
+                    });
+            });
+
+
+            return {
+                movieId: movie._id,
+                mainTitle: movie.mainTitle,
+                subTitle: movie.subTitle,
+                releaseDate: movie.releaseDate,
+                description: movie.description,
+                genres: movie.genres, 
+                averageRate: Number(averageRate),
+                totalViewsLastThreeMonths,
+                source: movie.source,
+            };
+        }));
+
+        for (const movie of movieDetails) {
+            await convertIdToName(movie, 'genres', Genre);
+        }
+
+        const limitedMovies = movieDetails.sort((a, b) => b.totalViewsLastThreeMonths - a.totalViewsLastThreeMonths).slice(0, 12);
+
+        res.status(200).json(limitedMovies);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error", error });
+    }
+};
+
+
+
+
+
 
 
 // Tạm thời
@@ -1006,6 +1089,7 @@ exports.getMoviesOverview = async (req, res) => {
                 mainTitle: movie.mainTitle,
                 subTitle: movie.subTitle,
                 releaseDate: movie.releaseDate,
+                
                 averageRate: Number(averageRate),
                 totalComment,
                 viewsPerMonth,

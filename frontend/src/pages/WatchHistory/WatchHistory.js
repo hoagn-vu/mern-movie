@@ -58,7 +58,7 @@ const WatchHistory = ({ userData }) => {
                         <div className='row'>
                             {groupedData[dateKey].map((item, itemIndex) => (
                                 <div className='watch-history-item col-6 col-md-4 col-lg-3 mb-3' key={itemIndex}>
-                                    <Link to={`/watch/${item.movieId}`} className='watch-history-link text-decoration-none text-white'>
+                                    <Link to={`/${userData._id}/watch/${item.movieId}`} className='watch-history-link text-decoration-none text-white'>
                                         <div className='watch-history-thumbnail'>
                                             <ImageWithSkeletonSwiper 
                                                 src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${item.source}/banner`}

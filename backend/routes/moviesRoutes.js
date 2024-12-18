@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const movieController = require('../controllers/movieController');
-const { getAllMovies, deleteMovie, getSomeNewestMovies, getPromotedMovies, setPromote, updateInforMovie, getMoviesByGenre, getMoviesByNation, recommendMovies, searchMovies, getMovieById, getMoviesByIds, getMovieToWatch, addComment, deleteComment, addReport, getAllReports, rateMovie, toggleFavorite, removeFavorites, getFavoriteList, saveWatchHistory, getWatchHistory, statistic } = require('../controllers/movieController');
+const { getAllMovies, deleteMovie, getSomeNewestMovies, getPromotedMovies, setPromote, updateInforMovie, getMoviesByGenre, getMoviesByNation, recommendMovies, searchMovies, getMovieById, getMoviesByIds, getMovieToWatch, addComment, deleteComment, addReport, getAllReports, rateMovie, toggleFavorite, removeFavorites, getFavoriteList, saveWatchHistory, getWatchHistory, statistic, getTopMovies } = require('../controllers/movieController');
 const upload = require('../middlewares/uploadMiddleware');
 // const { authMiddleware, authorizeRoles } = require('../middlewares/authMiddleware');
 
@@ -44,6 +44,9 @@ router.get('/:userId/getWatchHistory', getWatchHistory);
 // router.put('/:movieId/updateViews', updateViews);
 
 router.get('/statistic', statistic);
+router.get('/getTopMovies', getTopMovies);
+
+
 
 const { getMoviesOverview } = require('../controllers/movieController');
 router.get('/overview', getMoviesOverview);

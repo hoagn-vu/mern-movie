@@ -203,6 +203,10 @@
     white-space: normal; /* Cho phép xuống dòng */
 }
 
+.movie-result-infos .fa-star {
+    color: #ff6500;
+}
+
 /* Giữ nút action nằm ở cuối */
 .movie-result-actions {
     margin-top: auto; /* Đẩy phần nút xuống dưới cùng */
