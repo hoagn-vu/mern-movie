@@ -20,7 +20,7 @@ const AdminLayout = ({userData}) => {
 
     const clearUploadingQueue = () => {
         if (uploadingQueue.filter((movie) => movie.status === 'uploading').length === 0) {
-        setUploadingQueue([]);
+            setUploadingQueue([]);
         }
     };
 
@@ -40,62 +40,62 @@ const AdminLayout = ({userData}) => {
         formData.append('poster', poster);
 
         setUploadingQueue((prev) => [
-        ...prev,
-        {
-            id: (prev.length + 1),
-            name: mainTitle,
-            progress: 0,
-            status: 'uploading',
-        },
+            ...prev,
+            {
+                id: (prev.length + 1),
+                name: mainTitle,
+                progress: 0,
+                status: 'uploading',
+            },
         ]);
     
         for (let [key, value] of formData.entries()) {
-        console.log(key, ":", value);
+            console.log(key, ":", value);
         }
 
         try {
-        console.log("Uploading...");
-        const response = await api.post('/movies/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            console.log("Uploading...");
+            const response = await api.post('/movies/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
 
-            onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
 
+                    setUploadingQueue((prev) =>
+                        prev.map((movie) =>
+                        movie.name === mainTitle
+                            ? { ...movie, progress: percentCompleted }
+                            : movie
+                        )
+                    );
+                }
+                
+            });
             setUploadingQueue((prev) =>
                 prev.map((movie) =>
                 movie.name === mainTitle
-                    ? { ...movie, progress: percentCompleted }
+                    ? { ...movie, progress: 100, status: 'done' }
                     : movie
                 )
             );
-            }
-            
-        });
-        setUploadingQueue((prev) =>
-            prev.map((movie) =>
-            movie.name === mainTitle
-                ? { ...movie, progress: 100, status: 'done' }
-                : movie
-            )
-        );
-        alert(response.data.message || 'Đăng tải phim thành công');
+            alert(response.data.message || 'Đăng tải phim thành công');
 
-        // Cập nhật danh sách phim
-        setMovies((prev) => [response.data.movie, ...prev]);
-        setOriginalMovies((prev) => [response.data.movie, ...prev]);
+            // Cập nhật danh sách phim
+            setMovies((prev) => [response.data.movie, ...prev]);
+            setOriginalMovies((prev) => [response.data.movie, ...prev]);
 
-        // return response.data.movie;
+            // return response.data.movie;
         
         } catch (error) {
-        console.error('Lỗi khi đăng tải phim:', error);
-        alert('Upload failed');
-        setUploadingQueue((prev) =>
-            prev.map((movie) =>
-            movie.name === mainTitle
-                ? { ...movie, progress: 0, status: 'failed' }
-                : movie
-            )
-        );
+            console.error('Lỗi khi đăng tải phim:', error);
+            alert('Lỗi khi đăng tải phim!');
+            setUploadingQueue((prev) =>
+                prev.map((movie) =>
+                movie.name === mainTitle
+                    ? { ...movie, progress: 0, status: 'failed' }
+                    : movie
+                )
+            );
         }
     };
 
@@ -115,12 +115,12 @@ const AdminLayout = ({userData}) => {
     const getAllMovies = async () => {
         // if (movies) return;
         try {
-        const response = await api.get('/movies/getAllMovies');
-        setMovies(response.data);
-        setOriginalMovies(response.data);
-        console.log('Fetching movies');
+            const response = await api.get('/movies/getAllMovies');
+            setMovies(response.data);
+            setOriginalMovies(response.data);
+            console.log('Fetching movies');
         } catch (error) {
-        console.error('Error fetching movies:', error);
+            console.error('Error fetching movies:', error);
         }
     };
 

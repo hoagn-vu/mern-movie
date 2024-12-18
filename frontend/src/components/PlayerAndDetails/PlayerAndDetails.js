@@ -41,7 +41,6 @@ const PlayerAndDetails = ({ movie: initialMovie, movieId, userData, callOpenRepo
         userActivity: updatedUserActivity,
       });
 
-      alert('Rating success');
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'An error occurred';
       alert(`Rating failed: ${errorMessage}`);

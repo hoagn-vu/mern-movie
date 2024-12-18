@@ -414,7 +414,7 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                         {searchResult.length > 0 ? searchResult.map((movie, index) => (
                             <div key={index} className='col-12 col-md-12 col-lg-12 col-xl-6 mb-5'>
                                 <div className='search-result-movie d-flex'>
-                                    <img src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`} alt={movie.subTitle} className="poster-result-fluid rounded me-3" />
+                                    <ImageWithSkeletonSearch src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`} alt={movie.subTitle} className="poster-result-fluid rounded me-3" />
                                     <div className='movie-info-and-action text-white'>
                                         <div className='movie-result-infos'>
                                             <h3>{movie.mainTitle}</h3>
@@ -423,7 +423,7 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                                             <p>Nội dung: {movie.description}</p>
                                         </div>
                                         <div className='movie-result-actions d-flex align-items-center'>
-                                            <Link to={`/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
+                                            <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
                                                 <button className='watch-button'>Xem ngay</button>                                            
                                             </Link>
                                             <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>

@@ -52,7 +52,7 @@ exports.sendOTPForVerify = async (req, res) => {
       from: process.env.EMAIL_USER,
       to: email,
       subject: subject || '[Lovie] Xác thực tài khoản',
-      text: `Mã xác thực của bạn là: ${code} \n\n Mã xác thực sẽ hết hạn vào ${expiredAt}`,
+      text: `Mã xác thực của bạn là: ${code} \n\nMã xác thực sẽ hết hạn vào ${expiredAt}`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -87,7 +87,7 @@ exports.sendOTPForResetPassword = async (req, res) => {
       from: process.env.EMAIL_USER,
       to: user.email,
       subject: '[Lovie] Đặt lại mật khẩu',
-      text: `Mã xác thực của bạn là: ${code} \n\n Mã xác thực sẽ hết hạn vào ${expiredAt}`,
+      text: `Mã xác thực của bạn là: ${code} \n\nMã xác thực sẽ hết hạn vào ${expiredAt}`,
     };
 
     await transporter.sendMail(mailOptions);

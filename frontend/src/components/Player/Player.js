@@ -284,6 +284,12 @@ const Player = ({  movieSource, callOpenReportModal, history }) => {
     
     const handleLoadedData = () => {
         const video = videoRef.current;
+        
+        const historyData = history.find((item) => item.movieId === movieId);
+        if (historyData) {
+            video.currentTime = historyData.timeWatched;
+        }
+
         setDuration(video.duration);
         setIsBuffering(false);
     };
@@ -552,14 +558,14 @@ const Player = ({  movieSource, callOpenReportModal, history }) => {
     // }, [movieId, userId]);
 
     // Kiểm tra history và nếu có thì chuyển đến thời gian đã xem
-    useEffect(() => {
-        const historyData = history.find((item) => item.movieId === movieId);
-        if (historyData) {
-            if (window.confirm(`Bạn đã xem đến ${formatTime(historyData.timeWatched)}. Bạn có muốn tiếp tục xem không?`)) {
-                videoRef.current.currentTime = historyData.timeWatched;
-            }
-        }
-    }, [history, movieId]);
+    // useEffect(() => {
+    //     const historyData = history.find((item) => item.movieId === movieId);
+    //     if (historyData) {
+    //         if (window.confirm(`Bạn đã xem đến ${formatTime(historyData.timeWatched)}. Bạn có muốn tiếp tục xem không?`)) {
+    //             videoRef.current.currentTime = historyData.timeWatched;
+    //         }
+    //     }
+    // }, [history, movieId]);
     
     
 

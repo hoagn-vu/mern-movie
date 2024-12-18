@@ -142,23 +142,23 @@ const Sidebar = ({ userData, uploadingQueue, callClearQueue, hideToastBody, call
                 </div>
             
                 <div className="d-flex align-items-center">
-                    <div className="dropdown me-3">
-                    <button
-                        className="btn p-0 rounded-circle bg-dark notification dropdown-toggle"
-                        type="button"
-                        id="notificationDropdown"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
-                        <i className="far fa-bell text-white"></i>
-                        <span className="notification-dot position-absolute"></span>
-                    </button>
-                    <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
-                        <li><a className="dropdown-item" >Notification 1</a></li>
-                        <li><a className="dropdown-item" >Notification 2</a></li>
-                        <li><a className="dropdown-item" >Notification 3</a></li>
-                    </ul>
-                    </div>
+                    {/* <div className="dropdown me-3">
+                        <button
+                            className="btn p-0 rounded-circle bg-dark notification dropdown-toggle"
+                            type="button"
+                            id="notificationDropdown"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <i className="far fa-bell text-white"></i>
+                            <span className="notification-dot position-absolute"></span>
+                        </button>
+                        <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                            <li><a className="dropdown-item" >Notification 1</a></li>
+                            <li><a className="dropdown-item" >Notification 2</a></li>
+                            <li><a className="dropdown-item" >Notification 3</a></li>
+                        </ul>
+                    </div> */}
                     <li className="nav-item dropdown d-block">
                     <Link
                         className="nav-link dropdown-toggle d-flex align-items-center text-white"
@@ -180,7 +180,14 @@ const Sidebar = ({ userData, uploadingQueue, callClearQueue, hideToastBody, call
                         <li><Link className="dropdown-item text-white" id="account-dropdown-item" to="/favorite">Yêu thích</Link></li>
                         <li><Link className="dropdown-item text-white" id="account-dropdown-item" to="/history">Lịch sử xem</Link></li>
                         <li><hr className="dropdown-divider" /></li>
-                        <li><Link className="dropdown-item text-white" id="account-dropdown-item" onClick={handleLogout}>Đăng xuất</Link></li>
+                        <li>
+                            <Link className="dropdown-item text-white" id="account-dropdown-item" onClick={handleLogout}>
+                                <div className='d-flex align-items-center justify-content-between'>
+                                    Đăng xuất
+                                    <i className="fa-solid fa-right-from-bracket"></i>
+                                </div>
+                            </Link>
+                        </li>
                     </ul>
                     </li>
                 </div>

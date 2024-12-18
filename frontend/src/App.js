@@ -129,12 +129,18 @@ const App = () => {
     useEffect(() => {
         if (isAuthenticated) {
             getUserData();
+
         }
     }, [isAuthenticated]);
 
     useEffect(() => {
         if (userData && userData.emailVerified === false) {
             navigate('/verify');
+        }
+        const cId = localStorage.getItem('chosenMovie');
+        if (cId) {
+            navigate(`/${userData._id}/watch/${cId}`);
+            localStorage.removeItem('chosenMovie');
         }
     }, [userData]);
 

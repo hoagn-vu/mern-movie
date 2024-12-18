@@ -45,18 +45,18 @@ const SwiperHistory = ({ userId, title, moviesData }) => {
                     1024: { slidesPerView: 5, slidesPerGroup: 5, },
                 }}
             >
-            {moviesData.map((movie, index) => (
-                <SwiperSlide key={index}>
-                    <Link to={`/${userId}/watch/${movie.movieId}`} className='text-white text-decoration-none swiper-history-content' onClick={(e)=>checkAuth(e, movie.movieId )}>
-                        <ImageWithSkeletonSwiper src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner`} alt={movie.mainTitle} className="poster-fluid rounded" />
-                        <div className='movie-duration rounded'>
-                            <div className='movie-duration-progress rounded' style={{ width: `${(movie.timeWatched / movie.duration) * 100}%` }}></div>
-                        </div>
-                        
-                        <h5 >{movie.mainTitle}</h5>
-                    </Link>
-                </SwiperSlide>
-            ))}
+                {moviesData.map((movie, index) => (
+                    <SwiperSlide key={index}>
+                        <Link to={`/${userId}/watch/${movie.movieId}`} className='text-white text-decoration-none swiper-history-content' onClick={(e)=>checkAuth(e, movie.movieId )}>
+                            <ImageWithSkeletonSwiper src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner`} alt={movie.mainTitle} className="poster-fluid rounded" />
+                            <div className='movie-duration rounded'>
+                                <div className='movie-duration-progress rounded' style={{ width: `${(movie.timeWatched / movie.duration) * 100}%` }}></div>
+                            </div>
+                            
+                            <h5 >{movie.mainTitle}</h5>
+                        </Link>
+                    </SwiperSlide>
+                ))}
             </Swiper>
         </div>
     );

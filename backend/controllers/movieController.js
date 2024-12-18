@@ -517,7 +517,7 @@ exports.addReport = async (req, res) => {
             return res.status(400).json({ message: 'Id không hợp lệ' });
         }
         if (!content || typeof content !== 'string' || content.trim() === '') {
-            return res.status(400).json({ message: 'Content cannot be empty' });
+            return res.status(400).json({ message: 'Nội dung không được để trống' });
         }
 
         const movie = await Movie.findById(movieId);
@@ -554,21 +554,28 @@ exports.getAllReports = async (req, res) => {
 
         // Truy vấn tất cả user trước
         const userIds = movies
-            .flatMap(movie => movie.userActivity.map(activity => activity.userId));
-        const users = await User.find({ _id: { $in: userIds } }).select(['username', 'fullname']);
-        const userMap = new Map(users.map(user => [user._id.toString(), user.username]));
+            .flatMap(movie => movie.userActivity?.map(activity => activity.userId) || []);
+        const uniqueUserIds = [...new Set(userIds)]; // Loại bỏ trùng lặp
+        const users = await User.find({ _id: { $in: uniqueUserIds } }).select('username fullname');
+        
+        // Tạo map để tra cứu nhanh
+        const userMap = new Map(users.map(user => [user._id.toString(), { 
+            username: user.username, 
+            fullname: user.fullname 
+        }]));
 
         // Xử lý dữ liệu
         const reports = [];
         movies.forEach(movie => {
-            movie.userActivity.forEach(activity => {
-                activity.report.forEach(report => {
+            movie.userActivity?.forEach(activity => {
+                activity.report?.forEach(report => {
+                    const user = userMap.get(activity.userId.toString());
                     reports.push({
                         movieId: movie._id,
                         movieTitle: movie.mainTitle,
                         userId: activity.userId,
-                        username: userMap.get(activity.userId.toString()) || null,
-                        fullname: userMap.get(activity.userId.toString()) || null,
+                        username: user?.username || null,
+                        fullname: user?.fullname || null,
                         reportId: report._id,
                         content: report.content,
                         createAt: report.createAt,
@@ -583,6 +590,7 @@ exports.getAllReports = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
 
 exports.rateMovie = async (req, res) => {
     try {
@@ -715,7 +723,7 @@ exports.getFavoriteList = async (req, res) => {
         const movieIds = user.favoriteList;
 
         // Truy vấn tất cả các phim theo movieId
-        const movies = await Movie.find({ _id: { $in: movieIds } }).select(['_id', 'mainTitle', 'subTitle']);
+        const movies = await Movie.find({ _id: { $in: movieIds }, status: 'Available' }).sort({ _id: -1 }).select(['_id', 'mainTitle', 'subTitle']);
 
         // Tạo danh sách kết quả
         const favoriteList = movies.map((movie) => ({

@@ -80,7 +80,8 @@ const Login = () => {
       setShowPassword(!showPassword);
     };
 
-    const handleLoginWithGoogle = async () => {
+    const handleLoginWithGoogle = async (e) => {
+        e.preventDefault();
         window.location.href = 'http://localhost:5001/auth/google';
         // navigate('http://localhost:5001/auth/google');
     };
@@ -128,7 +129,7 @@ const Login = () => {
                         <div className="line"></div>
                     </div>
                     <div className="d-flex align-items-center justify-content-center">
-                        <button className="btn-login-with" onClick={handleLoginWithGoogle}><i className="fab fa-google-plus-g"></i></button>
+                        <button className="btn-login-with" onClick={(e) => handleLoginWithGoogle(e)}><i className="fab fa-google-plus-g"></i></button>
                     </div>
                 </form>
             </div>

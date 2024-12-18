@@ -60,6 +60,7 @@ const WatchMovie = ({ userData }) => {
 
   return (
     <DefaultLayout userData={userData} >
+        <div className='watch-movie-container'>
 
       <PlayerAndDetails movie={movie} movieId={movieId} userData={userData} callOpenReportModal={handleOpenReportModal} />
 
@@ -100,7 +101,7 @@ const WatchMovie = ({ userData }) => {
           </div>
         </div>
       )}
-
+</div>
     </DefaultLayout>
   );
 };

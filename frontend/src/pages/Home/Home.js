@@ -166,10 +166,10 @@ const Home = ({ userData, userFavorite, callChangeFavorite }) => {
                     <SwiperType1 userId={userData._id} title="Phim Việt Nam" moviesData={getRandomElements(vietnameseMovies, 15)} />
                 </div>
                 <div className='mt-5'>
-                    <SwiperType1 userId={userData._id} title="Phim Hàn Quốc" moviesData={getRandomElements(koreanMovies, 15)} />
+                    <SwiperType2 userId={userData._id} title="Hành Động Kịch Tính" moviesData={getRandomElements(actionMovies, 15)} />
                 </div>
                 <div className='mt-5'>
-                    <SwiperType2 userId={userData._id} title="Hành Động Kịch Tính" moviesData={getRandomElements(actionMovies, 15)} />
+                    <SwiperType1 userId={userData._id} title="Phim Hàn Quốc" moviesData={getRandomElements(koreanMovies, 15)} />
                 </div>
                 <div className='mt-5'>
                     <SwiperType2 userId={userData._id} title="Khoa Học Viễn Tưởng" moviesData={getRandomElements(scientificMovies, 15)} />

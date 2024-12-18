@@ -30,3 +30,7 @@
     background-color: #ffb74d;
     border-color: #ffb74d;
 }
+
+.watch-movie-container {
+    min-height: 100vh;
+}
