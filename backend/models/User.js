@@ -29,6 +29,13 @@ const UserSchema = new mongoose.Schema({
     password: { type: String },
     status: { type: String, default: "active", required: true },
     role: { type: String, default: "User", required: true },
+    accessControl: {
+        dashboard: { type: Boolean, default: false },
+        movies: { type: Boolean, default: false },
+        users: { type: Boolean, default: false },
+        rolebased: { type: Boolean, default: false },
+        reports: { type: Boolean, default: false },
+    },
     favoriteList: [{ type: mongoose.Schema.Types.ObjectId, ref: "Movie", default: [] }],
     history: { type: [historySchema], default: [] },
     googleId: { type: String, unique: true, sparse: true }, // Google ID cho OAuth2
@@ -43,21 +50,15 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 UserSchema.pre('save', async function(next) {
-    // if (role.toLowerCase() === 'admin') {
-    //     this.avatar = 'https://i.imgur.com/uS19Xv3.png';
-    // }
-
-    // // Kiểm tra unique email
-    // const email = await this.model('User').findOne({ email: this.email });
-    // if (email) {
-    //     throw new Error('Email đã tồn tại');
-    // }
-
-    // // Kiểm tra unique username
-    // const username = await this.model('User').findOne({ username: this.username });
-    // if (username) {
-    //     throw new Error('Tên tài khoản đã tồn tại');
-    // }
+    if (this.role === 'admin') {
+        this.accessControl = {
+            dashboard: true,
+            movies: true,
+            users: false,
+            rolebased: false,
+            reports: true,
+        };
+    }
 
     if (this.googleId) {
         this.emailVerified = true;

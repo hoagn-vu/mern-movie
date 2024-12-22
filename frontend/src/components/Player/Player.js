@@ -322,10 +322,8 @@ const Player = ({  movieSource, callOpenReportModal, history }) => {
         setCurrentPerform(perform);
         alert(`Tạm thời chưa hỗ trợ\n(Coi như) Đã chuyển sang chất lượng ${perform}`)
 
-        // Xóa class 'active' hiện tại
         document.querySelector(".perform-option.active")?.classList.remove("active");
     
-        // Thêm class 'active' vào lựa chọn mới
         document.querySelector(`.perform-option[data-perform="${perform}"]`)?.classList.add("active");
     }
     
@@ -334,10 +332,8 @@ const Player = ({  movieSource, callOpenReportModal, history }) => {
         video.playbackRate = parseFloat(speed);
         setCurrentSpeed(speed);
     
-        // Xóa class 'active' hiện tại
         document.querySelector(".speed-option.active")?.classList.remove("active");
     
-        // Thêm class 'active' vào lựa chọn mới
         document.querySelector(`.speed-option[data-speed="${speed}"]`)?.classList.add("active");
     };
     

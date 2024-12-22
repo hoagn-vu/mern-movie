@@ -8,6 +8,7 @@ const commentSchema = new mongoose.Schema({
 const reportSchema = new mongoose.Schema({
     createAt: { type: Date, default: Date.now },
     content: String,
+    status: { type: String, default: "pending" },
 });
 
 const userActivitySchema = new mongoose.Schema({

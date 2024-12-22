@@ -1,9 +1,11 @@
 const express = require('express');
-const { getAllAccounts, getAccountById, createAccount, updateAccount, deleteAccount, updateAvatarFullname, updateUsernamePassword, changePassword } = require('../controllers/accountController');
+const { getAllAccounts, getAccountsByRole, changeAccessControl, getAccountById, createAccount, updateAccount, deleteAccount, updateAvatarFullname, updateUsernamePassword, changePassword } = require('../controllers/accountController');
 // const { authMiddleware, authorizeRoles } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 router.get('/get', getAllAccounts);
+router.get('/get/:role', getAccountsByRole);
+router.put('/access/:userId', changeAccessControl);
 router.get('/get/:id', getAccountById);
 router.post('/create', createAccount);
 router.put('/update/:id', updateAccount);

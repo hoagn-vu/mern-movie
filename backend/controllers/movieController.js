@@ -8,6 +8,7 @@ const Director = require('../models/Director');
 const Cast = require('../models/Actor');
 const User = require('../models/User');
 const movieService = require('../services/movieService');
+const e = require('express');
 
 // Upload file (đã được xử lý qua multer middleware)
 exports.uploadMovie = async (req, res) => {
@@ -48,7 +49,7 @@ exports.editMovie = async (req, res) => {
     const { mainTitle, subTitle, description, releaseDate, duration, country, genres, directors, casts } = req.body;
 
     try {
-        const movie = await Movie.findById(movieId);
+        const movie = await Movie.findById(movieId).select(['-__v', '-userActivity']);
         if (!movie) return res.status(404).json({ message: 'Không tìm thấy phim!' });
 
         movie.mainTitle = mainTitle ? mainTitle : movie.mainTitle;
@@ -62,7 +63,7 @@ exports.editMovie = async (req, res) => {
         movie.casts = casts ? casts.split(',') : movie.casts;
         
         await movie.save();
-        res.json({ message: 'Movie updated successfully' });
+        res.json({ message: 'Movie updated successfully', movie });
     } catch (error) {
         console.error('Error updating movie:', error);
         res.status(500).json({ message: 'Error updating movie' });
@@ -555,12 +556,13 @@ exports.getAllReports = async (req, res) => {
         const userIds = movies
             .flatMap(movie => movie.userActivity?.map(activity => activity.userId) || []);
         const uniqueUserIds = [...new Set(userIds)]; // Loại bỏ trùng lặp
-        const users = await User.find({ _id: { $in: uniqueUserIds } }).select('username fullname');
+        const users = await User.find({ _id: { $in: uniqueUserIds } }).select('username fullname email');
         
         // Tạo map để tra cứu nhanh
         const userMap = new Map(users.map(user => [user._id.toString(), { 
             username: user.username, 
-            fullname: user.fullname 
+            fullname: user.fullname,
+            email: user.email
         }]));
 
         // Xử lý dữ liệu
@@ -575,15 +577,50 @@ exports.getAllReports = async (req, res) => {
                         userId: activity.userId,
                         username: user?.username || null,
                         fullname: user?.fullname || null,
+                        email: user?.email || null,
                         reportId: report._id,
                         content: report.content,
                         createAt: report.createAt,
+                        status: report.status,
                     });
                 });
             });
         });
 
         res.json(reports); // Trả về danh sách báo cáo
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+exports.changeStatusReport = async (req, res) => {
+    try {
+        const { movieId, userId, reportId } = req.params;
+        const { status } = req.body;
+
+        if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: 'Id không hợp lệ' });
+        }
+
+        const movie = await Movie.findById(movieId);
+        if (!movie) {
+            return res.status(404).json({ message: 'Không tìm thấy phim!' });
+        }
+
+        const userActivity = movie.userActivity.find(activity => activity.userId.equals(userId));
+        if (!userActivity) {
+            return res.status(404).json({ message: 'Không tìm thấy hoạt động người dùng!' });
+        }
+
+        const reportIndex = userActivity.report.findIndex(report => report._id.equals(reportId));
+        if (reportIndex === -1) {
+            return res.status(404).json({ message: 'Không tìm thấy báo cáo!' });
+        }
+
+        userActivity.report[reportIndex].status = status;
+        await movie.save();
+        res.status(200).json({ message: 'Trạng thái báo cáo đã được cập nhật!', userActivity });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

@@ -6,23 +6,14 @@ import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
 import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
 import Profile from './pages/Profile/Profile';
-import AccountManagement from './pages/AccountManagement/AccountManagement';
 import WatchMovie from './pages/WatchMovie/WatchMovie';
-
-import AdminLayout from './layouts/AdminLayout/AdminLayout';
-import Dashboard from './pages/AdminDashboard/Dashboard';
-import MovieManagement from './pages/AdminMovieManagement/MovieManagement';
-import AccountManagement2 from './pages/AdminAccountManagement/AccountManagement';
-import RequestHandling from './pages/AdminRequestHandling/RequestHandling';
-
+import AdminPage from './layouts/AdminPage/AdminPage';
 import SearchMovie from './pages/SearchMovie/SearchMovie';
 import FavoriteList from './pages/FavoriteList/FavoriteList';
 import WatchHistory from './pages/WatchHistory/WatchHistory';
-
 import { UserContext } from './UserContext';
 import api from './api/api';
 
-import Test2 from './components/Test2/Test2';
 import Tpage from './pages/Tpage/Tpage';
 
 const App = () => {
@@ -91,19 +82,6 @@ const App = () => {
     //     });
     // }, []);
 
-    // const getUserDataRecall = async () => {
-    //     try {
-    //         const response = await api.get('/auth/profile', {
-    //             headers: {
-    //                 Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    //             },
-    //         });
-    //         setUserData(response.data);
-    //         console.log('Recall fetching user profile');
-    //     } catch (error) {
-    //         console.error('Error during getting user data:', error);
-    //     }
-    // };
     const getUserData = async () => {
         try {
             const response = await api.get('/auth/profile', {
@@ -233,7 +211,16 @@ const App = () => {
             <Route path="/login" element={<Login />} />
 
             <Route path="/tp" element={<Tpage />} />
-            <Route path="/tp2" element={<Test2 />} />
+
+            <Route 
+                path="/admin-site" 
+                element={
+                    <AdminRoute isAuthenticated={isAuthenticated} userData={userData}>
+                        <AdminPage userData={userData} />
+                    </AdminRoute>
+                } 
+            />
+
             <Route
                 path="/profile"
                 element={
@@ -242,14 +229,7 @@ const App = () => {
                     </ProtectedRoute>
                 }
             />
-            <Route
-                path="/admin/accounts"
-                element={
-                    <AdminRoute isAuthenticated={isAuthenticated} userData={userData}>
-                        <AccountManagement />
-                    </AdminRoute>
-                }
-            />
+
             <Route 
                 path="/:userId/watch/:movieId" 
                 element={
@@ -258,25 +238,6 @@ const App = () => {
                     </ProtectedRoute>
                 }
             />
-            {/* <Route 
-                path='/admin/accounts' 
-                element={userData.role==='admin' ? <AccountManagement /> : <Navigate to="/login" />} 
-            /> */}
-
-            {/* <Route path="/testpage" element={<TestPage />} /> */}
-            <Route 
-                path="/admin" 
-                element={
-                    <AdminRoute isAuthenticated={isAuthenticated} userData={userData}>
-                        <AdminLayout userData={userData} />
-                    </AdminRoute>
-                }
-            >
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="movies" element={<MovieManagement />} />
-                <Route path="accounts2" element={<AccountManagement2 />} />
-                <Route path="requests" element={<RequestHandling />} />
-            </Route>
 
         </Routes>
     );

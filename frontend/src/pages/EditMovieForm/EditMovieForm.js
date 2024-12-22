@@ -1,11 +1,9 @@
-// EditMovieForm
 import React, { useState, useCallback, useEffect } from 'react';
 import './EditMovieForm.css';
-import api from '../../api/api';
 
 import CustomInputTag from '../../components/CustomInputTag/CustomInputTag';
 
-function EditMovieForm({ movieDataEdit, callCancelEditMovie }) {
+function EditMovieForm({ movieDataEdit, callCancelEditMovie, handleEditMovie }) {
     const [currentStep, setCurrentStep] = useState(1);
     const [movieId, setMovieId] = useState(null);
     const [movie, setMovie] = useState(null);
@@ -14,6 +12,8 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie }) {
     const [bannerUrl, setBannerUrl] = useState(null);
     const [poster, setPoster] = useState(null);
     const [posterUrl, setPosterUrl] = useState(null);
+    
+    const [source, setSource] = useState('');
 
     const [mainTitle, setMainTitle] = useState('');
     const [subTitle, setSubTitle] = useState('');
@@ -39,6 +39,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie }) {
             setGenres(movieDataEdit.genres);
             setDirectors(movieDataEdit.directors);
             setCasts(movieDataEdit.casts);
+            setSource(movieDataEdit.source);
             console.log('movieDataEdit:', movieDataEdit);
 
             setBannerUrl(`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movieDataEdit.source}/banner`);
@@ -79,6 +80,29 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie }) {
         }
     };
 
+    const handleResetForm = () => {
+        setMainTitle('');
+        setSubTitle('');
+        setReleaseDate('');
+        setCountry('');
+        setDescription('');
+        setGenres([]);
+        setDirectors([]);
+        setCasts([]);
+        setMovie(null);
+        setBanner(null);
+        setPoster(null);
+        setBannerUrl(null);
+        setPosterUrl(null);
+        setCurrentStep(1);
+    }
+
+    const handleEditing = async () => {
+        handleEditMovie(movieId, mainTitle, subTitle, releaseDate, duration, country, description, genres, directors, casts, movie, banner, poster, source)
+        handleResetForm();
+        callCancelEditMovie();
+    };
+
     const handleUpdateGenres = useCallback((selectedItems) => {
         setGenres(selectedItems.map(item => item._id));
     }, []);
@@ -92,66 +116,6 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie }) {
     }, []);
 
 
-    const handleUpload = async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData();
-        formData.append('mainTitle', mainTitle);
-        formData.append('subTitle', subTitle);
-        formData.append('releaseDate', releaseDate);
-        formData.append('duration', duration);
-        formData.append('country', country);
-        formData.append('description', description);
-        formData.append('genres', genres);
-        formData.append('directors', directors);
-        formData.append('casts', casts);
-        formData.append('movie', movie);
-        formData.append('banner', banner);
-        formData.append('poster', poster);
-        
-        // In ra formData sau khi append
-        for (let [key, value] of formData.entries()) {
-            console.log(key, ":", value);
-        }
-
-        try {
-            console.log("Uploading...");
-            const response = await api.put(`movies/update/${movieId} `, formData, {
-                headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-
-            onUploadProgress: (progressEvent) => {
-                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                setUploadProgress(percentCompleted);
-            }
-            
-            });
-            // setUploadProgress(100);
-            alert(response.data.message || 'Upload successful');
-            setUploadProgress(0);
-
-            // Reset form
-            setMainTitle('');
-            setSubTitle('');
-            setReleaseDate('');
-            setCountry('');
-            setDescription('');
-            setGenres([]);
-            setDirectors([]);
-            setCasts([]);
-            setMovie(null);
-            setBanner(null);
-            setPoster(null);
-            setBannerUrl(null);
-            setPosterUrl(null);
-            callCancelEditMovie();            
-        } catch (error) {
-            console.error('Error uploading:', error);
-            alert('Upload failed');
-            setUploadProgress(0);
-        }
-    };
-
-
     const handleNext = () => {
         if (currentStep < 3) setCurrentStep(currentStep + 1);
     };
@@ -160,24 +124,6 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie }) {
         if (currentStep > 1) setCurrentStep(currentStep - 1);
     };
 
-    // const isNextEnabled = () => {
-    //     if (currentStep === 1) return movie && duration;
-    //     if (currentStep === 2) return banner && poster;
-    //     if (currentStep === 3) {
-    //         return (
-    //             mainTitle &&
-    //             subTitle &&
-    //             releaseDate &&
-    //             duration &&
-    //             country &&
-    //             description &&
-    //             genres.length > 0 &&
-    //             directors.length > 0 &&
-    //             casts.length > 0
-    //         );
-    //     }
-    //     return false;
-    // };
 
 return (
     <div className="card mb-4">
@@ -219,13 +165,6 @@ return (
             </div>
             )}
         </div>
-        {movie && (
-            <div className="progress mt-3">
-            <div className="progress-bar progress-bar-striped" style={{ width: '100%' }}>
-                100%
-            </div>
-            </div>
-        )}
         </div>
     )}
 
@@ -234,17 +173,17 @@ return (
         <div className="drag-drop-horizontal position-relative text-center d-flex align-items-center justify-content-center">
             <input type="file" accept="image/*" name="banner" onChange={handleFileChange} required/>
             {bannerUrl ? (
-            <img src={bannerUrl} alt="Horizontal Banner" className="img-fluid rounded" />
+                <img src={bannerUrl} alt="Horizontal Banner" className="img-fluid rounded" />
             ) : (
-            <p>Upload Banner</p>
+                <p>Đăng tải áp phích ngang</p>
             )}
         </div>
         <div className="drag-drop-vertical position-relative text-center d-flex align-items-center justify-content-center">
             <input type="file" accept="image/*" name="poster" onChange={handleFileChange} required/>
             {posterUrl ? (
-            <img src={posterUrl} alt="Vertical Poster" className="img-fluid rounded" />
+                <img src={posterUrl} alt="Vertical Poster" className="img-fluid rounded" />
             ) : (
-            <p>Upload Poster</p>
+                <p>Đăng tải áp phích dọc</p>
             )}
         </div>
         </div>
@@ -361,21 +300,6 @@ return (
         
     )}
 
-        {uploadProgress > 0 && (
-        <div className="progress mt-3">
-            <div
-            className="progress-bar progress-bar-striped"
-            role="progressbar"
-            style={{ width: `${uploadProgress}%` }}
-            aria-valuenow={uploadProgress}
-            aria-valuemin="0"
-            aria-valuemax="100"
-            >
-            {uploadProgress}%
-            </div>
-        </div>
-        )}
-
     </div>
 
     <div className="card-footer upload-card-footer d-flex justify-content-between">
@@ -395,7 +319,7 @@ return (
         </button>
         <button
             className="btn btn-primary"
-            onClick={currentStep === 3 ? handleUpload : handleNext}
+            onClick={()=>currentStep === 3 ? handleEditing() : handleNext()}
             // disabled={!isNextEnabled()}
         >
             {currentStep === 3 ? 'Đăng tải' : 'Tiếp theo'}

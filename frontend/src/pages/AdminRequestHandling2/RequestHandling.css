@@ -1,0 +1,47 @@
+.pagination .page-item.active .page-link {
+    background-color: #ffa726;
+    border-color: #ffa726;
+}
+
+.modal {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.request-handling-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.handle-request-container .pagination {
+    width: 500px;
+    margin-bottom: 150px !important;
+}
+
+.status-report-btn {
+    min-width: 85.75px;
+}
+
+
+.request-handling-header .search-box {
+    width: 250px;
+    position: relative;
+    border: #dee2e6 solid 1px;
+    padding: 6px 12px;
+}
+
+.request-handling-header .search-box .search-input {
+    border: none;
+    outline: none;
+}
+
+.request-handling-header .search-box .search-input:focus {
+    border: none;
+    outline: none;
+}
+
+.request-handling-header .search-box .search-icon {
+    color: #ccc;
+}

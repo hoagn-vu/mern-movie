@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const movieController = require('../controllers/movieController');
-const { getAllMovies, deleteMovie, getSomeNewestMovies, getPromotedMovies, setPromote, updateInforMovie, getMoviesByGenre, getMoviesByNation, recommendMovies, searchMovies, getMovieById, getMoviesByIds, getMovieToWatch, addComment, deleteComment, addReport, getAllReports, rateMovie, toggleFavorite, removeFavorites, getFavoriteList, saveWatchHistory, getWatchHistory, statistic, getTopMovies } = require('../controllers/movieController');
+const { getAllMovies, deleteMovie, getSomeNewestMovies, getPromotedMovies, setPromote, updateInforMovie, getMoviesByGenre, getMoviesByNation, recommendMovies, searchMovies, getMovieById, getMoviesByIds, getMovieToWatch, addComment, deleteComment, addReport, getAllReports, changeStatusReport, rateMovie, toggleFavorite, removeFavorites, getFavoriteList, saveWatchHistory, getWatchHistory, statistic, getTopMovies } = require('../controllers/movieController');
 const upload = require('../middlewares/uploadMiddleware');
 // const { authMiddleware, authorizeRoles } = require('../middlewares/authMiddleware');
 
@@ -35,6 +35,7 @@ router.post('/:movieId/comment', addComment);
 router.delete('/:movieId/delete-comment/:userId/:commentId', deleteComment);
 router.post('/:movieId/report', addReport);
 router.get('/getAllReports', getAllReports);
+router.put('/:movieId/change/:userId/:reportId', changeStatusReport);
 router.post('/:movieId/rate', rateMovie);
 router.post('/:userId/favorite/:movieId', toggleFavorite);
 router.put('/:userId/removeFavorites', removeFavorites);

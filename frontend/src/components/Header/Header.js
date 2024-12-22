@@ -66,11 +66,10 @@ const Header = ({ userData }) => {
                     </ul>
 
                     {/* Icon Search luôn hiển thị trên màn hình lớn */}
-                    <Link className="nav-link d-none d-lg-block me-3 text-white search-div" href="#">
+                    <Link className="nav-link d-none d-lg-block me-3 text-white search-div">
                         {userData.role === 'admin' && (
-                            <Link className="nav-link to-admin-site" to="/admin/dashboard">Chuyển đổi QTV</Link>
+                            <Link className="nav-link to-admin-site" to="/admin-site"><i className="fa-solid fa-people-arrows me-2"></i>Chuyển đổi QTV</Link>
                         )}
-                        {/* <i className="fas fa-search me-2"></i> */}
                     </Link>
 
                     {isAuthenticated ? (
@@ -149,25 +148,16 @@ const Header = ({ userData }) => {
                                             </div>
                                         </Link>
                                     </li>
-                                    </ul>
-                                {/* <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="offcanvasNavbarDropdown">
-                                    <li><Link className="dropdown-item" href="#">Hồ sơ</Link></li>
-                                    <li><Link className="dropdown-item" href="#">Settings</Link></li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li><Link className="dropdown-item" href="#">Đăng xuất</Link></li>
-                                </ul> */}
+                                </ul>
                             </div>
                         ) : (
                             <Link className="text-decoration-none text-white to-login-site" to="/login">Đăng nhập/Đăng ký</Link>
                         )}
-                        <div className="nav-item d-lg-none">
+                        {/* <div className="nav-item d-lg-none">
                             {userData.role === 'admin' && (
-                                <Link className="nav-link" to="/admin/dashboard">Chuyển đổi QTV</Link>
+                                <Link className="nav-link" to="/admin/dashboard"><i className="fa-solid fa-people-arrows me-2"></i>Chuyển đổi QTV</Link>
                             )}
-                            {/* <Link className="nav-link" href="#">
-                                <i className="fas fa-search text-white" style={{  }}></i>
-                            </Link> */}
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="offcanvas-body">
@@ -180,6 +170,11 @@ const Header = ({ userData }) => {
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/favorite">Yêu thích</Link>
+                            </li>
+                            <li className="nav-item">
+                                {userData.role === 'admin' && (
+                                    <Link className="nav-link" to="/admin/dashboard">Chuyển đổi QTV</Link>
+                                )}
                             </li>
                             {/* {userData.role === 'admin' && (
                                 <li className="nav-item">

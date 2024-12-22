@@ -56,7 +56,7 @@ const Login = () => {
             const chosenMovie = localStorage.getItem('chosenMovie');
             if (!chosenMovie) {
                 if (response.data.role.toLowerCase() === 'admin') {
-                    navigate('/admin/dashboard');
+                    navigate('/admin-site');
                 } else {
                     if (response.data.emailVerified === false) {
                         navigate('/verify');
@@ -83,7 +83,6 @@ const Login = () => {
     const handleLoginWithGoogle = async (e) => {
         e.preventDefault();
         window.location.href = 'http://localhost:5001/auth/google';
-        // navigate('http://localhost:5001/auth/google');
     };
 
     
@@ -103,9 +102,7 @@ const Login = () => {
                             <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'} me-3`} onClick={togglePasswordVisibility}></i>
                             <i className='fas fa-unlock-alt'></i>
                         </div>
-                        {/* <span className="icon fa-regular fa-eye"><i className='fas fa-unlock-alt'></i></span> */}
-                        {/* <span className="icon fas fa-unlock-alt"> <i onClick={togglePasswordVisibility}>{showPassword ? '👁️' : '👁️‍🗨️'}</i> </span> */}
-                        
+  
                         <input type={showPassword ? 'text' : 'password'} name="password" onChange={handleChange} required />
                         <label htmlFor="">Mật khẩu</label>
                     </div>

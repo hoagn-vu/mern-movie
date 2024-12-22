@@ -121,6 +121,7 @@ const Tpage = () => {
 
             {/* <button className="btn btn-primary" onClick={handleShowToast}>Hiện Toast</button> */}
             {/* <button className="btn btn-primary" onClick={startUpload}>Start Upload</button> */}
+            {/* <img src='https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/Iron-Man-2/banner' alt='test image' className="poster-fluid rounded" /> */}
 
             <div className="container swiper-test-container bg-dark mt-5 pt-5 pb-5">
                 <div className="d-flex justify-content-between align-items-center mb-2">

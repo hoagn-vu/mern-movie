@@ -22,22 +22,6 @@ const VerifyEmail = ({ mail, isVerified }) => {
         };
     }, []);
 
-    // useEffect(() => {
-    //     const timer = setInterval(() => {
-    //         setResendTime((prevTime) => {
-    //             if (prevTime > 1) {
-    //                 return prevTime - 1;
-    //             } else {
-    //                 clearInterval(timer);
-    //                 setResendTime(0);
-    //                 setResendDisable(false);
-    //                 return 0;
-    //             }
-    //         });
-    //     }, 1000);
-    
-    //     return () => clearInterval(timer);
-    // }, []);
     useEffect(() => {
         let timer;
         if (resendTime > 0) {

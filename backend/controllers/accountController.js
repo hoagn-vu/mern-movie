@@ -4,13 +4,56 @@ const bcrypt = require('bcryptjs');
 
 exports.getAllAccounts = async (req, res) => {
     try {
-        const accounts = await User.find().select(['-password', '-__v']).sort({ _id: -1 });
-        if (!accounts) return res.status(404).json({ message: 'No accounts found' });
+        const accounts = await User.find({ username: { $ne: 'hoangvu' } }).select(['-password', '-__v']).sort({ _id: -1 });
+        if (!accounts) return res.status(404).json({ message: 'Danh sách tài khoản trống!' });
         res.json(accounts);
     } catch (error) {
-        res.status(500).json({ message: 'Error getting accounts', error });
+        res.status(500).json({ message: 'Lỗi khi lấy danh sách tài khoản', error });
     }
 }
+
+exports.getAccountsByRole = async (req, res) => {
+    const { role } = req.params;
+    try {
+        const accounts = await User.find({ role }).select(['-password', '-updatedAt', '-__v']).sort({ _id: -1 });
+        if (!accounts) return res.status(404).json({ message: 'Danh sách tài khoản trống!' });
+        res.json(accounts);
+    } catch (error) {
+        res.status(500).json({ message: 'Lỗi khi lấy danh sách tài khoản', error });
+    }
+}
+
+exports.changeAccessControl = async (req, res) => {
+    const { userId } = req.params;
+    const { dashboard, movies, users, rolebased, reports } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: 'ID không hợp lệ.' });
+    }
+
+    if (typeof dashboard === 'undefined' && typeof movies === 'undefined' && typeof users === 'undefined' && typeof rolebased === 'undefined' && typeof reports === 'undefined') {
+        return res.status(400).json({ message: 'Vui lòng cung cấp thông tin cần cập nhật.' });
+    }
+
+    try {
+        const account = await User.findById(userId);
+        if (!account) return res.status(404).json({ message: 'Không tìm thấy tài khoản.' });
+
+        if (typeof dashboard !== 'undefined') account.accessControl.dashboard = dashboard;
+        if (typeof movies !== 'undefined') account.accessControl.movies = movies;
+        if (typeof users !== 'undefined') account.accessControl.users = users;
+        if (typeof rolebased !== 'undefined') account.accessControl.rolebased = rolebased;
+        if (typeof reports !== 'undefined') account.accessControl.reports = reports;
+
+        await account.save();
+        res.json({ message: 'Đã cập nhật quyền truy cập.' });
+    } catch (error) {
+        res.status(400).json({ message: 'Xảy ra lỗi khi cập nhật quyền truy cập.', error });
+    }
+};
+
+
+
 
 exports.getAccountById = async (req, res) => {
     try {

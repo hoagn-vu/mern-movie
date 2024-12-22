@@ -73,12 +73,18 @@
   z-index: 1000;
 }
 
-.content {
+/* .content {
   flex-grow: 1;
-  /* overflow-y: auto; */
-}
+  overflow-y: auto;
+} */
   
+/* .content {
+    overflow-y: auto !important;
+}
 
+.content::-webkit-scrollbar {
+    display: none !important;
+} */
 
 
 

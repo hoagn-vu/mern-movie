@@ -6,16 +6,30 @@ const { transporterConfig } = require('../config/nodemailerConfig');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+exports.checkValidRegister = async (req, res) => {
+    const { username, email } = req.body;
+    try {
+        const isValidUsername = Boolean(await User.findOne({ username }));
+        const isValidEmail = Boolean(await User.findOne({ email }));
+        if (isValidUsername) return res.status(400).json({ message: 'Tên tài khoản đã được sử dụng!' });
+        if (isValidEmail) return res.status(400).json({ message: 'Email đã được sử dụng!' });
+
+        res.json({ message: 'Tên tài khoản và email hợp lệ' });
+    } catch (error) {
+        res.status(400).json({ message: 'Xảy ra lỗi khi kiểm tra tài khoản và email', error });
+    }
+};
+
 exports.register = async (req, res) => {
     const { username, fullname, email, password } = req.body;
     
     const isValidUsername = Boolean(await User.findOne({ username }));
     const isValidEmail = Boolean(await User.findOne({ email }));
-    if (isValidUsername) return res.status(400).json({ message: 'Tên tài khoản đã tồn tại' });
-    if (isValidEmail) return res.status(400).json({ message: 'Email đã tồn tại' });
+    if (isValidUsername) return res.status(400).json({ message: 'Tên tài khoản đã được sử dụng!' });
+    if (isValidEmail) return res.status(400).json({ message: 'Email đã được sử dụng!' });
 
     try {
-        const user = new User({ username, fullname, email, password, role: 'User' });
+        const user = new User({ username, fullname, email, password, role: 'User', emailVerified: true });
         await user.save();
         res.status(201).json({ message: 'Đăng ký tài khoản thành công' });
     } catch (error) {
@@ -166,7 +180,7 @@ exports.logout = (req, res) => {
 
 exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.userId).select(['_id', 'email', 'emailVerified', 'username', 'fullname', 'role', 'avatar', 'createdAt', 'googleId', 'password', 'favoriteList', 'history']);
+        const user = await User.findById(req.user.userId).select(['_id', 'email', 'emailVerified', 'username', 'fullname', 'role', 'accessControl', 'avatar', 'createdAt', 'googleId', 'password', 'favoriteList', 'history']);
         // const user = await User.findById(req.user.userId).select(['-password', '-updatedAt', '-__v', '-favoriteList', '-history', '-status']);
         if (!user) return res.status(404).json({ message: 'User not found' });
         // res.json(user);
@@ -215,13 +229,14 @@ exports.getProfile = async (req, res) => {
             fullname: user.fullname,
             createdAt: user.createdAt,
             role: user.role,
+            accessControl: user.accessControl,
             avatar: user.avatar,
             googleId: user.googleId,
             hasPassword: user.password ? true : false,
             favoriteList: user.favoriteList,
             history: watchHistory,
         })
-        console.log("User profile sent");
+        console.log("Đã gửi thông tin người dùng");
         // console.log('user history:', watchHistory);
     } catch (error) {
         res.status(500).json({ message: 'Xảy ra lỗi khi lấy thông tin người dùng', error });

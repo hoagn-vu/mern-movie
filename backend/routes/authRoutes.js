@@ -1,8 +1,9 @@
 const express = require('express');
-const { register, verifyEmail, resetPassword, login, refreshToken, logout, getProfile } = require('../controllers/authController');
+const { checkValidRegister, register, verifyEmail, resetPassword, login, refreshToken, logout, getProfile } = require('../controllers/authController');
 const { authMiddleware } = require('../middlewares/authMiddleware.js');
 const router = express.Router();
 
+router.post('/valid-register', checkValidRegister);
 router.post('/register', register);
 router.post('/verify-email', verifyEmail);
 router.post('/reset-password', resetPassword);

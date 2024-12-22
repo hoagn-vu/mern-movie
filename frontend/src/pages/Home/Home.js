@@ -114,7 +114,7 @@ const Home = ({ userData, userFavorite, callChangeFavorite }) => {
             const response = await api.get(`/movies/genre/${genreToSearch}`);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching movies with genre ${genreToSearch}:`, error);
+            console.error(`Lỗi khi tải phim thể loại ${genreToSearch}:`, error);
             return [];
         }
     };
@@ -124,7 +124,7 @@ const Home = ({ userData, userFavorite, callChangeFavorite }) => {
             const response = await api.get(`/movies/country/${nationToSearch}`);
             return response.data;
         } catch (error) {
-            console.error(`Error fetching movies with nation ${nationToSearch}:`, error);
+            console.error(`Lỗi khi tải phim quốc gia ${nationToSearch}:`, error);
             return [];
         }
     };

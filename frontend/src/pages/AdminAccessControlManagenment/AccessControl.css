@@ -1,0 +1,69 @@
+.access-control-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.access-control-header .search-box {
+    width: 250px;
+    position: relative;
+    border: #dee2e6 solid 1px;
+    padding: 6px 12px;
+}
+
+.access-control-header .search-box .search-input {
+    border: none;
+    outline: none;
+}
+
+.access-control-header .search-box .search-input:focus {
+    border: none;
+    outline: none;
+}
+
+.access-control-header .search-box .search-icon {
+    color: #ccc;
+}
+
+.access-control-header .btn-primary {
+    background-color: #ffa726;
+    border-color: #ffa726;
+    /* width: 175px; */
+}
+
+.access-control-header .btn-primary:hover {
+    background-color: #ffb74d;
+    border-color: #ffb74d;
+}
+
+.access-control-table .form-check-input:focus {
+    box-shadow: none;
+    border: #ffa726 solid 1px;
+}
+
+.access-control-table .form-check-input:checked {
+    background-color: #ffa726;
+    box-shadow: none;
+    border: #ffa726 solid 1px;
+}
+
+.access-control-table .pre-change-btn {
+    width: 32px;
+    height: 32px;
+}
+
+.access-control-table .send-btn {
+    width: 32px;
+    height: 32px;
+}
+
+.access-control-table .send-btn i {
+    font-size: 1.2rem;
+}
+
+.access-control-table .cancel-btn i {
+    font-size: 1.2rem;
+}
+
+.access-control-table .cancel-btn {
+    width: 32px;
+    height: 32px;
+}
