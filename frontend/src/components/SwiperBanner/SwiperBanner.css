@@ -114,11 +114,11 @@
   display: none;
 }
 
-.movie-swiper-detail-container:hover .swiper-button-next,
+/* .movie-swiper-detail-container:hover .swiper-button-next,
 .movie-swiper-detail-container:hover .swiper-button-prev {
   display: block;
   color: white;
-}
+} */
 
 
 

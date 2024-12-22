@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DefaultLayout from '../../layouts/DefaultLayout/DefaultLayout';
 import SwiperBanner from '../../components/SwiperBanner/SwiperBanner';
 import SwiperHistory from '../../components/SwiperHistory/SwiperHistory';
@@ -21,7 +22,7 @@ const Home = ({ userData, userFavorite, callChangeFavorite }) => {
     const [watchHistory, setWatchHistory] = useState([]);
     const [recommendedMovies, setRecommendedMovies] = useState([]);
 
-
+    const navigate = useNavigate();
     
     useEffect(() => {
         const fetchMoviesForBanner = async () => {
@@ -67,8 +68,7 @@ const Home = ({ userData, userFavorite, callChangeFavorite }) => {
                     const rcm = await getRecommendMovies();
                     setRecommendedMovies(rcm);
 
-                    setWatchHistory(userData.history);
-                    // console.log('Recommended movies length:', rcm.length);
+                    setWatchHistory(userData.history.slice(0, 15));
                 }
 
                 // if (userData && userData.history && userData.history.length > 0) {
@@ -140,7 +140,15 @@ const Home = ({ userData, userFavorite, callChangeFavorite }) => {
         return shuffled.slice(0, n);
     };
 
-
+    // useEffect(() => {
+    //     const cId = localStorage.getItem('chosenMovie');
+    //     if (cId) {
+    //         navigate(`/${userData._id}/watch/${cId}`);
+    //         localStorage.removeItem('chosenMovie');
+    //     }
+    // }, [userData]);
+    
+    
 
 
     
@@ -158,35 +166,83 @@ const Home = ({ userData, userFavorite, callChangeFavorite }) => {
 
                 { userData && recommendedMovies.length>0  && (
                     <div className='mt-5'>
-                        <SwiperType1 userId={userData._id} title="Có Thể Bạn Sẽ Thích" moviesData={recommendedMovies} />
+                        <SwiperType1 userId={userData._id} title="Có Thể Bạn Sẽ Thích" moviesData={recommendedMovies} displayOpenMore={false} />
                     </div>
                 )}
 
                 <div className='mt-5'>
-                    <SwiperType1 userId={userData._id} title="Phim Việt Nam" moviesData={getRandomElements(vietnameseMovies, 15)} />
+                    <SwiperType1 
+                        userId={userData._id} 
+                        title="Phim Việt Nam" 
+                        moviesData={getRandomElements(vietnameseMovies, 15)} 
+                        queryType="nation"
+                        queryValue="Việt Nam"
+                    />
                 </div>
                 <div className='mt-5'>
-                    <SwiperType2 userId={userData._id} title="Hành Động Kịch Tính" moviesData={getRandomElements(actionMovies, 15)} />
+                    <SwiperType2 
+                        userId={userData._id} 
+                        title="Hành Động Kịch Tính" 
+                        moviesData={getRandomElements(actionMovies, 15)} 
+                        queryType="genre"
+                        queryValue="Hành động"
+                    />
                 </div>
                 <div className='mt-5'>
-                    <SwiperType1 userId={userData._id} title="Phim Hàn Quốc" moviesData={getRandomElements(koreanMovies, 15)} />
+                    <SwiperType1 
+                        userId={userData._id} 
+                        title="Phim Hàn Quốc" 
+                        moviesData={getRandomElements(koreanMovies, 15)} 
+                        queryType="nation"
+                        queryValue="Hàn Quốc"
+                    />
                 </div>
                 <div className='mt-5'>
-                    <SwiperType2 userId={userData._id} title="Khoa Học Viễn Tưởng" moviesData={getRandomElements(scientificMovies, 15)} />
+                    <SwiperType2 
+                    userId={userData._id} 
+                    title="Khoa Học Viễn Tưởng" 
+                    moviesData={getRandomElements(scientificMovies, 15)} 
+                    queryType="genre"
+                    queryValue="Khoa học viễn tưởng"
+                />
                 </div>
                 <div className='mt-5'>
-                    <SwiperType1 userId={userData._id} title="Kinh Dị Giật Gân" moviesData={getRandomElements(horrorMovies, 15)} />
+                    <SwiperType1 
+                        userId={userData._id} 
+                        title="Kinh Dị Giật Gân" 
+                        moviesData={getRandomElements(horrorMovies, 15)} 
+                        queryType="genre"
+                        queryValue="Kinh dị"
+                    />
                 </div>
                 <div className='mt-5'>
-                    <SwiperType3 userId={userData._id} title="Gia đình cùng thuởng thức" moviesData={getRandomElements(familyMovies, 15)} />
+                    <SwiperType3 
+                        userId={userData._id} 
+                        title="Gia đình cùng thuởng thức" 
+                        moviesData={getRandomElements(familyMovies, 15)} 
+                        queryType="genre"
+                        queryValue="Gia đình"
+                    />
                 </div>
 
                 <div className='mt-5'>
-                    <SwiperType2 userId={userData._id} title="Tình Cảm Lãng Mạn" moviesData={getRandomElements(romanticMovies, 15)} />
+                    <SwiperType2 
+                    userId={userData._id} 
+                    title="Tình Cảm Lãng Mạn" 
+                    moviesData={getRandomElements(romanticMovies, 15)} 
+                    queryType="genre"
+                    queryValue="Lãng mạn"
+                />
                 </div>
 
                 <div className='mt-5'>
-                    <SwiperType2 userId={userData._id} title="Không Chỉ Là Hoạt Hình" moviesData={getRandomElements(cartoonMovies, 15)} />
+                    <SwiperType2 
+                        userId={userData._id} 
+                        title="Hoạt Hình Vui Nhộn" 
+                        moviesData={getRandomElements(cartoonMovies, 15)} 
+                        queryType="genre"
+                        queryValue="Hoạt hình"
+                    />
                 </div>
 
 

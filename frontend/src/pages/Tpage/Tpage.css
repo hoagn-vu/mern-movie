@@ -110,4 +110,59 @@
 .test-dropdown-ellipsis .delete-comment:hover {
     color: #ff6500;
 }
-  
+
+
+
+/* Swiper */
+.swiper-test-container .swiper-button-next,
+.swiper-test-container .swiper-button-prev {
+    display: none;
+    /* top: 38% !important; */
+    top: calc(50% - 20px);
+    color: white;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.disable-swiper-button {
+    pointer-events: none;
+    visibility: hidden;
+}
+
+.swiper-test-container:hover .swiper-button-next,
+.swiper-test-container:hover .swiper-button-prev {
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.swiper-test-container .swiper-slide img {
+    object-fit: cover;
+    width: 100%;
+}
+
+.swiper-test-container h5 {
+    margin-top: 0.5rem;
+}
+
+.swiper-test-container .poster-fluid {
+    max-width: 252px;
+    aspect-ratio: 2 / 1;
+}
+
+.swiper-test-container .swiper-button-disabled {
+    pointer-events: auto !important;
+    display: none !important;
+}
+
+.swiper-test-container .swiper-test-content:hover {
+        color: #ff6500 !important;
+}
+
+.swiper-test-container .open-more {
+    color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.swiper-test-container .open-more:hover {
+    color: #ff6500 !important;
+}

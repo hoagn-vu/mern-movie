@@ -284,14 +284,16 @@ const Player = ({  movieSource, callOpenReportModal, history }) => {
     
     const handleLoadedData = () => {
         const video = videoRef.current;
-        
-        const historyData = history.find((item) => item.movieId === movieId);
-        if (historyData) {
-            video.currentTime = historyData.timeWatched;
-        }
 
         setDuration(video.duration);
         setIsBuffering(false);
+
+        const historyData = history.find((item) => item.movieId === movieId);
+        if (historyData) {
+            if (window.confirm(`Bạn đã xem đến ${formatTime(historyData.timeWatched)}. Bạn có muốn tiếp tục xem không?`)) {
+                video.currentTime = historyData.timeWatched;
+            }
+        }
     };
 
     const handlePlaybackMenuToggle = (menuType) => {

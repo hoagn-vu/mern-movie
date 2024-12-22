@@ -11,7 +11,7 @@ import { UserContext } from '../../UserContext';
 
 import ImageWithSkeletonSwiper from '../ImageWithSkeletonSwiper/ImageWithSkeletonSwiper';
 
-const SwiperType3 = ({ userId, title, moviesData }) => {
+const SwiperType3 = ({ userId, title, moviesData, queryType, queryValue }) => {
     const { isAuthenticated } = useContext(UserContext);
 
     const navigate = useNavigate();
@@ -28,9 +28,17 @@ const SwiperType3 = ({ userId, title, moviesData }) => {
         }
     }
 
+    let queryParams = new URLSearchParams({  }).toString();
+    if (queryType && queryValue) {
+        queryParams = new URLSearchParams({ [queryType]: queryValue }).toString();
+    }
+
     return (
         <div className="container movie-swiper-type-3-container text-white">
-            <h2 className='mb-3'>{title}</h2>
+            <div className="d-flex justify-content-between align-items-center mb-2">
+                <h2 className='mb-0'>{title}</h2>
+                <Link to={`/search?${queryParams}&title=${title}`} className='open-more text-secondary text-decoration-none'>Xem thêm</Link>
+            </div>
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={15}
@@ -60,7 +68,7 @@ const SwiperType3 = ({ userId, title, moviesData }) => {
                     <SwiperSlide key={index}>
                         <Link to={`/${userId}/watch/${movie._id}`} className='text-white text-decoration-none swiper-type-3-content' onClick={(e) => checkAuth(e, movie._id)} >
                             <ImageWithSkeletonSwiper src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner`} alt={movie.mainTitle} className="poster-fluid rounded" />
-                            <h5>{movie.mainTitle}</h5>
+                            <h5 className='swiper-content-title'>{movie.mainTitle}</h5>
                         </Link>
                     </SwiperSlide>
                 ))}

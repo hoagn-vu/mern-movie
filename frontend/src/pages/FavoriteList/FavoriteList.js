@@ -6,7 +6,7 @@ import api from '../../api/api';
 
 import ImageWithSkeletonSwiper from '../../components/ImageWithSkeletonSwiper/ImageWithSkeletonSwiper';
 
-const FavoriteList = ({ userData }) => {
+const FavoriteList = ({ userData, userFavorite, callChangeFavorite }) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -76,11 +76,13 @@ const FavoriteList = ({ userData }) => {
             await api.put(`/movies/${userData._id}/removeFavorites`, { movieIds: favoriteList.filter(item => selectedItems.includes(item.movieId)).map(item => item.movieId) });
 
             setFavoriteList(removedList);
+            callChangeFavorite(removedList.map(item => item.movieId));
+
             setSelectedItems([]);
             setIsEditingFL(false);
-            alert('Đã xóa khỏi danh sách yêu thích');
+            // alert('Đã xóa khỏi danh sách yêu thích');
         } catch (error) {
-            console.error('Error during removing favorite list:', error);
+            console.error('Lỗi khi xóa phim khỏi danh sách yêu thích:', error);
         }
     };
 

@@ -3,33 +3,38 @@
 /* Ẩn mũi tên điều hướng mặc định */
 .movie-swiper-type-2-container .swiper-button-next,
 .movie-swiper-type-2-container .swiper-button-prev {
-  display: none;
-  top: 40% !important;
-  color: white;
-  z-index: 999;
+    display: none;
+    top: calc(50% - 30px) !important;
+    color: white;
+    z-index: 999;
 }
 
 /* Hiển thị mũi tên điều hướng khi di chuột vào vùng Swiper */
 .movie-swiper-type-2-container:hover .swiper-button-next,
 .movie-swiper-type-2-container:hover .swiper-button-prev {
-  display: block;
-  opacity: 1;
-  transition: opacity 0.3s ease;
+    display: block;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.movie-swiper-type-2-container .swiper-button-next:hover,
+.movie-swiper-type-2-container .swiper-button-prev:hover {
+    color: #ff6500;
 }
 
 /* Căn chỉnh hình ảnh */
 .movie-swiper-type-2-container .swiper-slide img {
-  object-fit: cover;
-  width: 100%; /* Để img-fluid của Bootstrap hoạt động */
+    object-fit: cover;
+    width: 100%;
 }
 
 .movie-swiper-type-2-container h5 {
-  margin-top: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .movie-swiper-type-2-container .poster-fluid {
-  max-width: 252px;
-  aspect-ratio: 1 / 1.5;
+    max-width: 252px;
+    aspect-ratio: 1 / 1.5;
 }
 
 .swiper-type-2-content:hover {

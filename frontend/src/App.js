@@ -113,8 +113,9 @@ const App = () => {
             });
             setUserData(response.data);
             setUserFavorite(response.data.favoriteList);
+            // console.log(response.data.favoriteList);
             console.log('Fetching user profile');
-            console.log(response.data);
+            // console.log(response.data);
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 console.log('Token expired. Redirecting to login.');
@@ -137,17 +138,20 @@ const App = () => {
         if (userData && userData.emailVerified === false) {
             navigate('/verify');
         }
-        const cId = localStorage.getItem('chosenMovie');
-        if (cId) {
-            navigate(`/${userData._id}/watch/${cId}`);
-            localStorage.removeItem('chosenMovie');
-        }
     }, [userData]);
 
-    const [userFavorite, setUserFavorite] = useState([]);
     // useEffect(() => {
-    //     setUserFavorite(userData.favoriteList);
+    //     const cId = localStorage.getItem('chosenMovie');
+    //     if (cId) {
+    //         navigate(`/${userData._id}/watch/${cId}`);
+    //         localStorage.removeItem('chosenMovie');
+    //     }
     // }, [userData]);
+
+    // useEffect(() => {
+        //     setUserFavorite(userData.favoriteList);
+    // }, [userData]);
+    const [userFavorite, setUserFavorite] = useState([]);
     const onChangeFavorite = (updated) => {
         setUserFavorite(updated);
     };
@@ -201,7 +205,7 @@ const App = () => {
                 path='/favorite' 
                 element={
                     <ProtectedRoute isAuthenticated={isAuthenticated} userData={userData}>
-                        <FavoriteList userData={userData} />
+                        <FavoriteList userData={userData} userFavorite={userFavorite} callChangeFavorite={onChangeFavorite} />
                     </ProtectedRoute>
                 } 
             />

@@ -31,7 +31,11 @@ const SwiperHistory = ({ userId, title, moviesData }) => {
   
     return (
         <div className="container movie-swiper-history-container text-white">
-            <h2 className='mb-3'>{ title }</h2>
+            <div className='d-flex justify-content-between align-items-center mb-2'>
+                <h2>{ title }</h2>
+                <Link to={`/history`} className='open-more text-secondary text-decoration-none'>Xem thêm</Link>
+            </div>
+
             <Swiper
                 modules={[Navigation, Pagination, Scrollbar, A11y]}
                 spaceBetween={10}
@@ -53,7 +57,7 @@ const SwiperHistory = ({ userId, title, moviesData }) => {
                                 <div className='movie-duration-progress rounded' style={{ width: `${(movie.timeWatched / movie.duration) * 100}%` }}></div>
                             </div>
                             
-                            <h5 >{movie.mainTitle}</h5>
+                            <h5 className='swiper-content-title'>{movie.mainTitle}</h5>
                         </Link>
                     </SwiperSlide>
                 ))}

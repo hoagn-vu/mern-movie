@@ -71,7 +71,7 @@ exports.resetPassword = async (req, res) => {
             from: process.env.EMAIL_USER,
             to: user.email,
             subject: '[Lovie] Mật khẩu đã được đặt lại',
-            text: `Mật khẩu mới của bạn là: ${newPassword} \n\n Vui lòng đăng nhập và đổi mật khẩu ngay sau khi đăng nhập!`,
+            text: `Mật khẩu mới của bạn là: ${newPassword} \n\nVui lòng đăng nhập và đổi mật khẩu ngay sau khi đăng nhập!`,
         };
 
         await transporter.sendMail(mailOptions);
@@ -156,7 +156,9 @@ exports.logout = (req, res) => {
     try {
         res.clearCookie('refreshToken');
         res.clearCookie('connect.sid');
+
         res.json({ message: "Logged out" });
+        
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

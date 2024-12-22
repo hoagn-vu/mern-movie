@@ -3,7 +3,8 @@
 .movie-swiper-type-3-container .swiper-button-next,
 .movie-swiper-type-3-container .swiper-button-prev {
   display: none;
-  top: 43% !important;
+  /* top: 43% !important; */
+  top: calc(50% - 30px) !important;
   color: white;
   z-index: 999;
 }
@@ -14,6 +15,11 @@
   display: block;
   opacity: 1;
   transition: opacity 0.3s ease;
+}
+
+.movie-swiper-type-3-container .swiper-button-next:hover,
+.movie-swiper-type-3-container .swiper-button-prev:hover {
+    color: #ff6500;
 }
 
 /* Căn chỉnh hình ảnh */

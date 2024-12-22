@@ -15,7 +15,7 @@ const Header = ({ userData }) => {
                 }
             });
         } catch (error) {
-            console.error("Error during logout:", error);
+            console.error("Lỗi khi đăng xuất:", error);
         }
         localStorage.removeItem('accessToken');
         window.location.href = '/';

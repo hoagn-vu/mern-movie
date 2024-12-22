@@ -9,16 +9,21 @@ passport.use(
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: "http://localhost:5001/auth/google/callback",
+            // passReqToCallback: true, // Cho phép truyền req vào callback
+            prompt: "select_account", // Yêu cầu chọn tài khoản
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
+                if (!profile || !profile.id) {
+                    return done(new Error("Invalid Google profile"), null);
+                }
+
                 // Tìm kiếm user dựa trên googleId
                 let user = await User.findOne({ googleId: profile.id });
 
                 if (!user) {
                     user = await User.findOne({ email: profile.emails?.[0]?.value });
                     if (user) {
-                        // Cập nhật googleId nếu chưa có
                         user.googleId = profile.id;
                         await user.save();
                     } else {
@@ -27,12 +32,12 @@ passport.use(
                             googleId: profile.id,
                             fullname: profile.displayName,
                             email: profile.emails?.[0]?.value || `${profile.id}@google.com`,
-                            avatar: profile.photos?.[0]?.value || "https://i.imgur.com/YemEHhw.png",
+                            emailVerified: true,
+                            avatar: profile.photos?.[0]?.value || "https://i.imgur.com/0ODZkGf.png",
                         });
                     }
                 }
 
-                // Phát hành accessToken và refreshToken
                 const userId = user._id;
                 const accessToken = jwt.sign(
                     { userId },
@@ -46,24 +51,23 @@ passport.use(
                     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
                 );
 
-                // Trả user cho done()
                 done(null, { user, accessToken, refreshToken });
             } catch (error) {
-                console.error("Error during Google OAuth", error);
+                console.error("Lỗi khi đăng nhập Google OAuth", error);
                 done(error, null);
             }
         }
     )
 );
 
-// Serialize và deserialize user
 passport.serializeUser((user, done) => {
-    done(null, user.id); // Serialize chỉ lưu ID
+    done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = await User.findById(id); // Lấy user từ DB
+        const user = await User.findById(id);
+        if (!user) return done(new Error("User not found"), null);
         done(null, user);
     } catch (error) {
         console.error("Error deserializing user", error);

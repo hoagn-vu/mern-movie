@@ -280,16 +280,15 @@ exports.searchMovies = async (req, res) => {
             query.genres = { $in: [genreIdSearch] };
         }
         if (yearSearch) {
-            // Tạo khoảng thời gian từ đầu năm đến cuối năm
-            const startOfYear = new Date(yearSearch, 0, 1); // 01/01/<yearSearch>
-            const endOfYear = new Date(yearSearch + 1, 0, 1); // 01/01/<yearSearch + 1>
+            const startOfYear = new Date(yearSearch, 0, 1);
+            const endOfYear = new Date(yearSearch + 1, 0, 1);
             query.releaseDate = { $gte: startOfYear, $lt: endOfYear };
         }
         if (nationSearch) {
             query.country = { $regex: nationSearch, $options: 'i' };
         }
 
-        const moviesSearch = await Movie.find(query).lean();
+        const moviesSearch = await Movie.find(query).sort({ releaseDate: -1 }).lean();
 
         for (const movie of moviesSearch) {
             await convertIdToName(movie, 'genres', Genre);
@@ -720,10 +719,13 @@ exports.getFavoriteList = async (req, res) => {
         }
 
         // Lấy danh sách movieId từ favoriteList
-        const movieIds = user.favoriteList;
+        const movieIds = user.favoriteList.reverse();
 
         // Truy vấn tất cả các phim theo movieId
-        const movies = await Movie.find({ _id: { $in: movieIds }, status: 'Available' }).sort({ _id: -1 }).select(['_id', 'mainTitle', 'subTitle']);
+        let movies = await Movie.find({ _id: { $in: movieIds }, status: 'Available' }).select(['_id', 'mainTitle', 'subTitle']);
+
+        // Sắp xếp lại thứ tự của movies theo thứ tự trong movieIds
+        movies = movies.sort((a, b) => movieIds.indexOf(a._id.toString()) - movieIds.indexOf(b._id.toString()));
 
         // Tạo danh sách kết quả
         const favoriteList = movies.map((movie) => ({
@@ -735,7 +737,7 @@ exports.getFavoriteList = async (req, res) => {
         // Trả về kết quả
         res.json( favoriteList );
     } catch (error) {
-        console.error('Error in getFavoriteList:', error);
+        console.error('Lỗi khi lấy danh sách yêu thích:', error);
         res.status(500).json({ message: 'Server error' });
     }
 };

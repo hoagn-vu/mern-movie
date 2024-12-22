@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import './Tpage.css';
 import api from '../../api/api';
 
@@ -6,6 +5,17 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 import ImageWithSkeleton from '../../components/ImageWithSkeletonSwiper/ImageWithSkeletonSwiper';
+
+import React, { useContext, useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/scrollbar';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Link } from 'react-router-dom';
+
+import ImageWithSkeletonSwiper from '../../components/ImageWithSkeletonSwiper/ImageWithSkeletonSwiper';
 
 const Tpage = () => {
     const [email, setEmail] = useState('');
@@ -53,7 +63,8 @@ const Tpage = () => {
 
 
 
-    const [showToast, setShowToast] = useState(true);
+    const [showToast, setShowToast] = useState(false);
+    // const [showToast, setShowToast] = useState(true);
     const handleShowToast = () => {
         setShowToast(true);
     };
@@ -79,6 +90,30 @@ const Tpage = () => {
             
         }
     }, [showToast, isUploading]);
+
+
+    // Swiper
+    const moviesData = [
+        {id: 1, mainTitle: 'Movie 1'},
+        {id: 2, mainTitle: 'Movie 2'},
+        {id: 3, mainTitle: 'Movie 3'},
+        {id: 4, mainTitle: 'Movie 4'},
+        {id: 5, mainTitle: 'Movie 5'},
+        {id: 6, mainTitle: 'Movie 6'},
+        {id: 7, mainTitle: 'Movie 7'},
+        {id: 8, mainTitle: 'Movie 8'},
+        {id: 9, mainTitle: 'Movie 9'},
+        {id: 10, mainTitle: 'Movie 10'},
+        {id: 11, mainTitle: 'Movie 11'},
+        {id: 12, mainTitle: 'Movie 12'},
+        {id: 13, mainTitle: 'Movie 13'},
+        {id: 14, mainTitle: 'Movie 14'},
+        {id: 15, mainTitle: 'Movie 15'},
+    ];
+
+    const movieClick = () => {
+        alert('Movie clicked');
+    };
  
 
     return (
@@ -86,6 +121,38 @@ const Tpage = () => {
 
             {/* <button className="btn btn-primary" onClick={handleShowToast}>Hiện Toast</button> */}
             {/* <button className="btn btn-primary" onClick={startUpload}>Start Upload</button> */}
+
+            <div className="container swiper-test-container bg-dark mt-5 pt-5 pb-5">
+                <div className="d-flex justify-content-between align-items-center mb-2">
+                    <h2 className='mb-0 text-white'>Title Test So Long</h2>
+                    <Link className='open-more text-secondary d-flex align-items-end text-decoration-none'>Xem thêm</Link>
+                </div>
+
+                <Swiper
+                    modules={[Navigation, Pagination, Scrollbar, A11y]}
+                    spaceBetween={10}
+                    slidesPerView={5}
+                    slidesPerGroup={5}
+                    navigation
+                    breakpoints={{
+                        320: { slidesPerView: 2, slidesPerGroup: 2, },
+                        640: { slidesPerView: 2, slidesPerGroup: 2, },
+                        768: { slidesPerView: 3, slidesPerGroup: 3, },
+                        1024: { slidesPerView: 5, slidesPerGroup: 5, },
+                    }}
+                >
+                {moviesData.map((movie, index) => (
+                    <SwiperSlide key={index}>
+                        <Link className='text-white text-decoration-none swiper-test-content' onClick={movieClick}>
+                            <ImageWithSkeletonSwiper src={`https://i.imgur.com/GM9FyA4.jpeg`} alt='test image' className="poster-fluid rounded" />
+                            <h5>{movie.mainTitle}</h5>
+                        </Link>
+                    </SwiperSlide>
+                ))}
+                </Swiper>
+            </div>
+
+            <hr />
 
             <div className="toast-container position-fixed bottom-0 end-0 pe-3" style={{ zIndex: 1055 }} >
                 <div className={`toast upload-movie-toast align-items-center ${showToast ? "show" : ""}`} data-bs-autohide="false" >

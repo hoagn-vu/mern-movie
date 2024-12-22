@@ -9,124 +9,124 @@ import api from '../../api/api';
 import ImageWithSkeletonSwiper from '../../components/ImageWithSkeletonSwiper/ImageWithSkeletonSwiper';
 
 const MovieManagement = ({}) => {
-  const { handleUploadMovie, toggleToastBodyFunc } = useOutletContext();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [isAddingMovie, setIsAddingMovie] = useState(false);
-  const [isEditingMovie, setIsEditingMovie] = useState(false);
+    const { handleUploadMovie, toggleToastBodyFunc } = useOutletContext();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [isAddingMovie, setIsAddingMovie] = useState(false);
+    const [isEditingMovie, setIsEditingMovie] = useState(false);
 
-  const [movieEdit, setMovieEdit] = useState(null);
+    const [movieEdit, setMovieEdit] = useState(null);
 
-  const { movies, setMovies, originalMovies, setOriginalMovies, getAllMovies } = useOutletContext();
-  // const [movies, setMovies] = useState([]);
-  // const [originalMovies, setOriginalMovies] = useState([]);
-  // const getAllMovies = async () => {
-  //   try {
-  //     const response = await api.get('/movies/getAllMovies');
-  //     setMovies(response.data);
-  //     setOriginalMovies(response.data);
-  //   } catch (error) {
-  //     console.error('Error fetching movies:', error);
-  //   }
-  // };
-  useEffect(() => {
-    getAllMovies();
-  }, []);
+    const { movies, setMovies, originalMovies, setOriginalMovies, getAllMovies } = useOutletContext();
+    // const [movies, setMovies] = useState([]);
+    // const [originalMovies, setOriginalMovies] = useState([]);
+    // const getAllMovies = async () => {
+    //   try {
+    //     const response = await api.get('/movies/getAllMovies');
+    //     setMovies(response.data);
+    //     setOriginalMovies(response.data);
+    //   } catch (error) {
+    //     console.error('Error fetching movies:', error);
+    //   }
+    // };
+    useEffect(() => {
+        getAllMovies();
+    }, []);
 
-    const [moviePrePromote, setMoviePrePromote] = useState(null);
-    const [startDatePromote, setStartDatePromote] = useState(new Date().toISOString().slice(0, 10));
-    const [endDatePromote, setEndDatePromote] = useState(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
+        const [moviePrePromote, setMoviePrePromote] = useState(null);
+        const [startDatePromote, setStartDatePromote] = useState(new Date().toISOString().slice(0, 10));
+        const [endDatePromote, setEndDatePromote] = useState(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
 
-    const handlePreSetMoviePromote = (currentPromoteStatus, endDate, movie) => {
-        if (currentPromoteStatus === false || (currentPromoteStatus === true && new Date(endDate) < new Date())) {
-            if (movie.status !== 'Available') {
-                alert('Không thể thiết lập nổi bật cho phim bị ẩn!');
-                return;
+        const handlePreSetMoviePromote = (currentPromoteStatus, endDate, movie) => {
+            if (currentPromoteStatus === false || (currentPromoteStatus === true && new Date(endDate) < new Date())) {
+                if (movie.status !== 'Available') {
+                    alert('Không thể thiết lập nổi bật cho phim bị ẩn!');
+                    return;
+                }
+                setMoviePrePromote(movie);
+                toggleModal(true);
+            } else if (currentPromoteStatus === true) {
+                if (window.confirm(`Xác nhận hủy thiết lập nổi bật phim ${movie.mainTitle}?`)) {
+                    setMoviePromote(movie._id, false, '', '')
+                }
             }
-            setMoviePrePromote(movie);
-            toggleModal(true);
-        } else if (currentPromoteStatus === true) {
-            if (window.confirm(`Xác nhận hủy thiết lập nổi bật phim ${movie.mainTitle}?`)) {
-                setMoviePromote(movie._id, false, '', '')
+        };
+
+    const setMoviePromote = async (id, isPromote, startDate, endDate) => {
+        try {
+        await api.put(`/movies/setPromote/${id}`, { isPromote, startDate, endDate });
+        setMovies(movies.map(movie => {
+            if (movie._id === id) {
+            return { ...movie, promote: { isPromote, startDate, endDate } };
             }
+            return movie;
+        }));
+        setOriginalMovies(originalMovies.map(movie => {
+            if (movie._id === id) {
+            return { ...movie, promote: { isPromote, startDate, endDate } };
+            }
+            return movie;
+        }));
+        
+        setMoviePrePromote(null);
+        setStartDatePromote(new Date().toISOString().slice(0, 10));
+        setEndDatePromote(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
+        setIsModalOpen(false);
+        } catch (error) {
+        console.error('Error setting movie promote:', error);
         }
     };
 
-  const setMoviePromote = async (id, isPromote, startDate, endDate) => {
-    try {
-      await api.put(`/movies/setPromote/${id}`, { isPromote, startDate, endDate });
-      setMovies(movies.map(movie => {
-        if (movie._id === id) {
-          return { ...movie, promote: { isPromote, startDate, endDate } };
-        }
-        return movie;
-      }));
-      setOriginalMovies(originalMovies.map(movie => {
-        if (movie._id === id) {
-          return { ...movie, promote: { isPromote, startDate, endDate } };
-        }
-        return movie;
-      }));
-      
-      setMoviePrePromote(null);
-      setStartDatePromote(new Date().toISOString().slice(0, 10));
-      setEndDatePromote(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error('Error setting movie promote:', error);
-    }
-  };
-
-  const changeMovieStatus = async (id, name, status) => {
-    // if (window.confirm(`Are you sure you want to ${status === "Available" ? 'show' : 'hide'} this movie?`)) {
-    if (window.confirm(`Xác nhận ${status === "Available" ? 'hiển thị' : 'ẩn'} phim "${name}" với người dùng?`)) {
-      try {
-        console.log('Try to update movie status: ', id, status);
-        await api.put(`/movies/updateInforMovie/${id}`, { status });
-        // getAllMovies();
-        setMovies(movies.map(movie => {
-          if (movie._id === id) {
-            if (status !== 'Available') {
-              return { ...movie, status, promote: { isPromote: false, startDate: '', endDate: '' } };
+    const changeMovieStatus = async (id, name, status) => {
+        // if (window.confirm(`Are you sure you want to ${status === "Available" ? 'show' : 'hide'} this movie?`)) {
+        if (window.confirm(`Xác nhận ${status === "Available" ? 'hiển thị' : 'ẩn'} phim "${name}" với người dùng?`)) {
+        try {
+            console.log('Try to update movie status: ', id, status);
+            await api.put(`/movies/updateInforMovie/${id}`, { status });
+            // getAllMovies();
+            setMovies(movies.map(movie => {
+            if (movie._id === id) {
+                if (status !== 'Available') {
+                return { ...movie, status, promote: { isPromote: false, startDate: '', endDate: '' } };
+                }
+                return { ...movie, status };
             }
-            return { ...movie, status };
-          }
-          return movie;
-        }));
-        console.log('Movie status updated: ', id, status);
-      } catch (error) {
-        console.error('Error updating movie status:', error);
-      }
+            return movie;
+            }));
+            console.log('Movie status updated: ', id, status);
+        } catch (error) {
+            console.error('Error updating movie status:', error);
+        }
+        }
+    };
+
+    const toggleModal = () => {
+        setIsModalOpen((prev) => !prev);
+    };
+
+    const handleAddMovie = () => {
+        setIsAddingMovie(true);
+        toggleToastBodyFunc(true);
+    };
+    
+    const afterEditOrAddMovie = () => {
+        getAllMovies();
+        toggleToastBodyFunc(false)
+        setIsAddingMovie(false);
+        setIsEditingMovie(false);
+    };
+
+    const handleClickEdit = (movie) => {
+        setMovieEdit(movie);
+        setIsEditingMovie(!isEditingMovie);
+    };
+
+    const cancelSettingPromote = () => {
+        toggleModal(false);
+        setMoviePrePromote(null);
+        setStartDatePromote(new Date().toISOString().slice(0, 10));
+        setEndDatePromote(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
     }
-  };
-
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
-
-  const handleAddMovie = () => {
-    setIsAddingMovie(true);
-    toggleToastBodyFunc(true);
-  };
-  
-  const afterEditOrAddMovie = () => {
-    getAllMovies();
-    toggleToastBodyFunc(false)
-    setIsAddingMovie(false);
-    setIsEditingMovie(false);
-  };
-
-  const handleClickEdit = (movie) => {
-    setMovieEdit(movie);
-    setIsEditingMovie(!isEditingMovie);
-  };
-
-  const cancelSettingPromote = () => {
-    toggleModal(false);
-    setMoviePrePromote(null);
-    setStartDatePromote(new Date().toISOString().slice(0, 10));
-    setEndDatePromote(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
-  }
 
     const toggleDeleteConfirm = ( mId = '' ) => {
         setMovieIdPreDelete(mId);
@@ -148,7 +148,7 @@ const MovieManagement = ({}) => {
     };
 
 
-  
+
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 8;

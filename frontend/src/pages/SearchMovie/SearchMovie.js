@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import './SearchMovie.css';
 import DefaultLayout from '../../layouts/DefaultLayout/DefaultLayout';
 import api from '../../api/api';
 import { UserContext } from '../../UserContext';
 
 import ImageWithSkeletonSearch from '../../components/ImageWithSkeletonSearch/ImageWithSkeletonSearch';
-import ImageWithSkeletonSwiper from '../../components/ImageWithSkeletonSwiper/ImageWithSkeletonSwiper';
 
 import Select, { components } from 'react-select';
 import { countryOptions, yearOptions } from '../../data'
@@ -63,28 +62,6 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
         { value: "oldest", label: "Cũ nhất" },
     ];
 
-    const handleSearch = async () => {
-        if (!nameSearch && !selectedGenre && !selectedYear && !selectedCountry) {
-            alert('Vui lòng nhập thông tin tìm kiếm');
-            return;
-        }
-
-        setIsSearching(true);
-    
-        try {
-            const response = await api.post('/movies/search', {
-                titleSearch: nameSearch || '',
-                genreIdSearch: selectedGenre?.value || '',
-                yearSearch: selectedYear?.value || '',
-                nationSearch: selectedCountry?.value || '',
-            });
-            setSearchResult(response.data);
-            console.log('movieSearched:', response.data);
-        } catch (err) {
-            console.log('Error:', err);
-        }
-    };
-
     const fetchSomeNewestMovies = async () => {
         try {
             const response = await api.get('/movies/getSomeNewestMovies');
@@ -94,11 +71,11 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
         }
     }
 
-    useEffect(() => {
-        if (!isSearching) {
-            fetchSomeNewestMovies()
-        };
-    }, [isSearching]);
+    // useEffect(() => {
+    //     if (!isSearching) {
+    //         fetchSomeNewestMovies()
+    //     };
+    // }, [isSearching]);
 
     const handleSort = (option) => {
         const sortedResults = [...searchResult]; // Tạo bản sao của searchResult
@@ -137,29 +114,6 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
         );
     };
 
-    // const [topViewedMovies, setTopViewedMovies] = useState([]);
-    // const [topRatedMovies, setTopRatedMovies] = useState([]);
-    // const getTopMovies = async () => {
-    //     try {
-    //         const response = await api.get('/movies/getTopMovies');
-    //         console.log('Top movies:', response.data);
-            
-    //         // sample response:
-    //         // movieId: movie._id,
-    //         // mainTitle: movie.mainTitle,
-    //         // subTitle: movie.subTitle,
-    //         // releaseDate: movie.releaseDate,
-    //         // averageRate: Number(averageRate),
-    //         // viewsPerMonth, // [{ month: 1, views: 100 }, { month: 2, views: 200 }, ...]
-    //         // source: movie.source,
-    //         setTopViewedMovies(response.data.sort((a, b) => b.viewsPerMonth[0]?.views - a.viewsPerMonth[0]?.views).slice(0, 5));
-        
-    //         console.log('Top viewed:', topViewedMovies);
-    //         setTopRatedMovies(response.data.sort((a, b) => b.averageRate - a.averageRate).slice(0, 5));
-    //     } catch (error) {
-    //         console.error('Error fetching top movies:', error);
-    //     }
-    // };
     const [topViewedMovies, setTopViewedMovies] = useState([]);
     const getTopMovies = async () => {
         try {
@@ -171,11 +125,140 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
             console.error('Error fetching top movies:', error);
         }
     };
+    useEffect(() => {
+        if (isSearching===false) getTopMovies();
+    }, [isSearching]);
 
+
+    // const [isFirstSearch, setIsFirstSearch] = useState(true);
+    // const [searchParams] = useSearchParams();
+
+    // let genreId = '';
+    // let nation = '';
+
+    // if (isFirstSearch) {
+    //     genreId = genreOptions.find((genre) => genre.label === searchParams.get('genre')) || '';
+    //     nation = searchParams.get('nation') || '';
+    //     setIsFirstSearch(false);
+    // } else {
+    //     genreId = selectedGenre?.value || '';
+    //     nation = selectedCountry?.value || '';
+    // }
+
+    // useEffect(() => {
+    //     if (isFirstSearch) {
+    //         if (searchParams.get('genre')) {
+    //             setSelectedGenre(genreOptions.find((genre) => genre.label === searchParams.get('genre')));
+    //         } else if (searchParams.get('nation')) {
+    //             setSelectedCountry(countryOptions.find((country) => country.label === searchParams.get('nation')));
+    //         }
+    //         handleSearch();
+    //     }
+    // }, [isFirstSearch]);
+
+    // const handleSearch = async () => {
+    //     // const genreId = selectedGenre?.value || searchParams.get('genre') || '';
+    //     // const country = selectedCountry?.value || searchParams.get('nation') || '';
+    //     // const year = selectedYear?.value || searchParams.get('year') || '';
+    
+    //     // if (!nameSearch && !genreId && !year && !country) {
+    //     if (!nameSearch && !selectedGenre && !selectedYear && !selectedCountry) {
+    //         alert('Vui lòng nhập thông tin tìm kiếm');
+    //         return;
+    //     }
+    
+    //     setIsSearching(true);
+    
+    //     try {
+    //         const response = await api.post('/movies/search', {
+    //             titleSearch: nameSearch || '',
+    //             // genreIdSearch: selectedGenre?.value || '',
+    //             genreIdSearch: genreId,
+    //             yearSearch: selectedYear?.value || '',
+    //             // nationSearch: selectedCountry?.value || '',
+    //             nationSearch: nation,
+    //         });
+    //         setSearchResult(response.data);
+    //         // console.log('movieSearched:', response.data);
+
+    //     } catch (err) {
+    //         console.error('Error:', err);
+    //     }
+    // };
+    const [isFirstSearch, setIsFirstSearch] = useState(true);
+    const [searchParams] = useSearchParams();
+    const [displayTitle, setDisplayTitle] = useState('Kết quả tìm kiếm');
 
     useEffect(() => {
-        getTopMovies();
-    }, []);
+        if (isFirstSearch && genreOptions.length > 0) {
+            const genreLabel = searchParams.get('genre');
+            const nationLabel = searchParams.get('nation');
+            const incomeTitle = searchParams.get('title');
+
+            // Nếu có incomeTitle, hiển thị nó
+            if (incomeTitle) {
+                setDisplayTitle(incomeTitle);
+            }
+
+            // Chỉ set giá trị nếu searchParams có giá trị
+            if (genreLabel && genreOptions.length > 0) {
+                // console.log('genreLabel:', genreLabel);
+                setSelectedGenre(genreOptions.find((genre) => genre.label === genreLabel) || null);
+                // console.log('genreOptions:', genreOptions);
+                // console.log('id genre label:', genreOptions.find((genre) => genre.label === genreLabel) || null);
+            }
+            if (nationLabel) {
+                // console.log('nationLabel:', nationLabel);
+                setSelectedCountry(countryOptions.find((country) => country.label === nationLabel) || null);
+            }
+
+            // Gọi handleSearch chỉ khi có tham số tìm kiếm
+            if (genreLabel || nationLabel) {
+                // setIncomeTitle(searchParams.get('title'));
+                // console.log(searchParams.get('title'));
+
+                handleSearch({
+                    genreIdSearch: genreOptions.find((genre) => genre.label === genreLabel)?.value || '',
+                    nationSearch: nationLabel || '',
+                });
+            }
+
+            setIsFirstSearch(false); // Đánh dấu đã xử lý lần đầu
+        }
+    }, [isFirstSearch, searchParams, genreOptions]);
+
+    const handleSearch = async (overrideParams = {}) => {
+        const {
+            genreIdSearch = selectedGenre?.value || '',
+            nationSearch = selectedCountry?.value || '',
+            titleSearch = nameSearch || '',
+            yearSearch = selectedYear?.value || '',
+        } = overrideParams;
+
+        if (!titleSearch && !genreIdSearch && !yearSearch && !nationSearch) {
+            alert('Vui lòng nhập thông tin tìm kiếm');
+            return;
+        }
+
+        setIsSearching(true);
+
+        try {
+            const response = await api.post('/movies/search', {
+                titleSearch,
+                genreIdSearch,
+                yearSearch,
+                nationSearch,
+            });
+            setSearchResult(response.data);
+            if (!isFirstSearch) {
+                setDisplayTitle('Kết quả tìm kiếm');
+            }
+        } catch (err) {
+            console.error('Error:', err);
+        }
+    };
+
+  
 
 
     
@@ -209,10 +292,8 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                         ></i>
                     </div>
 
-                    {/* Select Thể loại */}
                     <div className='select-search col-md-6 col-lg-2'>
                         <Select
-
                             isSearchable
                             isClearable
                             options={genreOptions} 
@@ -227,7 +308,6 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                         />
                     </div>
 
-                    {/* Select Năm chiếu */}
                     <div className='select-search year-select-search col-md-6 col-lg-2'>
                         <Select
                             isSearchable
@@ -244,7 +324,6 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                         />
                     </div>
 
-                    {/* Select Quốc gia */}
                     <div className='select-search col-md-6 col-lg-2'>
                         <Select
                             isSearchable
@@ -266,67 +345,8 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                     </div>
                 </form>
 
-                { !isSearching ? (
+                {!isSearching ? (
                     <div className='newest-movies text-white mb-3'>
-                        {/* <div className='row'>
-                            <div className='col-12 col-lg-6'>
-                                <h2>Phim được xem nhiều nhất</h2>
-                                <div className='top-movies-list'>
-                                    {topViewedMovies.map((movie, index) => (
-                                        <div key={index} className='top-movie d-flex mb-3'>
-                                            <ImageWithSkeletonSwiper
-                                                src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`}
-                                                alt={movie.subTitle}
-                                                className="poster-result-fluid rounded me-3"
-                                            />
-                                            <div className='top-movie-info'>
-                                                <h3>{movie.mainTitle}</h3>
-                                                <p>Năm: {new Date(movie.releaseDate).getFullYear()}</p>
-                                                <p>Đánh giá: {movie.averageRate.toFixed(1)}</p>
-                                                <p>Lượt xem 3 tháng gần nhất: {movie.viewsInLast3Months}</p>
-
-                                                <Link to={`/watch/${movie.movieId}`} onClick={(e) => checkAuth(e, movie.movieId)}>
-                                                    <button className='watch-button'>Xem ngay</button>
-                                                </Link>
-
-                                                <button className="like-button" onClick={() => handleToggleFavorite(movie.movieId)}>
-                                                    { userFavorite && userFavorite.includes(movie.movieId) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className='col-12 col-lg-6'>
-                                <h2>Phim được đánh giá cao nhất</h2>
-                                <div className='top-movies-list'>
-                                    {topRatedMovies.map((movie, index) => (
-                                        <div key={index} className='top-movie d-flex mb-3'>
-                                            <ImageWithSkeletonSwiper
-                                                src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`}
-                                                alt={movie.subTitle}
-                                                className="poster-result-fluid rounded me-3"
-                                            />
-                                            <div className='top-movie-info'>
-                                                <h3>{movie.mainTitle}</h3>
-                                                <p>Năm: {new Date(movie.releaseDate).getFullYear()}</p>
-                                                <p>Đánh giá: {movie.averageRate.toFixed(1)}</p>
-                                                <p>Lượt xem 3 tháng gần nhất: {movie.viewsInLast3Months}</p>
-
-                                                <div className='movie-result-actions d-flex align-items-center'>
-                                                    <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
-                                                        <button className='watch-button'>Xem ngay</button>                                            
-                                                    </Link>
-                                                    <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>
-                                                        { userFavorite && userFavorite.includes(movie._id) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div> */}
                         <h2 className='mt-5 mb-3'>Phim thịnh hành</h2>
                         <div className='newest-movies-list row'>
                             {/* {newestMovies.map((movie, index) => ( */}
@@ -344,7 +364,7 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                                                 <h3>{movie.mainTitle}</h3>
                                                 <div className='row'>
                                                     <p>
-                                                        <i class="fa-solid fa-star"></i> {movie.averageRate} 
+                                                        <i className="fa-solid fa-star"></i> {movie.averageRate} 
                                                         <span className='ms-2 me-2 text-secondary'>|</span>
                                                         {movie.totalViewsLastThreeMonths} lượt xem
                                                         <span className='ms-2 me-2 text-secondary'>|</span>
@@ -356,11 +376,11 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                                                 <p>Nội dung: {movie.description}</p>
                                             </div>
                                             <div className='movie-result-actions d-flex align-items-center'>
-                                                <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
+                                                <Link to={`/${userData._id}/watch/${movie.movieId}`} onClick={(e) => checkAuth(e, movie._id)}>
                                                     <button className='watch-button'>Xem ngay</button>                                            
                                                 </Link>
-                                                <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>
-                                                    { userFavorite && userFavorite.includes(movie._id) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
+                                                <button className="like-button" onClick={() => handleToggleFavorite(movie.movieId)}>
+                                                    { userFavorite && userFavorite.includes(movie.movieId) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
                                                 </button>
                                             </div>
                                         </div>
@@ -370,81 +390,71 @@ const SearchMovie = ({ userData, userFavorite, callChangeFavorite }) => {
                         </div>
                     </div>
 
-
-
-
-
                 ) : (
-                <div className='search-result'>
-                    <div className='search-result-header d-flex justify-content-between align-items-center text-white mb-3'>
-
-                        <h2>Kết quả tìm kiếm</h2>
-                        <div className='search-result-sort d-flex align-items-center'>
-                            <span className="me-2">Sắp xếp theo:</span>
-                            <Select
-                                isSearchable={false}
-                                options={sortOptions} 
-                                components={{
-                                    IndicatorSeparator: () => null,
-                                }}
-                                classNamePrefix="react-select"
-                                className='search-select'
-                                defaultValue={sortOptions[0]}
-                                styles={{
-                                    control: (provided) => ({
-                                        ...provided,
-                                        minWidth: '120px', // Chiều rộng tối thiểu
-                                        maxWidth: '120px', // Chiều rộng tối đa
-                                    }),
-                                    singleValue: (provided) => ({
-                                        ...provided,
-                                        whiteSpace: 'nowrap', // Ngăn xuống dòng
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis', // Nếu quá dài sẽ hiện dấu "..."
-                                    }),
-                                }}
-
-                                onChange={(option) => handleSort(option)}
-                            />
+                    <div className='search-result'>
+                        <div className='search-result-header d-flex justify-content-between align-items-center text-white mb-3'>
+                            <h2>{displayTitle} </h2>
+                            <div className='search-result-sort d-flex align-items-center'>
+                                <span className="me-2">Sắp xếp theo:</span>
+                                <Select
+                                    isSearchable={false}
+                                    options={sortOptions} 
+                                    components={{
+                                        IndicatorSeparator: () => null,
+                                    }}
+                                    classNamePrefix="react-select"
+                                    className='search-select'
+                                    defaultValue={sortOptions[0]}
+                                    styles={{
+                                        control: (provided) => ({
+                                            ...provided,
+                                            minWidth: '120px', // Chiều rộng tối thiểu
+                                            maxWidth: '120px', // Chiều rộng tối đa
+                                        }),
+                                        singleValue: (provided) => ({
+                                            ...provided,
+                                            whiteSpace: 'nowrap', // Ngăn xuống dòng
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis', // Nếu quá dài sẽ hiện dấu "..."
+                                        }),
+                                    }}
+                                    onChange={(option) => handleSort(option)}
+                                />
+                            </div>
                         </div>
-                    </div>
 
 
-                    <div className='search-result-movies row'>
-                        {searchResult.length > 0 ? searchResult.map((movie, index) => (
-                            <div key={index} className='col-12 col-md-12 col-lg-12 col-xl-6 mb-5'>
-                                <div className='search-result-movie d-flex'>
-                                    <ImageWithSkeletonSearch src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`} alt={movie.subTitle} className="poster-result-fluid rounded me-3" />
-                                    <div className='movie-info-and-action text-white'>
-                                        <div className='movie-result-infos'>
-                                            <h3>{movie.mainTitle}</h3>
-                                            <p>Năm: {new Date(movie.releaseDate).getFullYear()}</p>
-                                            <p>Thể loại: {movie.genres.join(', ')}</p>
-                                            <p>Nội dung: {movie.description}</p>
-                                        </div>
-                                        <div className='movie-result-actions d-flex align-items-center'>
-                                            <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
-                                                <button className='watch-button'>Xem ngay</button>                                            
-                                            </Link>
-                                            <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>
-                                                { userFavorite && userFavorite.includes(movie._id) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
-                                                {/* <i className="far fa-heart"></i> */}
-                                            </button>
+                        <div className='search-result-movies row'>
+                            {searchResult.length > 0 ? searchResult.map((movie, index) => (
+                                <div key={index} className='col-12 col-md-12 col-lg-12 col-xl-6 mb-5'>
+                                    <div className='search-result-movie d-flex'>
+                                        <ImageWithSkeletonSearch src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/poster`} alt={movie.subTitle} className="poster-result-fluid rounded me-3" />
+                                        <div className='movie-info-and-action text-white'>
+                                            <div className='movie-result-infos'>
+                                                <h3>{movie.mainTitle}</h3>
+                                                <p>Năm: {new Date(movie.releaseDate).getFullYear()}</p>
+                                                <p>Thể loại: {movie.genres.join(', ')}</p>
+                                                <p>Nội dung: {movie.description}</p>
+                                            </div>
+                                            <div className='movie-result-actions d-flex align-items-center'>
+                                                <Link to={`/${userData._id}/watch/${movie._id}`} onClick={(e) => checkAuth(e, movie._id)}>
+                                                    <button className='watch-button'>Xem ngay</button>                                            
+                                                </Link>
+                                                <button className="like-button" onClick={() => handleToggleFavorite(movie._id)}>
+                                                    { userFavorite && userFavorite.includes(movie._id) ? <i className="fa-solid fa-heart liked"></i> : <i className="far fa-heart"></i> }
+                                                    {/* <i className="far fa-heart"></i> */}
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                        )) : (
-                            <div className='no-result text-white'>Không tìm thấy kết quả phù hợp</div>
-                        )}
-
+                                
+                            )) : (
+                                <div className='no-result text-white'>Không tìm thấy kết quả phù hợp</div>
+                            )}
+                        </div>
                     </div>
-                </div>
-
-
                 )}
-                
             </div>
         </DefaultLayout>
     );

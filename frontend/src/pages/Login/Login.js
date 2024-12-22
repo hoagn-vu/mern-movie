@@ -47,7 +47,7 @@ const Login = () => {
         try {
             const response = await api.post('/auth/login', {
                 ...formData,
-                rememberMe, // gửi giá trị rememberMe cùng dữ liệu đăng nhập
+                rememberMe,
             });
 
             localStorage.setItem('accessToken', response.data.accessToken);
