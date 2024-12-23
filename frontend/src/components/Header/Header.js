@@ -21,14 +21,17 @@ const Header = ({ userData }) => {
         window.location.href = '/';
     };
 
+    const handleClickLogo = (e) => {
+        e.preventDefault();
+        window.location.href = '/';
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-black sticky-top shadow">
             <div className="container header-comp-container">
                 {/* Logo */}
-                <Link className="navbar-brand" to="/">
+                <Link className="navbar-brand" onClick={(e) => handleClickLogo(e)}>
                     <img src="https://i.imgur.com/MD7mgf9.png" alt="Logo" className='me-2' />
-                    {/* <img src="https://i.imgur.com/oFOA28M.png" alt="Logo" className='me-2' /> */}
-                    {/* <img src="https://i.imgur.com/qsNW0LL.png" alt="Logo" className='me-2' /> */}
                     <span>Lovie</span>
                 </Link>
 

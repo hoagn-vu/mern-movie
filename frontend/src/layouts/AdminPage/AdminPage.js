@@ -196,9 +196,14 @@ const AdminPage = ({ userData }) => {
             console.log(key, ":", value);
         }
 
+        setUploadingQueue((prev) => [
+            ...prev,
+            { id: movieId, name: mainTitle, progress: 0, status: 'uploading' },
+        ]);        
+
         try {
-            console.log("Uploading...");
-            const response = await api.put(`movies/update/${movieId} `, formData, {
+            console.log("Đang tải...");
+            const response = await api.put(`movies/update/${movieId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
 
                 onUploadProgress: (progressEvent) => {
@@ -206,9 +211,9 @@ const AdminPage = ({ userData }) => {
 
                     setUploadingQueue((prev) =>
                         prev.map((movie) =>
-                        movie.name === mainTitle
-                            ? { ...movie, progress: percentCompleted }
-                            : movie
+                            movie.name === mainTitle
+                                ? { ...movie, progress: percentCompleted }
+                                : movie
                         )
                     );
                 }
@@ -308,9 +313,28 @@ const AdminPage = ({ userData }) => {
             activeSite={handleActive}
         >
             {inSite === 'welcome' && (
-                <div className="container-fluid welcome-admin-container d-flex justify-content-center align-items-center p-4" style={{ height: "90vh" }}>
-                    <img src='https://i.imgur.com/mypQCtG.png' alt='Welcome to Lovie Admin' />
+                <div className="container-fluid welcome-admin-container d-flex flex-column justify-content-center align-items-center p-0 position-relative"
+                    style={{ height: "90vh" }}
+                >
+                    <img
+                        src="https://i.imgur.com/IJpV9Qi.png"
+                        alt="Welcome to Lovie Admin"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
+                    <div className="text-overlay position-absolute text-center"
+                        style={{
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        // color: "white",
+                        // textShadow: "2px 2px 5px rgba(0, 0, 0, 0.7)",
+                        }}
+                    >
+                        <h1>Chào mừng trở lại, {userData.fullname}!</h1>
+                        <h2>Hãy chọn một mục để bắt đầu</h2>
+                    </div>
                 </div>
+
             )}
             {inSite === 'dashboard' && (
                 <Dashboard 

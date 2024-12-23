@@ -461,109 +461,50 @@ const Player = ({  movieSource, callOpenReportModal, history }) => {
         }
     };
 
+    const saveWatchHistoryWithBeacon = () => {
+        const payload = JSON.stringify({
+            userId: userId,
+            movieId: movieId,
+            timeWatched: videoRef.current.currentTime === videoRef.current.duration
+            ? 0
+            : videoRef.current.currentTime || 0,
+        });
+        const blob = new Blob([payload], { type: 'application/json' });
 
-    // const [viewUpdated, setViewUpdated] = useState(false);
-    // const updateViews = async () => {
-    //     try {
-    //         await api.put(`/movies/${movieId}/updateViews`);
-    //         console.log("Views updated");
-    //     } catch (error) {
-    //         console.error("Error updating views:", error);
-    //     }
-    // };
+        const success = navigator.sendBeacon('http://localhost:5001/api/movies/saveWatchHistory', blob);
 
+        if (success) {
+            console.log('Beacon sent watch history successfully');
+        } else {
+            console.error('Beacon sending failed');
+        }
+    };
 
-    // useEffect(() => {
-        // const saveWatchHistory = async (e) => {
-        //     e.preventDefault();
-        //     try {
-        //         await api.post(`/movies/saveWatchHistory`, {
-        //             userId: userId,
-        //             movieId: movieId,
-        //             timeWatched: videoRef.current.currentTime || 1,
-        //         });
-        //         console.log("Watch history saved");
-        //     } catch (error) {
-        //         console.error("Error saving watch history:", error);
-        //     }
-    //     };
+    useEffect(() => {
+        const handleUnload = () => {
+            const payload = JSON.stringify({
+                userId: userId,
+                movieId: movieId,
+                timeWatched: videoRef.current.currentTime === videoRef.current.duration
+                ? 0
+                : videoRef.current.currentTime || 0,
+            });
+            const blob = new Blob([payload], { type: 'application/json' });
 
-    //     window.addEventListener("beforeunload", saveWatchHistory);
-    //     return () => {
-    //         window.removeEventListener("beforeunload", saveWatchHistory);
-    //     };
-    // }, [ userId, movieId ]);
-    // useEffect(() => {
-    //     const saveWatchHistory = (e) => {
-    //         // Dữ liệu cần gửi
-    //         const data = {
-    //             userId: userId,
-    //             movieId: movieId,
-    //             timeWatched: videoRef.current?.currentTime || 1,
-    //         };
-    
-    //         // Gửi yêu cầu đồng bộ (navigator.sendBeacon)
-    //         const url = `http://localhost:5001/api/movies/saveWatchHistory`;
-    //         const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-    
-    //         navigator.sendBeacon(url, blob);
-    
-    //         console.log("Watch history saved with sendBeacon");
-    
-    //         e.preventDefault();
-    //         e.returnValue = ""; // Hiển thị cảnh báo đóng trang (tùy chọn)
-    //     };
-    
-    //     window.addEventListener("beforeunload", saveWatchHistory);
-    
-    //     return () => {
-    //         window.removeEventListener("beforeunload", saveWatchHistory);
-    //     };
-    // }, [userId, movieId]);
-    // useEffect(() => {
-    //     const saveToLocalStorage = () => {
-    //         const data = {
-    //             userId: userId,
-    //             movieId: movieId,
-    //             timeWatched: videoRef.current?.currentTime || 1,
-    //         };
-    //         localStorage.setItem("unsavedWatchHistory", JSON.stringify(data));
-    //     };
-    
-    //     window.addEventListener("beforeunload", saveToLocalStorage);
-    
-    //     return () => {
-    //         window.removeEventListener("beforeunload", saveToLocalStorage);
-    //     };
-    // }, [userId, movieId]);
-    // useEffect(() => {
-    //     const handleBeforeUnload = () => {
-    //         if (videoRef.current) {
-    //             const currentTime = videoRef.current?.currentTime || 1;
-    //             navigator.sendBeacon('http://localhost:5001/api/movies/saveWatchHistory', {
-    //                 userId: userId,
-    //                 movieId: movieId,
-    //                 timeWatched: currentTime,
-    //             });
-    //         }
-    //     };
+            const success = navigator.sendBeacon('http://localhost:5001/api/movies/saveWatchHistory', blob);
 
-    //     window.addEventListener('beforeunload', handleBeforeUnload);
+            if (!success) {
+                console.error('Beacon API failed to send data');
+            }
+        };
 
-    //     return () => {
-    //         window.removeEventListener('beforeunload', handleBeforeUnload);
-    //     };
-    // }, [movieId, userId]);
+        window.addEventListener('beforeunload', handleUnload);
 
-    // Kiểm tra history và nếu có thì chuyển đến thời gian đã xem
-    // useEffect(() => {
-    //     const historyData = history.find((item) => item.movieId === movieId);
-    //     if (historyData) {
-    //         if (window.confirm(`Bạn đã xem đến ${formatTime(historyData.timeWatched)}. Bạn có muốn tiếp tục xem không?`)) {
-    //             videoRef.current.currentTime = historyData.timeWatched;
-    //         }
-    //     }
-    // }, [history, movieId]);
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload);
+        };
+    }, []);
+
     
     
 

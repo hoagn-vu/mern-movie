@@ -26,8 +26,6 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
     const [directors, setDirectors] = useState([]);
     const [casts, setCasts] = useState([]);
 
-    const [uploadProgress, setUploadProgress] = useState(0);
-
     const selectGenreRef = useRef(null);
     const selectDirectorRef = useRef(null);
     const selectCastRef = useRef(null);
@@ -324,7 +322,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
             <div className="drag-drop text-center position-relative">
                 <input type="file" accept="video/*" id='movieInput' name='movie' onChange={handleFileChange} required/>
                 {movieUrl ? (
-                <video src={movieUrl} controls className="video-fluid rounded" />
+                <video src={movieUrl+`?timestamp=${new Date().getTime()}`} controls className="video-fluid rounded" />
                 ) : (
                 <div className='upload-icon-form'>
                     <i className="fas fa-cloud-upload-alt "></i>
@@ -342,7 +340,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                 <div className="drag-drop-horizontal position-relative text-center d-flex align-items-center justify-content-center">
                     <input type="file" accept="image/*" id='bannerInput' name="banner" onChange={handleFileChange} required/>
                     {bannerUrl ? (
-                        <img src={bannerUrl} alt="Horizontal Banner" className="img-fluid rounded" />
+                        <img src={bannerUrl+`?timestamp=${new Date().getTime()}`} alt="Horizontal Banner" className="img-fluid rounded" />
                     ) : (
                         <p>Đăng Tải Áp Phích Ngang</p>
                     )}
@@ -350,7 +348,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                 <div className="drag-drop-vertical position-relative text-center d-flex align-items-center justify-content-center">
                     <input type="file" accept="image/*" id='posterInput' name="poster" onChange={handleFileChange} required/>
                     {posterUrl ? (
-                        <img src={posterUrl} alt="Vertical Poster" className="img-fluid rounded" />
+                        <img src={posterUrl+`?timestamp=${new Date().getTime()}`} alt="Vertical Poster" className="img-fluid rounded" />
                     ) : (
                         <p>Đăng Tải Áp Phích Dọc</p>
                     )}
@@ -364,7 +362,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                     <div className="col-md-6 p-2">
                         <div className="text-center mb-3">
                             {bannerUrl && (
-                            <img src={bannerUrl} alt="Banner" className="img-fluid rounded banner-image p-2" />
+                            <img src={bannerUrl+`?timestamp=${new Date().getTime()}`} alt="Banner" className="img-fluid rounded banner-image p-2" />
                             )}
                         </div>
                     </div>
@@ -512,21 +510,6 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
             </div>
             
         )}
-
-            {uploadProgress > 0 && (
-            <div className="progress mt-3">
-                <div
-                className="progress-bar progress-bar-striped"
-                role="progressbar"
-                style={{ width: `${uploadProgress}%` }}
-                aria-valuenow={uploadProgress}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                >
-                {uploadProgress}%
-                </div>
-            </div>
-            )}
 
         </div>
 

@@ -1,4 +1,4 @@
-const { ListObjectsCommand, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { DeleteObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
 const s3 = require('../config/awsConfig');
 const mongoose = require('mongoose');
 
@@ -8,7 +8,7 @@ const Director = require('../models/Director');
 const Cast = require('../models/Actor');
 const User = require('../models/User');
 const movieService = require('../services/movieService');
-const e = require('express');
+// const e = require('express');
 
 // Upload file (đã được xử lý qua multer middleware)
 exports.uploadMovie = async (req, res) => {
@@ -46,7 +46,25 @@ exports.uploadMovie = async (req, res) => {
 
 exports.editMovie = async (req, res) => {
     const { movieId } = req.params;
-    const { mainTitle, subTitle, description, releaseDate, duration, country, genres, directors, casts } = req.body;
+    const { mainTitle, subTitle, description, releaseDate, duration, country, genres, directors, casts, source } = req.body;
+
+    if (!source) return res.status(400).json({ message: 'Source is required' });
+
+    if (req.files && req.files.movie) {
+        console.log('New movie ready to upload');
+        // await s3.send(new DeleteObjectCommand({ Bucket: process.env.AWS_BUCKET_NAME, Key: `movies/${source}/movie` }));
+        // console.log('Deleted movie file');
+    }
+    if (req.files && req.files.banner) {
+        console.log('New banner ready to upload');
+        // await s3.send(new DeleteObjectCommand({ Bucket: process.env.AWS_BUCKET_NAME, Key: `movies/${source}/banner` }));
+        // console.log('Deleted banner file');
+    }
+    if (req.files && req.files.poster) {
+        console.log('New poster ready to upload');
+        // await s3.send(new DeleteObjectCommand({ Bucket: process.env.AWS_BUCKET_NAME, Key: `movies/${source}/poster` }));
+        // console.log('Deleted poster file');
+    }
 
     try {
         const movie = await Movie.findById(movieId).select(['-__v', '-userActivity']);
@@ -63,7 +81,7 @@ exports.editMovie = async (req, res) => {
         movie.casts = casts ? casts.split(',') : movie.casts;
         
         await movie.save();
-        res.json({ message: 'Movie updated successfully', movie });
+        res.json({ message: 'Cập nhật phim thành công', movie });
     } catch (error) {
         console.error('Error updating movie:', error);
         res.status(500).json({ message: 'Error updating movie' });
@@ -89,6 +107,8 @@ exports.deleteMovie = async (req, res) => {
         res.status(500).json({ message: 'Error deleting movie' });
     }
 };
+
+
 
 
 const convertIdToName = async (movie, field, model) => {

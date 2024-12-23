@@ -63,14 +63,14 @@ const SwiperBanner = ({ userId, userFavorite, callChangeFavorite, moviesData }) 
                         <div className="swiper-slide-content">
                             <div className='swiper-image container'>
                                 <ImageWithSkeletonSwiper 
-                                src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner`} 
-                                alt={movie.mainTitle} 
-                                className="poster-fluid" 
+                                    src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner`} 
+                                    alt={movie.mainTitle} 
+                                    className="poster-fluid" 
                                 />
                                 <img 
-                                src="https://i.imgur.com/r6KvOcj.png"
-                                alt="Overlay Image"
-                                className="overlay-image"
+                                    src="https://i.imgur.com/r6KvOcj.png"
+                                    alt="Overlay Image"
+                                    className="overlay-image"
                                 />
                             </div>
                             <div className="slide-info">

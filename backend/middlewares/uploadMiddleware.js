@@ -1,13 +1,14 @@
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const s3 = require('../config/awsConfig');
+const { DeleteObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
 
 const upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: process.env.AWS_BUCKET_NAME,
         key: (req, file, cb) => {
-            const folderName = (req.body.subTitle || 'unamed-folder').replace(/\s+/g, '-');
+            const folderName = (req.body.subTitle || req.body.source || 'unamed-folder').replace(/\s+/g, '-');
             let fileName;
 
             if (file.fieldname === 'movie') {
@@ -34,5 +35,6 @@ const upload = multer({
         }
     }
 });
+
 
 module.exports = upload;
