@@ -34,83 +34,83 @@ function UploadForm({ callCancelAddMovie, callUploadMovie }) {
     const handleFileChange = (e) => {
         const { name, files } = e.target;
         if (name === 'movie') {
-        if (files && files[0]) {
-            const movieInput = document.getElementById('movieInput');
-            const allowedVideoTypes = ['video/mp4'];
-            const file = e.target.files[0];
-            if (!allowedVideoTypes.includes(file.type)) {
-            alert('Chỉ hỗ trợ định dạng mp4. Vui lòng thử lại.');
-            movieInput.value = '';
-            return;
-            }
+            if (files && files[0]) {
+                const movieInput = document.getElementById('movieInput');
+                const allowedVideoTypes = ['video/mp4'];
+                const file = e.target.files[0];
+                if (!allowedVideoTypes.includes(file.type)) {
+                alert('Chỉ hỗ trợ định dạng mp4. Vui lòng thử lại.');
+                movieInput.value = '';
+                return;
+                }
 
-            const url = URL.createObjectURL(e.target.files[0]);
-            const videoPlayer = document.createElement("video");
-            videoPlayer.src = url;
-            videoPlayer.onloadedmetadata = () => {
-            setDuration(videoPlayer.duration);
-            }
+                const url = URL.createObjectURL(e.target.files[0]);
+                const videoPlayer = document.createElement("video");
+                videoPlayer.src = url;
+                videoPlayer.onloadedmetadata = () => {
+                setDuration(videoPlayer.duration);
+                }
 
-            setMovieUrl(url);
-            setMovie(files[0]);
-        }
+                setMovieUrl(url);
+                setMovie(files[0]);
+            }
         }
         if (name === 'banner') {
-        if (files && files[0]) {
-            const bannerInput = document.getElementById('bannerInput');
-            const allowedVideoTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            const file = e.target.files[0];
-            if (!allowedVideoTypes.includes(file.type)) {
-            alert('Chỉ hỗ trợ các định dạng png, jpg, jpeg. Vui lòng thử lại.');
-            bannerInput.value = '';
-            return;
-            }
-            // Đảm bảo width > height
-            const image = new Image();
-            image.src = URL.createObjectURL(e.target.files[0]);
-            image.onload = () => {
-            if (image.width < image.height) {
-                alert('Kích thuớc hình ảnh không hợp lệ. Vui lòng thử lại.');
+            if (files && files[0]) {
+                const bannerInput = document.getElementById('bannerInput');
+                const allowedVideoTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                const file = e.target.files[0];
+                if (!allowedVideoTypes.includes(file.type)) {
+                alert('Chỉ hỗ trợ các định dạng png, jpg, jpeg. Vui lòng thử lại.');
                 bannerInput.value = '';
-                setBannerUrl(null);
-                setBanner(null);
                 return;
-            }
-            }
+                }
+                // Đảm bảo width > height
+                const image = new Image();
+                image.src = URL.createObjectURL(e.target.files[0]);
+                image.onload = () => {
+                if (image.width < image.height) {
+                    alert('Kích thuớc hình ảnh không hợp lệ. Vui lòng thử lại.');
+                    bannerInput.value = '';
+                    setBannerUrl(null);
+                    setBanner(null);
+                    return;
+                }
+                }
 
-            const url = URL.createObjectURL(e.target.files[0]);
-            setBannerUrl(url);
-            setBanner(files[0]);
-        }
+                const url = URL.createObjectURL(e.target.files[0]);
+                setBannerUrl(url);
+                setBanner(files[0]);
+            }
         } 
         if (name === 'poster') {
-        if (files && files[0]) {
-            const posterInput = document.getElementById('posterInput');
-            const allowedVideoTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-            const file = e.target.files[0];
-            if (!allowedVideoTypes.includes(file.type)) {
-            alert('Chỉ hỗ trợ các định dạng png, jpg, jpeg. Vui lòng thử lại.');
-            posterInput.value = '';
-            return;
-            }
-
-            // Đảm bảo width < height
-            const image = new Image();
-            image.src = URL.createObjectURL(e.target.files[0]);
-            image.onload = () => {
-            if (image.width > image.height) {
-                alert('Kích thuớc hình ảnh không hợp lệ. Vui lòng thử lại.');
+            if (files && files[0]) {
+                const posterInput = document.getElementById('posterInput');
+                const allowedVideoTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                const file = e.target.files[0];
+                if (!allowedVideoTypes.includes(file.type)) {
+                alert('Chỉ hỗ trợ các định dạng png, jpg, jpeg. Vui lòng thử lại.');
                 posterInput.value = '';
-                setPosterUrl(null);
-                setPoster(null);
                 return;
-            }
-            }
+                }
 
-            const url = URL.createObjectURL(e.target.files[0]);
-            setPosterUrl(url);
-            setPoster(files[0]);
-        }
+                // Đảm bảo width < height
+                const image = new Image();
+                image.src = URL.createObjectURL(e.target.files[0]);
+                image.onload = () => {
+                if (image.width > image.height) {
+                    alert('Kích thuớc hình ảnh không hợp lệ. Vui lòng thử lại.');
+                    posterInput.value = '';
+                    setPosterUrl(null);
+                    setPoster(null);
+                    return;
+                }
+                }
+
+                const url = URL.createObjectURL(e.target.files[0]);
+                setPosterUrl(url);
+                setPoster(files[0]);
+            }
         }
     };
 
@@ -244,125 +244,41 @@ function UploadForm({ callCancelAddMovie, callUploadMovie }) {
     const [directorOptions, setDirectorOptions] = useState([]);
     const [actorOptions, setActorOptions] = useState([]);
 
-    // const handleCreateGenre = async (inputValue) => {
-    //   try {
-    //     const response = await api.post("/genres/create", { name: inputValue });
-    //     const newGenre = response.data;
-
-    //     // Cập nhật danh sách thể loại và giá trị đã chọn
-    //     const newOption = { value: newGenre._id, label: newGenre.name };
-    //     setGenreOptions((prev) => [...prev, newOption]);
-    //     return newOption;
-    //   } catch (error) {
-    //     console.error("Error creating genre:", error);
-    //     return null;
-    //   }
-    // };
-
-    // const handleKeyDown = async (event) => {
-    //   if (event.key === "Enter" && event.target.value.trim()) {
-    //     const inputValue = event.target.value.trim();
-
-    //     // Kiểm tra nếu thể loại chưa tồn tại
-    //     if (!genreOptions.some((opt) => opt.label === inputValue)) {
-    //       const newOption = await handleCreateGenre(inputValue);
-
-    //       if (newOption) {
-    //         setGenres((prev) => [...prev, newOption.value]);
-
-    //         // Cập nhật giá trị hiển thị của react-select
-    //         const currentValues = selectGenreRef.current.getValue();
-    //         selectGenreRef.current.setValue([...currentValues, newOption]);
-    //       }
-    //     }
-    //   }
-    // };
-
-    // useEffect(() => {
-    //   const getGenres = async () => {
-    //     try {
-    //       const response = await api.get('/genres/get');
-    //       setGenreOptions(response.data.map(genre => ({ value: genre._id, label: genre.name })));
-    //     } catch (error) {
-    //       console.error('Error fetching genres:', error);
-    //     }
-    //   };
-
-    //   const getDirectors = async () => {
-    //     try {
-    //       const response = await api.get('/directors/get');
-    //       setDirectorOptions(response.data.map(director => ({ value: director._id, label: director.name })));
-    //     } catch (error) {
-    //       console.error('Error fetching directors:', error);
-    //     }
-    //   };
-
-    //   const getActors = async () => {
-    //     try {
-    //       const response = await api.get('/actors/get');
-    //       setActorOptions(response.data.map(actor => ({ value: actor._id, label: actor.name })));
-    //     } catch (error) {
-    //       console.error('Error fetching actors:', error);
-    //     }
-    //   };
-
-    //   getGenres();
-    //   getDirectors();
-    //   getActors();
-    // }, []);
-
-    // const handleChangeGenres = (selectedOptions) => {
-    //   const values = selectedOptions ? selectedOptions.map((opt) => opt.value) : [];
-    //   setGenres(values); // Cập nhật hoàn toàn mảng `genres`
-    //   // console.log("Genres:", values);
-    // };
-
-    // const handleChangeDirectors = (selectedOptions) => {
-    //   const values = selectedOptions ? selectedOptions.map((opt) => opt.value) : [];
-    //   setDirectors(values);
-    // }
-
-    // const handleChangeActors = (selectedOptions) => {
-    //   const values = selectedOptions ? selectedOptions.map((opt) => opt.value) : [];
-    //   setCasts(values);
-    // }
-    // Hàm chung để fetch dữ liệu ban đầu
     const fetchOptions = async (endpoint, setOptions) => {
         try {
-        const response = await api.get(endpoint);
-        const data = response.data.map((item) => ({
-            value: item._id,
-            label: item.name,
-        }));
-        setOptions(data);
+            const response = await api.get(endpoint);
+            const data = response.data.map((item) => ({
+                value: item._id,
+                label: item.name,
+            }));
+            setOptions(data);
         } catch (error) {
-        console.error(`Error fetching data from ${endpoint}:`, error);
+            console.error(`Error fetching data from ${endpoint}:`, error);
         }
     };
 
     // Hàm chung để xử lý tạo mới và cập nhật danh sách
     const handleCreate = async (inputValue, endpoint, setOptions) => {
         try {
-        const response = await api.post(endpoint, { name: inputValue });
-        const newItem = response.data;
-        const newOption = { value: newItem._id, label: newItem.name };
-        setOptions((prev) => [...prev, newOption]);
+            const response = await api.post(endpoint, { name: inputValue });
+            const newItem = response.data;
+            const newOption = { value: newItem._id, label: newItem.name };
+            setOptions((prev) => [...prev, newOption]);
 
-        return newOption;
+            return newOption;
         } catch (error) {
-        console.error(`Error creating item at ${endpoint}:`, error);
-        return null;
+            console.error(`Error creating item at ${endpoint}:`, error);
+            return null;
         }
     };
 
-    // Hàm chung để xử lý sự kiện Enter
     const removeVietnameseTones = (str) => {
         return str
         .normalize("NFD") // Tách các dấu ra khỏi ký tự gốc
         .replace(/[\u0300-\u036f]/g, "") // Loại bỏ toàn bộ dấu
         .replace(/đ/g, "d")
         .replace(/Đ/g, "D")
-        .toLowerCase(); // Chuyển thành chữ thường
+        .toLowerCase();
     };
     // const handleKeyDown = async (event, options, inputValue, ref, endpoint, setOptions, setValues) => {
     //   if (event.key === "Enter" && inputValue.trim()) {
@@ -413,7 +329,6 @@ function UploadForm({ callCancelAddMovie, callUploadMovie }) {
         }
         }
     };
-    
 
     const [currentInputSelectGenreValue, setCurrentInputSelectGenreValue] = useState("");
     const [currentInputSelectDirectorValue, setCurrentInputSelectDirectorValue] = useState("");
@@ -470,19 +385,19 @@ function UploadForm({ callCancelAddMovie, callUploadMovie }) {
         <div className="card-body">
         {currentStep === 1 && (
             <div className="upload-step">
-            <div className="drag-drop text-center position-relative">
-                <input type="file" accept="video/*" id='movieInput' name='movie' onChange={handleFileChange} required/>
-                {movie ? (
-                <video src={movieUrl} controls className="video-fluid rounded" />
-                ) : (
-                <div className='upload-icon-form'>
-                    <i className="fas fa-cloud-upload-alt "></i>
-                    <p>Kéo & Thả</p>
-                    <p>- or -</p>
-                    <p>Nhấn Để Đăng Tải</p>
+                <div className="drag-drop text-center position-relative">
+                    <input type="file" accept="video/*" id='movieInput' name='movie' onChange={handleFileChange} required/>
+                    {movie ? (
+                        <video src={movieUrl} controls className="video-fluid rounded" />
+                    ) : (
+                        <div className='upload-icon-form'>
+                            <i className="fas fa-cloud-upload-alt "></i>
+                            <p>Kéo & Thả</p>
+                            <p>- or -</p>
+                            <p>Nhấn Để Đăng Tải</p>
+                        </div>
+                    )}
                 </div>
-                )}
-            </div>
             </div>
         )}
 

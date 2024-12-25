@@ -697,7 +697,6 @@ exports.toggleFavorite = async (req, res) => {
     try {
         const { userId, movieId } = req.params;
 
-        // Validate userId và movieId
         if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'Id không hợp lệ' });
         }
@@ -706,16 +705,13 @@ exports.toggleFavorite = async (req, res) => {
             return res.status(400).json({ message: 'Invalid movieId' });
         }
 
-        // Tìm user
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Kiểm tra movieId đã tồn tại trong favoriteList hay chưa
         const isFavorite = user.favoriteList.includes(movieId);
 
-        // Thực hiện thêm hoặc xóa movieId
         const updateOperation = isFavorite
             ? { $pull: { favoriteList: movieId } }
             : { $addToSet: { favoriteList: movieId } };
@@ -896,30 +892,24 @@ exports.getWatchHistory = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        // Kiểm tra userId hợp lệ
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'Id không hợp lệ' });
         }
 
-        // Tìm user và chỉ lấy lịch sử xem
         const user = await User.findById(userId).select('history');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        // Lấy danh sách movieId từ history
         const movieIds = user.history.map((item) => item.movieId);
 
-        // Truy vấn tất cả các phim theo movieId
         const movies = await Movie.find({ _id: { $in: movieIds } }).select(['_id', 'mainTitle', 'subTitle', 'duration']);
 
-        // Tạo danh sách lịch sử xem
         const watchHistory = user.history.flatMap((item) => {
-            // Nhóm progress theo ngày và lấy mới nhất mỗi ngày
             const groupedProgress = item.progress.reduce((acc, progress) => {
-                const dateKey = new Date(progress.at).toISOString().split('T')[0]; // Chỉ lấy phần ngày
+                const dateKey = new Date(progress.at).toISOString().split('T')[0];
                 if (!acc[dateKey] || new Date(acc[dateKey].at) < new Date(progress.at)) {
-                    acc[dateKey] = progress; // Ghi đè nếu có thời gian mới hơn
+                    acc[dateKey] = progress;
                 }
                 return acc;
             }, {});
@@ -927,7 +917,6 @@ exports.getWatchHistory = async (req, res) => {
             // Chuyển đổi groupedProgress thành mảng
             const filteredProgress = Object.values(groupedProgress);
 
-            // Tìm thông tin phim
             const movie = movies.find((m) => m._id.toString() === item.movieId.toString());
 
             // Tạo lịch sử xem cho từng ngày
@@ -941,7 +930,6 @@ exports.getWatchHistory = async (req, res) => {
             }));
         });
 
-        // Trả kết quả
         res.status(200).json(watchHistory);
     } catch (error) {
         console.error(error);
@@ -966,13 +954,10 @@ exports.getWatchHistory = async (req, res) => {
 
 exports.statistic = async (req, res) => {
     try {
-        // Lấy danh sách người dùng chỉ với các trường cần thiết
         const users = await User.find({}).select(['_id', 'history']);
 
-        // Lấy danh sách phim
         const movies = await Movie.find({});
 
-        // Duyệt qua danh sách phim để tính toán thông tin chi tiết
         const movieDetails = await Promise.all(movies.map(async (movie) => {
             // Calculate average rate
             const totalRatedActivities = movie.userActivity.filter(activity => activity.rate > 0).length;
@@ -981,10 +966,8 @@ exports.statistic = async (req, res) => {
                 ? (totalRates / totalRatedActivities).toFixed(2)
                 : 0;
 
-            // Count total comments
             const totalComment = movie.userActivity.reduce((acc, activity) => acc + activity.comment.length, 0);
 
-            // Calculate views per month
             const viewsMap = {};
             users.forEach((user) => {
                 user.history
@@ -1021,7 +1004,6 @@ exports.statistic = async (req, res) => {
         const totalUsers = await User.find({ role: { $in: ['User', 'user'] } }).select(['_id', 'createdAt']);
         const totalGenres = await Genre.find().countDocuments();
 
-        // Tổng hợp dữ liệu và trả về
         res.status(200).json({ totalUsers, totalGenres, movieDetails });
     } catch (error) {
         console.error(error);

@@ -92,7 +92,7 @@ const App = () => {
             setUserData(response.data);
             setUserFavorite(response.data.favoriteList);
             // console.log(response.data.favoriteList);
-            console.log('Fetching user profile');
+            // console.log('Fetching user profile');
             // console.log(response.data);
         } catch (error) {
             if (error.response && error.response.status === 401) {

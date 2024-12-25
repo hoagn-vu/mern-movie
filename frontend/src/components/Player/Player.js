@@ -628,9 +628,7 @@ const Player = ({  movieSource, callOpenReportModal, history }) => {
                     onLoadedData={handleLoadedData}
                 >
                     <source
-                        // src="demo-video.mp4"
-                        // src={`https://d3os4gr4tudec8.cloudfront.net/movies/Parasite/movie`}
-                        src={`https://d3os4gr4tudec8.cloudfront.net/movies/${movieSource}/movie`}
+                        src={`https://d3os4gr4tudec8.cloudfront.net/movies/${movieSource}/movie?timestamp=${new Date().getTime()}`}
                         type="video/mp4"
                     />
                 </video>

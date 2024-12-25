@@ -44,6 +44,16 @@ const Login = () => {
         //     setErrorMessage('Email is invalid');
         //     return;
         // }
+        if (formData.username.length < 6) {
+            setErrorMessage('Tài khoản chứa ít nhất 6 ký tự');
+            return;
+        }
+        if (formData.password.length < 6) {
+            setErrorMessage('Mật khẩu chứa ít nhất 6 ký tự');
+            return;
+        }
+
+
         try {
             const response = await api.post('/auth/login', {
                 ...formData,

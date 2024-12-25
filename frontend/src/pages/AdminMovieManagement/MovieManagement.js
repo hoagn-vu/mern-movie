@@ -33,38 +33,38 @@ const MovieManagement = ({}) => {
         getAllMovies();
     }, []);
 
-        const [moviePrePromote, setMoviePrePromote] = useState(null);
-        const [startDatePromote, setStartDatePromote] = useState(new Date().toISOString().slice(0, 10));
-        const [endDatePromote, setEndDatePromote] = useState(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
+    const [moviePrePromote, setMoviePrePromote] = useState(null);
+    const [startDatePromote, setStartDatePromote] = useState(new Date().toISOString().slice(0, 10));
+    const [endDatePromote, setEndDatePromote] = useState(new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10));
 
-        const handlePreSetMoviePromote = (currentPromoteStatus, endDate, movie) => {
-            if (currentPromoteStatus === false || (currentPromoteStatus === true && new Date(endDate) < new Date())) {
-                if (movie.status !== 'Available') {
-                    alert('Không thể thiết lập nổi bật cho phim bị ẩn!');
-                    return;
-                }
-                setMoviePrePromote(movie);
-                toggleModal(true);
-            } else if (currentPromoteStatus === true) {
-                if (window.confirm(`Xác nhận hủy thiết lập nổi bật phim ${movie.mainTitle}?`)) {
-                    setMoviePromote(movie._id, false, '', '')
-                }
+    const handlePreSetMoviePromote = (currentPromoteStatus, endDate, movie) => {
+        if (currentPromoteStatus === false || (currentPromoteStatus === true && new Date(endDate) < new Date())) {
+            if (movie.status !== 'Available') {
+                alert('Không thể thiết lập nổi bật cho phim bị ẩn!');
+                return;
             }
-        };
+            setMoviePrePromote(movie);
+            toggleModal(true);
+        } else if (currentPromoteStatus === true) {
+            if (window.confirm(`Xác nhận hủy thiết lập nổi bật phim ${movie.mainTitle}?`)) {
+                setMoviePromote(movie._id, false, '', '')
+            }
+        }
+    };
 
     const setMoviePromote = async (id, isPromote, startDate, endDate) => {
         try {
-        await api.put(`/movies/setPromote/${id}`, { isPromote, startDate, endDate });
-        setMovies(movies.map(movie => {
-            if (movie._id === id) {
-            return { ...movie, promote: { isPromote, startDate, endDate } };
-            }
-            return movie;
-        }));
-        setOriginalMovies(originalMovies.map(movie => {
-            if (movie._id === id) {
-            return { ...movie, promote: { isPromote, startDate, endDate } };
-            }
+            await api.put(`/movies/setPromote/${id}`, { isPromote, startDate, endDate });
+            setMovies(movies.map(movie => {
+                if (movie._id === id) {
+                    return { ...movie, promote: { isPromote, startDate, endDate } };
+                }
+                    return movie;
+            }));
+            setOriginalMovies(originalMovies.map(movie => {
+                if (movie._id === id) {
+                    return { ...movie, promote: { isPromote, startDate, endDate } };
+                }
             return movie;
         }));
         
@@ -151,7 +151,7 @@ const MovieManagement = ({}) => {
 
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 8;
+    const itemsPerPage = 10;
 
     const handlePageChange = (page) => {
         setCurrentPage(page);

@@ -107,10 +107,10 @@ exports.sendOTPForResetPassword = async (req, res) => {
         const transporter = nodemailer.createTransport(transporterConfig);
 
         const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: user.email,
-        subject: '[Lovie] Đặt lại mật khẩu',
-        text: `Mã xác thực của bạn là: ${code} \n\nMã xác thực sẽ hết hạn vào ${expiredAt}`,
+            from: process.env.EMAIL_USER,
+            to: user.email,
+            subject: '[Lovie] Đặt lại mật khẩu',
+            text: `Mã xác thực của bạn là: ${code} \n\nMã xác thực sẽ hết hạn vào ${expiredAt}`,
         };
 
         await transporter.sendMail(mailOptions);

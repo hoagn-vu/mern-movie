@@ -177,7 +177,7 @@ const AdminPage = ({ userData }) => {
     }
 
     // 3.4. Chỉnh sửa phim
-    const handleEditMovie = async (movieId, mainTitle, subTitle, releaseDate, duration, country, description, genres, directors, casts, movie, banner, poster) => {
+    const handleEditMovie = async (movieId, mainTitle, subTitle, releaseDate, duration, country, description, genres, directors, casts, movie, banner, poster, source) => {
         const formData = new FormData();
         formData.append('mainTitle', mainTitle);
         formData.append('subTitle', subTitle);
@@ -191,6 +191,7 @@ const AdminPage = ({ userData }) => {
         formData.append('movie', movie);
         formData.append('banner', banner);
         formData.append('poster', poster);
+        formData.append('source', source);
         
         for (let [key, value] of formData.entries()) {
             console.log(key, ":", value);

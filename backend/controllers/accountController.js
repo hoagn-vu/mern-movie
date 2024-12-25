@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+// const bcrypt = require('bcryptjs');
 
 exports.getAllAccounts = async (req, res) => {
     try {

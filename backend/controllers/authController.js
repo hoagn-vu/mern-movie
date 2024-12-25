@@ -236,7 +236,7 @@ exports.getProfile = async (req, res) => {
             favoriteList: user.favoriteList,
             history: watchHistory,
         })
-        console.log("Đã gửi thông tin người dùng");
+        // console.log("Đã gửi thông tin người dùng");
         // console.log('user history:', watchHistory);
     } catch (error) {
         res.status(500).json({ message: 'Xảy ra lỗi khi lấy thông tin người dùng', error });

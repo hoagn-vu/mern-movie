@@ -22,6 +22,32 @@ const Register = () => {
     const handleVerifyEmail = async (e) => {
         e.preventDefault();
         setErrorMessage('');
+
+        if (!formData.fullname || !formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+            setErrorMessage('Vui lòng điền đầy đủ thông tin');
+            return;
+        }
+
+        if (formData.username.length < 6) {
+            setErrorMessage('Tên tài khoản phải chứa ít nhất 6 ký tự');
+            return;
+        }
+
+        if (!validateEmail(formData.email)) {
+            setErrorMessage('Email không hợp lệ');
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            setErrorMessage('Mật khẩu phải chứa ít nhất 6 ký tự');
+            return;
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            setErrorMessage("Mật khẩu không trùng khớp");
+            return;
+        }
+
         setResendDisable(true);
         setResendTime(45);
         try {
@@ -237,7 +263,7 @@ const Register = () => {
                                 </div>
                                 
                                 <input type={showConfirmPassword ? 'text' : 'password'} value={formData.confirmPassword} name="confirmPassword" onChange={handleChange} required />
-                                <label htmlFor="">Xác thực mật khẩu</label>
+                                <label htmlFor="">Nhập lại mật khẩu</label>
                             </div>
                             {errorMessage && <p className="text-danger text-left err-mess-register mb-0">{errorMessage}</p>}
 

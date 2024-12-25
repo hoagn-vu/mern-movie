@@ -6,54 +6,6 @@
   margin-bottom: 20px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .movie-title-vn {
   font-size: 2rem;
   font-weight: bold;
@@ -77,7 +29,7 @@
 }
 
 .star-rating button.on .star {
-  color: gold;
+  color: #ff6500;
 }
 
 .star-rating button.off .star {

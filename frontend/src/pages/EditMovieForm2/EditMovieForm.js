@@ -25,6 +25,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
     const [genres, setGenres] = useState([]);
     const [directors, setDirectors] = useState([]);
     const [casts, setCasts] = useState([]);
+    const [source, setSource] = useState('');
 
     const selectGenreRef = useRef(null);
     const selectDirectorRef = useRef(null);
@@ -42,11 +43,12 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
             setGenres(movieDataEdit.genres);
             setDirectors(movieDataEdit.directors);
             setCasts(movieDataEdit.casts);
+            setSource(movieDataEdit.source);
             console.log('movieDataEdit:', movieDataEdit);
 
-            setBannerUrl(`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movieDataEdit.source}/banner`);
-            setPosterUrl(`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movieDataEdit.source}/poster`);
-            setMovieUrl(`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movieDataEdit.source}/movie`);
+            setBannerUrl(`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movieDataEdit.source}/banner?timestamp=${new Date().getTime()}`);
+            setPosterUrl(`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movieDataEdit.source}/poster?timestamp=${new Date().getTime()}`);
+            setMovieUrl(`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movieDataEdit.source}/movie?timestamp=${new Date().getTime()}`);
         }
     }, [movieDataEdit]);
 
@@ -71,7 +73,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                 }
 
                 setMovieUrl(url);
-                setMovie(files[0]);
+                setMovie(files);
             }
         }
         if (name === 'banner') {
@@ -108,22 +110,22 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                 const allowedVideoTypes = ['image/jpeg', 'image/jpg', 'image/png'];
                 const file = e.target.files[0];
                 if (!allowedVideoTypes.includes(file.type)) {
-                alert('Chỉ hỗ trợ các định dạng png, jpg, jpeg. Vui lòng thử lại.');
-                posterInput.value = '';
-                return;
+                    alert('Chỉ hỗ trợ các định dạng png, jpg, jpeg. Vui lòng thử lại.');
+                    posterInput.value = '';
+                    return;
                 }
 
                 // Đảm bảo width < height
                 const image = new Image();
                 image.src = URL.createObjectURL(e.target.files[0]);
                 image.onload = () => {
-                if (image.width > image.height) {
-                    alert('Kích thuớc hình ảnh không hợp lệ. Vui lòng thử lại.');
-                    posterInput.value = '';
-                    setPosterUrl(null);
-                    setPoster(null);
-                    return;
-                }
+                    if (image.width > image.height) {
+                        alert('Kích thuớc hình ảnh không hợp lệ. Vui lòng thử lại.');
+                        posterInput.value = '';
+                        setPosterUrl(null);
+                        setPoster(null);
+                        return;
+                    }
                 }
 
                 const url = URL.createObjectURL(e.target.files[0]);
@@ -134,8 +136,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
     };
 
     const handleUploading = async () => {
-
-        callEditMovie(movieId, mainTitle, subTitle, releaseDate, duration, country, description, genres, directors, casts, movie, banner, poster);
+        callEditMovie(movieId, mainTitle, subTitle, releaseDate, duration, country, description, genres, directors, casts, movie, banner, poster, source);
         handleResetForm();
         callCancelEditMovie();
     };
@@ -177,6 +178,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
         setGenres([]);
         setDirectors([]);
         setCasts([]);
+        setSource('');
         setMovie(null);
         setBanner(null);
         setPoster(null);
@@ -206,14 +208,14 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
 
     const fetchOptions = async (endpoint, setOptions) => {
         try {
-        const response = await api.get(endpoint);
-        const data = response.data.map((item) => ({
-            value: item._id,
-            label: item.name,
-        }));
-        setOptions(data);
+            const response = await api.get(endpoint);
+            const data = response.data.map((item) => ({
+                value: item._id,
+                label: item.name,
+            }));
+            setOptions(data);
         } catch (error) {
-        console.error(`Error fetching data from ${endpoint}:`, error);
+            console.error(`Error fetching data from ${endpoint}:`, error);
         }
     };
 
@@ -322,7 +324,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
             <div className="drag-drop text-center position-relative">
                 <input type="file" accept="video/*" id='movieInput' name='movie' onChange={handleFileChange} required/>
                 {movieUrl ? (
-                <video src={movieUrl+`?timestamp=${new Date().getTime()}`} controls className="video-fluid rounded" />
+                <video src={movieUrl} controls className="video-fluid rounded" />
                 ) : (
                 <div className='upload-icon-form'>
                     <i className="fas fa-cloud-upload-alt "></i>
@@ -340,7 +342,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                 <div className="drag-drop-horizontal position-relative text-center d-flex align-items-center justify-content-center">
                     <input type="file" accept="image/*" id='bannerInput' name="banner" onChange={handleFileChange} required/>
                     {bannerUrl ? (
-                        <img src={bannerUrl+`?timestamp=${new Date().getTime()}`} alt="Horizontal Banner" className="img-fluid rounded" />
+                        <img src={bannerUrl} alt="Horizontal Banner" className="img-fluid rounded" />
                     ) : (
                         <p>Đăng Tải Áp Phích Ngang</p>
                     )}
@@ -348,7 +350,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                 <div className="drag-drop-vertical position-relative text-center d-flex align-items-center justify-content-center">
                     <input type="file" accept="image/*" id='posterInput' name="poster" onChange={handleFileChange} required/>
                     {posterUrl ? (
-                        <img src={posterUrl+`?timestamp=${new Date().getTime()}`} alt="Vertical Poster" className="img-fluid rounded" />
+                        <img src={posterUrl} alt="Vertical Poster" className="img-fluid rounded" />
                     ) : (
                         <p>Đăng Tải Áp Phích Dọc</p>
                     )}
@@ -362,7 +364,7 @@ function EditMovieForm({ movieDataEdit, callCancelEditMovie, callEditMovie }) {
                     <div className="col-md-6 p-2">
                         <div className="text-center mb-3">
                             {bannerUrl && (
-                            <img src={bannerUrl+`?timestamp=${new Date().getTime()}`} alt="Banner" className="img-fluid rounded banner-image p-2" />
+                            <img src={bannerUrl} alt="Banner" className="img-fluid rounded banner-image p-2" />
                             )}
                         </div>
                     </div>

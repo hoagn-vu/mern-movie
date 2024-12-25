@@ -15,10 +15,12 @@ const Dashboard = ({ userStats, totalGenres, movieStats }) => {
 
     const toggleModalChart = () => {
         setIsModalChartOpen((prev) => !prev);
+        setCurrentPage(1);
     };
 
     const toggleModalRanking = () => {
         setIsModalRankingOpen((prev) => !prev);
+        setCurrentPage(1);
     };
 
     const [totalViewsAllTime, setTotalViewsAllTime] = useState(0);
@@ -30,6 +32,9 @@ const Dashboard = ({ userStats, totalGenres, movieStats }) => {
     
     useEffect(() => {
         if (movieStats.length === 0) return;
+
+        setMovieRankingByRating([...movieStats].sort((a, b) => b.averageRate - a.averageRate));
+        setMovieRankingByInteractions([...movieStats].sort((a, b) => b.totalComment - a.totalComment));
 
         const moviesWithTotalViews = movieStats.map(movie => {
             const totalViews = movie.viewsPerMonth.reduce((sum, item) => sum + item.views, 0);
@@ -62,8 +67,7 @@ const Dashboard = ({ userStats, totalGenres, movieStats }) => {
         });
 
         setMovieRankingByViews(viewsForCurrentMonth.sort((a, b) => b.views - a.views));
-        setMovieRankingByRating(movieStats.sort((a, b) => b.averageRate - a.averageRate));
-        setMovieRankingByInteractions(movieStats.sort((a, b) => b.totalComment - a.totalComment));
+
     }, [movieStats]);
 
   
@@ -141,16 +145,6 @@ const Dashboard = ({ userStats, totalGenres, movieStats }) => {
         ? movieRankingByRating.length
         : movieRankingByInteractions.length) / itemsPerPage
     );
-
-    
-
-
-
-
-
-        
-
-
 
     return (
         <div className="container-fluid dashboard-container p-4 text-dark">
@@ -293,7 +287,7 @@ const Dashboard = ({ userStats, totalGenres, movieStats }) => {
                 <div className="col-md-12 col-lg-4">
                     <div className="ranking-box ranking-box-rate p-3 pt-2">
                         <div className='ranking-box-header d-flex justify-content-between align-items-center mb-1'>
-                            <h5 className='mb-0 text-black'>Xếp hạng theo đánh giá</h5>
+                            <h5 className='mb-0 text-black'>Được đánh giá cao nhất</h5>
                             <button 
                                 className="btn btn-primary" 
                                 onClick={() => {

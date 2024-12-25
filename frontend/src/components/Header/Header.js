@@ -21,16 +21,28 @@ const Header = ({ userData }) => {
         window.location.href = '/';
     };
 
-    const handleClickLogo = (e) => {
+    const goHome = (e) => {
         e.preventDefault();
         window.location.href = '/';
     }
+
+    const goSearch = (e) => {
+        e.preventDefault();
+        window.location.href = '/search';
+    }
+
+    const goFavorite = (e) => {
+        e.preventDefault();
+        window.location.href = '/favorite';
+    }
+
+
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-black sticky-top shadow">
             <div className="container header-comp-container">
                 {/* Logo */}
-                <Link className="navbar-brand" onClick={(e) => handleClickLogo(e)}>
+                <Link className="navbar-brand" onClick={(e) => goHome(e)}>
                     <img src="https://i.imgur.com/MD7mgf9.png" alt="Logo" className='me-2' />
                     <span>Lovie</span>
                 </Link>
@@ -53,16 +65,16 @@ const Header = ({ userData }) => {
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                         <li className="nav-item">
                             <div>
-                                <Link className="nav-link" to="/">Trang chủ</Link>
+                                <Link className="nav-link" onClick={(e) => goHome(e)}>Trang chủ</Link>
                             </div>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/search">Tìm kiếm</Link>
+                            <Link className="nav-link" onClick={(e) => goSearch(e)}>Tìm kiếm</Link>
                         </li>
 
                         {isAuthenticated && (
                             <li className="nav-item">
-                                <Link className="nav-link" to="/favorite">Yêu thích</Link>
+                                <Link className="nav-link" onClick={(e) => goFavorite(e)} >Yêu thích</Link>
                             </li>
                         )}
 

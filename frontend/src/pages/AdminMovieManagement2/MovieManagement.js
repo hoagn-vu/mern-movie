@@ -137,7 +137,7 @@ const MovieManagement = ({ movies, setMovies, originalMovies, setOriginalMovies,
 
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 8;
+    const itemsPerPage = 10;
 
     const handlePageChange = (page) => {
         setCurrentPage(page);

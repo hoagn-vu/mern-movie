@@ -40,6 +40,13 @@ const SwiperBanner = ({ userId, userFavorite, callChangeFavorite, moviesData }) 
             console.error('Lỗi khi thêm vào danh sách yêu thích:', error);
         }
     };
+    
+    const convertSecToHrMin = (sec) => {
+        let hours = Math.floor(sec / 3600);
+        let minutes = Math.floor((sec - (hours * 3600)) / 60);
+        if (hours === 0) return minutes + 'm';
+        return hours + 'h ' + minutes + 'm';
+    }
 
     return (
         <div className="swip-bn-cont container movie-swiper-detail-container">
@@ -53,9 +60,9 @@ const SwiperBanner = ({ userId, userFavorite, callChangeFavorite, moviesData }) 
                 autoplay={{ delay: 5000, disableOnInteraction: false }}
                 loop={true}
                 breakpoints={{
-                320: { slidesPerView: 1, slidesPerGroup: 1, },
-                768: { slidesPerView: 1, slidesPerGroup: 1, },
-                1024: { slidesPerView: 1, slidesPerGroup: 1, },
+                    320: { slidesPerView: 1, slidesPerGroup: 1, },
+                    768: { slidesPerView: 1, slidesPerGroup: 1, },
+                    1024: { slidesPerView: 1, slidesPerGroup: 1, },
                 }}
             >
                 {moviesData.map((movie, index) => (
@@ -63,7 +70,8 @@ const SwiperBanner = ({ userId, userFavorite, callChangeFavorite, moviesData }) 
                         <div className="swiper-slide-content">
                             <div className='swiper-image container'>
                                 <ImageWithSkeletonSwiper 
-                                    src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner`} 
+                                    src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner`}
+                                    // src={`https://idev1-bucket.s3.ap-southeast-2.amazonaws.com/movies/${movie.source}/banner?timestamp=${new Date().getTime()}`}
                                     alt={movie.mainTitle} 
                                     className="poster-fluid" 
                                 />
@@ -75,7 +83,7 @@ const SwiperBanner = ({ userId, userFavorite, callChangeFavorite, moviesData }) 
                             </div>
                             <div className="slide-info">
                                 <h2>{movie.mainTitle}</h2>
-                                <p>{movie.genres.join(' • ')}</p>
+                                <p>{new Date(movie.releaseDate).getFullYear()} • {movie.genres.join(' • ')} </p>
                                 <div className="slide-actions">
                                     <Link to={`${userId}/watch/${movie._id}`} onClick={(e)=>checkAuth(e, movie._id )}>
                                         <button className="watch-button">Xem ngay</button>
